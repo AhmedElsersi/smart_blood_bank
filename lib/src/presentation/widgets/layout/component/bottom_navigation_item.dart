@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:masnaay/src/constants/colors.dart';
+import 'package:smart_blood_bank/src/constants/colors.dart';
 
 class BottomNavigationItem extends StatelessWidget {
   final String icon;

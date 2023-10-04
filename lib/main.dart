@@ -4,18 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:masnaay/src/business_logic/app_cubit/app_cubit.dart';
-import 'package:masnaay/src/business_logic/auth_cubit/auth_cubit.dart';
-import 'package:masnaay/src/business_logic/bloc_observer.dart';
-import 'package:masnaay/src/constants/const_methods.dart';
-import 'package:masnaay/src/constants/themes.dart';
-import 'package:masnaay/src/localization/app_strings_extension.dart';
-import 'package:masnaay/src/presentation/router/app_router.dart';
-import 'package:masnaay/src/presentation/screens/start/splash_screen.dart';
-import 'package:masnaay/src/services/cache_helper.dart';
-import 'package:masnaay/src/services/dio_helper.dart';
-import 'package:masnaay/src/services/network_checker_helper.dart';
-import 'package:masnaay/src/services/notification_service.dart';
+import 'package:smart_blood_bank/src/business_logic/app_cubit/app_cubit.dart';
+import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
+import 'package:smart_blood_bank/src/business_logic/bloc_observer.dart';
+import 'package:smart_blood_bank/src/business_logic/layout_cubit/layout_cubit.dart';
+import 'package:smart_blood_bank/src/constants/const_methods.dart';
+import 'package:smart_blood_bank/src/constants/themes.dart';
+import 'package:smart_blood_bank/src/localization/app_strings_extension.dart';
+import 'package:smart_blood_bank/src/presentation/router/app_router.dart';
+import 'package:smart_blood_bank/src/presentation/screens/start/splash_screen.dart';
+import 'package:smart_blood_bank/src/services/cache_helper.dart';
+import 'package:smart_blood_bank/src/services/dio_helper.dart';
+import 'package:smart_blood_bank/src/services/network_checker_helper.dart';
+import 'package:smart_blood_bank/src/services/notification_service.dart';
 
 Future<void> main() async {
   await runZonedGuarded(
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AuthCubit(),
+        ),
+        BlocProvider(
+          create: (context) => LayoutCubit(),
         ),
       ],
       child: BlocBuilder<AppCubit, AppState>(

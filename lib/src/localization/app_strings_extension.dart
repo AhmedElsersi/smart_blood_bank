@@ -8,7 +8,7 @@ const localizationDelegates = AppLocalizations.localizationsDelegates;
 extension AppStrings on BuildContext {
   bool get isAr => AppLocalizations.of(this)!.localeName == "ar";
 
-  String get masnaay => AppLocalizations.of(this)!.masnaay;
+  String get smart_blood_bank => AppLocalizations.of(this)!.smart_blood_bank;
   String get startNow => AppLocalizations.of(this)!.startNow;
   String get skip => AppLocalizations.of(this)!.skip;
   String get omBoardingTitle1 => AppLocalizations.of(this)!.omBoardingTitle1;

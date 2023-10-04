@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:masnaay/src/business_logic/auth_cubit/auth_cubit.dart';
-import 'package:masnaay/src/constants/assets.dart';
-import 'package:masnaay/src/constants/colors.dart';
-import 'package:masnaay/src/constants/const_methods.dart';
-import 'package:masnaay/src/constants/navigator_extension.dart';
-import 'package:masnaay/src/presentation/router/app_router_names.dart';
-import 'package:masnaay/src/presentation/widgets/default_button.dart';
-import 'package:masnaay/src/presentation/widgets/default_text.dart';
-import 'package:masnaay/src/presentation/widgets/default_text_field.dart';
+import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
+import 'package:smart_blood_bank/src/constants/assets.dart';
+import 'package:smart_blood_bank/src/constants/colors.dart';
+import 'package:smart_blood_bank/src/constants/const_methods.dart';
+import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
+import 'package:smart_blood_bank/src/models/industries_model.dart';
+import 'package:smart_blood_bank/src/models/interests_model.dart';
+import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
+import 'package:smart_blood_bank/src/presentation/widgets/default_button.dart';
+import 'package:smart_blood_bank/src/presentation/widgets/default_text.dart';
+import 'package:smart_blood_bank/src/presentation/widgets/default_text_field.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -42,8 +45,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void initState() {
+    AuthCubit.get(context).getIndustries();
+    AuthCubit.get(context).getInterests();
     super.initState();
   }
+
+  List<IndustriesModel> selectedIndustries = [];
+  List<InterestsModel> selectedInterests = [];
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +62,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
         body: BlocConsumer<AuthCubit, AuthState>(listener: (context, state) {
           final cubit = AuthCubit.get(context);
           if (state is RegisterSuccess) {
+            cubit.login(
+                password: _passwordController.text.trim(),
+                mobile: cubit.phoneNum);
+          }
+          if (state is LoginSuccess) {
             Navigator.pop(context);
             context.goTo(AppRouterNames.rLayout);
-          } else if (state is RegisterFailure) {
+          } else if (state is RegisterFailure || state is LoginFailure) {
             Navigator.pop(context);
           }
         }, builder: (context, state) {
@@ -138,6 +151,97 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       SizedBox(height: 16.h),
+                      DefaultTextField(
+                        controller: _industryController,
+                        readOnly: true,
+                        keyboardType: TextInputType.name,
+                        hintText: 'Industry',
+                        hintTextColor: AppColors.textFieldBorder,
+                        height: 40.h,
+                        borderRadius: 10,
+                        prefix: const Icon(
+                          Icons.email_outlined,
+                          color: AppColors.transparent,
+                        ),
+                        suffix: Icon(
+                          Icons.arrow_drop_down_sharp,
+                          size: 24.sp,
+                          color: AppColors.textFieldBorder,
+                        ),
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              return MultiSelectDialog<IndustriesModel>(
+                                height: 200.h,
+                                items: cubit.industries
+                                    .map((e) => MultiSelectItem(
+                                        e, e.industryName ?? ''))
+                                    .toList(),
+                                initialValue: selectedIndustries,
+                                onConfirm: (values) {
+                                  selectedIndustries = values;
+                                  logSuccess(selectedIndustries.toString());
+                                },
+                                searchable: true,
+                                selectedColor: AppColors.primary,
+                                title: const DefaultText(
+                                  text: "Industries",
+                                  textColor: AppColors.primary,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      SizedBox(height: 16.h),
+                      DefaultTextField(
+                        controller: _interestController,
+                        readOnly: true,
+                        keyboardType: TextInputType.name,
+                        hintText: 'Interest',
+                        hintTextColor: AppColors.textFieldBorder,
+                        height: 40.h,
+                        borderRadius: 10,
+                        prefix: const Icon(
+                          Icons.email_outlined,
+                          color: AppColors.transparent,
+                        ),
+                        suffix: Icon(
+                          Icons.arrow_drop_down_sharp,
+                          size: 24.sp,
+                          color: AppColors.textFieldBorder,
+                        ),
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              return MultiSelectDialog<InterestsModel>(
+                                height: 200.h,
+                                items: cubit.interests
+                                    .map((e) => MultiSelectItem(
+                                        e, e.interestName ?? ''))
+                                    .toList(),
+                                initialValue: selectedInterests,
+                                onConfirm: (values) {
+                                  selectedInterests = values;
+                                  logSuccess(selectedInterests.toString());
+                                },
+                                searchable: true,
+                                selectedColor: AppColors.primary,
+                                title: const DefaultText(
+                                  text: "Interests",
+                                  textColor: AppColors.primary,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.w),
                         child: Row(
@@ -273,6 +377,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           } else if (_passwordController.text.isEmpty) {
                             'password field is Required'.toToastWarning();
                             return;
+                          } else if (selectedIndustries.isEmpty) {
+                            'you have to choose one industry at least'
+                                .toToastWarning();
+                            return;
+                          } else if (selectedInterests.isEmpty) {
+                            'you have to choose one interest at least'
+                                .toToastWarning();
+                            return;
                           } else if (!_agreed) {
                             'you need to agree our terms and Conditions first'
                                 .toToastWarning();
@@ -287,8 +399,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             );
                             AuthCubit.get(context).register(
                               name: _nameController.text.trim(),
-                              phone: _passwordController.text.trim(),
-                              bloodType: _emailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                              email: _emailController.text.trim(),
+                              selectedIndustries: selectedIndustries
+                                  .map((e) => e.industryId ?? 0)
+                                  .toList(),
+                              selectedInterests: selectedInterests
+                                  .map((e) => e.interestId ?? 0)
+                                  .toList(),
                             );
                           }
                         },

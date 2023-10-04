@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:masnaay/src/constants/colors.dart';
-import 'package:masnaay/src/presentation/widgets/default_text.dart';
+import 'package:smart_blood_bank/src/constants/colors.dart';
+import 'package:smart_blood_bank/src/presentation/widgets/default_text.dart';
 
 class ContactItem extends StatelessWidget {
   final String label;

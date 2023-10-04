@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:masnaay/src/constants/colors.dart';
-import 'package:masnaay/src/constants/enums.dart';
+import 'package:smart_blood_bank/src/business_logic/layout_cubit/layout_cubit.dart';
+import 'package:smart_blood_bank/src/constants/colors.dart';
+import 'package:smart_blood_bank/src/constants/enums.dart';
+import 'package:smart_blood_bank/src/models/services_model.dart';
 
 void logError(String msg) => debugPrint(
       '\x1B[31m$msg\x1B[0m',
@@ -106,6 +108,23 @@ String cateName(int catId) {
       return 'Products';
     default:
       return ' ';
+  }
+}
+
+List<ServicesModel> cateList(int catId, BuildContext context) {
+  switch (catId) {
+    case 1:
+      return LayoutCubit.get(context).machines;
+    case 2:
+      return LayoutCubit.get(context).materials;
+    case 3:
+      return LayoutCubit.get(context).servicesJobs;
+    case 4:
+      return LayoutCubit.get(context).invOffers;
+    case 5:
+      return LayoutCubit.get(context).products;
+    default:
+      return [];
   }
   ;
 }

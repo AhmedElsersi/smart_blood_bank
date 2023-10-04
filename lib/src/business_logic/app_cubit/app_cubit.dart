@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:masnaay/src/constants/cache_keys.dart';
-import 'package:masnaay/src/services/cache_helper.dart';
-import 'package:masnaay/src/services/network_checker_helper.dart';
+import 'package:smart_blood_bank/src/constants/cache_keys.dart';
+import 'package:smart_blood_bank/src/services/cache_helper.dart';
+import 'package:smart_blood_bank/src/services/network_checker_helper.dart';
 
 part 'app_state.dart';
 
@@ -14,7 +14,7 @@ class AppCubit extends Cubit<AppState> {
 
   late ThemeMode _themeMode;
 
-  Locale _locale = const Locale('en');
+  Locale _locale = const Locale('ar');
 
   Locale get locale => _locale;
 
@@ -43,7 +43,7 @@ class AppCubit extends Cubit<AppState> {
     final lang = CacheHelper.getDataFromSharedPreference(
           key: CacheKeys.ckAppLang,
         ) ??
-        'en';
+        'ar';
     _locale = Locale(lang);
     emit(AppLanguageUpdateState());
   }

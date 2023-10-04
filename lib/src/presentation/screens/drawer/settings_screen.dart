@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:masnaay/src/constants/assets.dart';
-import 'package:masnaay/src/constants/colors.dart';
-import 'package:masnaay/src/presentation/widgets/default_text.dart';
+import 'package:smart_blood_bank/src/constants/assets.dart';
+import 'package:smart_blood_bank/src/constants/colors.dart';
+import 'package:smart_blood_bank/src/presentation/widgets/default_text.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

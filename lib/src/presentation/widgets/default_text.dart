@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:masnaay/src/constants/colors.dart';
-import 'package:masnaay/src/localization/app_strings_extension.dart';
+import 'package:smart_blood_bank/src/constants/colors.dart';
+import 'package:smart_blood_bank/src/localization/app_strings_extension.dart';
 
 class DefaultText extends StatelessWidget {
   const DefaultText({

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:masnaay/src/constants/colors.dart';
+import 'package:smart_blood_bank/src/constants/colors.dart';
 
 class LoadingIndicator extends StatelessWidget {
   const LoadingIndicator({super.key, this.color});

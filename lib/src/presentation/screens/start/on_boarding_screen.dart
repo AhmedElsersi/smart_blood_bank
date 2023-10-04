@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:masnaay/src/constants/assets.dart';
-import 'package:masnaay/src/constants/cache_keys.dart';
-import 'package:masnaay/src/constants/navigator_extension.dart';
-import 'package:masnaay/src/localization/app_strings_extension.dart';
-import 'package:masnaay/src/presentation/widgets/default_text.dart';
-import 'package:masnaay/src/presentation/widgets/dot.dart';
-import 'package:masnaay/src/services/cache_helper.dart';
+import 'package:smart_blood_bank/src/constants/assets.dart';
+import 'package:smart_blood_bank/src/constants/cache_keys.dart';
+import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
+import 'package:smart_blood_bank/src/localization/app_strings_extension.dart';
+import 'package:smart_blood_bank/src/presentation/widgets/default_text.dart';
+import 'package:smart_blood_bank/src/presentation/widgets/dot.dart';
+import 'package:smart_blood_bank/src/services/cache_helper.dart';
 
 import '../../../constants/colors.dart';
 import '../../router/app_router_names.dart';

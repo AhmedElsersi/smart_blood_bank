@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:masnaay/src/constants/colors.dart';
-import 'package:masnaay/src/constants/navigator_extension.dart';
-import 'package:masnaay/src/presentation/router/app_router_names.dart';
-import 'package:masnaay/src/presentation/widgets/default_text.dart';
+import 'package:smart_blood_bank/src/constants/colors.dart';
+import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
+import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
+import 'package:smart_blood_bank/src/presentation/widgets/default_text.dart';
 
 class AskGuestLogin extends StatelessWidget {
   const AskGuestLogin({

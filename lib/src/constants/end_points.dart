@@ -1,6 +1,6 @@
 class EndPoints {
-  static const baseUrl = "https://backend.masnaay.com/api/";
-  static const imageBaseUrl = "https://backend.masnaay.com/";
+  static const baseUrl = "https://backend.smart_blood_bank.com/api/";
+  static const imageBaseUrl = "https://backend.smart_blood_bank.com/";
 
   /// auth
   static const epVerifyPhone = "Users/RegisterStep1";

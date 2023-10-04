@@ -1,5 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:masnaay/src/constants/const_methods.dart';
+import 'package:smart_blood_bank/src/constants/const_methods.dart';
 
 class NotificationService {
   static late final FlutterLocalNotificationsPlugin notificationService;

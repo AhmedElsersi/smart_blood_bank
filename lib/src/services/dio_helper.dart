@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:masnaay/src/constants/cache_keys.dart';
-import 'package:masnaay/src/constants/end_points.dart';
-import 'package:masnaay/src/services/cache_helper.dart';
+import 'package:smart_blood_bank/src/constants/cache_keys.dart';
+import 'package:smart_blood_bank/src/constants/end_points.dart';
+import 'package:smart_blood_bank/src/services/cache_helper.dart';
 
 class DioHelper {
   static late Dio dio;

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:masnaay/src/constants/assets.dart';
-import 'package:masnaay/src/constants/cache_keys.dart';
-import 'package:masnaay/src/constants/colors.dart';
-import 'package:masnaay/src/constants/const_variables.dart';
-import 'package:masnaay/src/constants/navigator_extension.dart';
-import 'package:masnaay/src/localization/app_strings_extension.dart';
-import 'package:masnaay/src/presentation/router/app_router_names.dart';
-import 'package:masnaay/src/presentation/widgets/default_text.dart';
-import 'package:masnaay/src/services/cache_helper.dart';
+import 'package:smart_blood_bank/src/constants/assets.dart';
+import 'package:smart_blood_bank/src/constants/cache_keys.dart';
+import 'package:smart_blood_bank/src/constants/colors.dart';
+import 'package:smart_blood_bank/src/constants/const_variables.dart';
+import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
+import 'package:smart_blood_bank/src/localization/app_strings_extension.dart';
+import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
+import 'package:smart_blood_bank/src/presentation/widgets/default_text.dart';
+import 'package:smart_blood_bank/src/services/cache_helper.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -24,15 +24,16 @@ class _SplashScreenState extends State<SplashScreen> {
         CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckFirstTime) ??
             true;
     Future.delayed(const Duration(seconds: 1)).then((value) {
-      firstTime
-          ? {
-              context.goToReplace(AppRouterNames.rOnBoarding),
-            }
-          : {
-              isUser || isGuest
-                  ? context.goToReplace(AppRouterNames.rLayout)
-                  : context.goToReplace(AppRouterNames.rLogin)
-            };
+      // firstTime
+      //     ? {
+      //         context.goToReplace(AppRouterNames.rOnBoarding),
+      //       }
+      //     :
+      // {
+      isUser
+          ? context.goToReplace(AppRouterNames.rLayout)
+          : context.goToReplace(AppRouterNames.rLogin);
+      // };
     });
     super.initState();
   }
@@ -67,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
               AppAssets.icLogo,
             ),
             DefaultText(
-              text: context.masnaay,
+              text: context.smart_blood_bank,
               fontSize: 36.sp,
               fontWeight: FontWeight.w400,
               textColor: AppColors.white,
