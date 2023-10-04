@@ -8,9 +8,7 @@ import 'package:smart_blood_bank/src/constants/assets.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
 import 'package:smart_blood_bank/src/constants/const_methods.dart';
 import 'package:smart_blood_bank/src/constants/end_points.dart';
-import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
 import 'package:smart_blood_bank/src/models/featured_suppliers_model.dart';
-import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_text.dart';
 
 class SuppliersPage extends StatefulWidget {
@@ -66,7 +64,7 @@ class _SuppliersPageState extends State<SuppliersPage> {
                   onTap: () {},
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8.w),
-                    child: SvgPicture.asset(AppAssets.icFilters),
+                    child: SvgPicture.asset(AppAssets.icDonner),
                   ),
                 ),
               ],
@@ -87,8 +85,8 @@ class _SuppliersPageState extends State<SuppliersPage> {
                       itemCount: cubit.featuredSuppliers.length,
                       itemBuilder: (context, index) => InkWell(
                         onTap: () {
-                          context.goTo(AppRouterNames.rServiceProvider,
-                              args: cubit.featuredSuppliers[index]);
+                          // context.goTo(AppRouterNames.icDonner,
+                          //     args: cubit.featuredSuppliers[index]);
                         },
                         child: SupplierComponent(
                             supplier: cubit.featuredSuppliers[index]),

@@ -37,17 +37,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   int _pageIndex = 0;
   onBoardingData(BuildContext context) => [
         OnBoardingModel(
-          image: AppAssets.imgOnBoarding1,
+          image: AppAssets.icDonner,
           title: context.omBoardingTitle1,
           subTitle: context.omBoardingSubTitle1,
         ),
         OnBoardingModel(
-          image: AppAssets.imgOnBoarding2,
+          image: AppAssets.icDonner,
           title: context.omBoardingTitle2,
           subTitle: context.omBoardingSubTitle2,
         ),
         OnBoardingModel(
-          image: AppAssets.imgOnBoarding3,
+          image: AppAssets.icDonner,
           title: context.omBoardingTitle3,
           subTitle: context.omBoardingSubTitle3,
         ),

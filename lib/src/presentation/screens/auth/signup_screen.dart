@@ -1,20 +1,14 @@
-import 'package:country_pickers/country.dart';
-import 'package:country_pickers/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
-import 'package:smart_blood_bank/src/constants/assets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
-import 'package:smart_blood_bank/src/constants/const_methods.dart';
-import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
-import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
-import 'package:smart_blood_bank/src/presentation/widgets/custom_country_picker_dialog.dart';
-import 'package:smart_blood_bank/src/presentation/widgets/default_button.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_text.dart';
-import 'package:smart_blood_bank/src/presentation/widgets/default_text_field.dart';
+
+import '../../../constants/assets.dart';
+import '../../../constants/const_methods.dart';
+import '../../../constants/enums.dart';
+import '../../router/app_router_names.dart';
+import '../../widgets/default_button.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -24,30 +18,14 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final TextEditingController _phoneController = TextEditingController();
+  bool patient = false;
+  bool donner = false;
+  bool hospital = false;
+  bool bloodBank = false;
 
-  @override
-  void dispose() {
-    _phoneController.dispose();
-    super.dispose();
-  }
+  String radioValue = '';
 
-  late Country _country;
-
-  @override
-  void initState() {
-    super.initState();
-    _country = CountryPickerUtils.getCountryByPhoneCode('20');
-  }
-
-  void _showCountryPicker() => showDialog(
-        context: context,
-        builder: (context) => CustomCountryPickerDialog(
-          onCountryPicked: (Country country) =>
-              setState(() => _country = country),
-        ),
-      );
-
+  int userTypeId = 0;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -55,180 +33,183 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Positioned(
-                  top: -33.h,
-                  left: -22.w,
-                  child: SvgPicture.asset(AppAssets.imgLoginTop)),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 24.w, right: 24.w, top: 230.h, bottom: 20.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const DefaultText(
-                      text: 'Sign Up',
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    SizedBox(height: 20.h),
-                    const DefaultText(
-                      text:
-                          'Enter Your Mobile Number To Send\nYou The OTP Code',
-                      fontSize: 16,
-                      maxLines: 2,
-                      textColor: AppColors.tColor2,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    SizedBox(height: 20.h),
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: _showCountryPicker,
-                          child: Container(
-                            height: 40.h,
-                            padding: const EdgeInsets.all(4),
-                            margin: EdgeInsets.only(right: 8.w),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: AppColors.primary),
-                              color: AppColors.transparent,
-                            ),
-                            alignment: Alignment.center,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                DefaultText(
-                                  text: "+${_country.phoneCode}",
-                                  fontSize: 14,
-                                  textColor: AppColors.tColor2,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                Icon(
-                                  Icons.arrow_drop_down_sharp,
-                                  size: 14.sp,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: DefaultTextField(
-                            controller: _phoneController,
-                            keyboardType: TextInputType.phone,
-                            hintText: 'Mobile Number',
-                            hintTextColor: AppColors.textFieldBorder,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(10),
-                              FilteringTextInputFormatter.deny(
-                                RegExp(r'^0+'),
-                              ),
-                            ],
-                            height: 40.h,
-                            borderRadius: 10,
-                            prefix: const Icon(
-                              Icons.phone,
-                              color: AppColors.textFieldBorder,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20.h),
-                    BlocListener<AuthCubit, AuthState>(
-                      listener: (context, state) {
-                        if (state is VerifyPhoneSuccess) {
-                          AuthCubit.get(context).sendOtp();
-                        } else if (state is VerifyPhoneFail ||
-                            state is SendOtpFail) {
-                          Navigator.pop(context);
-                        } else if (state is SendOtpSuccess) {
-                          Navigator.pop(context);
-                          context.goTo(AppRouterNames.rOtp);
-                        }
-                      },
-                      child: DefaultButton(
-                        text: 'Continue',
-                        fontSize: 17,
-                        textColor: AppColors.white,
-                        fontWeight: FontWeight.w600,
-                        height: 35.h,
-                        radius: 1000,
-                        buttonColor: AppColors.primary,
-                        margin: EdgeInsets.symmetric(vertical: 24.h),
-                        onTap: () async {
-                          if (_phoneController.text.trim().isEmpty) {
-                            'context.phoneNumberRequired'.toToastWarning();
-                            return;
-                          } else if (_phoneController.text.length < 7) {
-                            'context.phoneNumberShort'.toToastWarning();
-                            return;
-                          } else {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              },
-                            );
-                            await AuthCubit.get(context).verifyPhone(
-                              phone: [
-                                "+${_country.phoneCode}",
-                                _phoneController.text.trim(),
-                              ],
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const DefaultText(
-                          text: "Already Have An Account?",
-                          fontSize: 14,
-                          textColor: AppColors.tColor2,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        DefaultButton(
-                          text: 'Login',
-                          fontSize: 16,
-                          textColor: AppColors.primary,
-                          fontWeight: FontWeight.bold,
-                          height: 35.h,
-                          width: 50.w,
-                          radius: 1000,
-                          buttonColor: AppColors.transparent,
-                          onTap: () {
-                            context.goTo(AppRouterNames.rLogin);
-                          },
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 32.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        3,
-                        (index) => Container(
-                          height: 8,
-                          width: 8,
-                          margin: EdgeInsets.symmetric(horizontal: 8.w),
-                          decoration: BoxDecoration(
-                              color: index == 0
-                                  ? AppColors.primary
-                                  : AppColors.lightGrey,
-                              shape: BoxShape.circle),
-                        ),
-                      ),
-                    ),
-                  ],
+          child: Padding(
+            padding: EdgeInsets.only(
+                left: 24.w, right: 24.w, top: 50.h, bottom: 20.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const DefaultText(
+                  text: 'قم باختيار نوع المستخدم بناءا علي الخدمة التي تحتاجها',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  textColor: Color(0xFF1E1E1E),
                 ),
-              ),
-            ],
+                SizedBox(height: 20.h),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                  margin: EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.red),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          SvgPicture.asset(AppAssets.icPatient),
+                          SizedBox(
+                            width: 8.w,
+                          ),
+                          const DefaultText(
+                            text: 'مريض',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            textColor: Color(0xFF1E1E1E),
+                          ),
+                        ],
+                      ),
+                      Radio(
+                          value: 'patient',
+                          groupValue: radioValue,
+                          activeColor: AppColors.red,
+                          onChanged: (v) {
+                            radioValue = v!;
+                            setState(() {});
+                          })
+                    ],
+                  ),
+                ),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                  margin: EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.red),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          SvgPicture.asset(AppAssets.icDonner),
+                          SizedBox(
+                            width: 8.w,
+                          ),
+                          const DefaultText(
+                            text: 'متبرع',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            textColor: Color(0xFF1E1E1E),
+                          ),
+                        ],
+                      ),
+                      Radio(
+                          value: 'donner',
+                          groupValue: radioValue,
+                          activeColor: AppColors.red,
+                          onChanged: (v) {
+                            radioValue = v!;
+                            setState(() {});
+                          })
+                    ],
+                  ),
+                ),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                  margin: EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.red),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          SvgPicture.asset(AppAssets.icHospital),
+                          SizedBox(
+                            width: 8.w,
+                          ),
+                          const DefaultText(
+                            text: 'مستشفي ',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            textColor: Color(0xFF1E1E1E),
+                          ),
+                        ],
+                      ),
+                      Radio(
+                          value: 'hospital',
+                          groupValue: radioValue,
+                          activeColor: AppColors.red,
+                          onChanged: (v) {
+                            radioValue = v!;
+                            setState(() {});
+                          })
+                    ],
+                  ),
+                ),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                  margin: EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.red),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          SvgPicture.asset(AppAssets.icBloodBank),
+                          SizedBox(
+                            width: 8.w,
+                          ),
+                          const DefaultText(
+                            text: 'بنك دم ',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            textColor: Color(0xFF1E1E1E),
+                          ),
+                        ],
+                      ),
+                      Radio(
+                          value: 'blood bank',
+                          groupValue: radioValue,
+                          activeColor: AppColors.red,
+                          onChanged: (v) {
+                            radioValue = v!;
+                            setState(() {});
+                          })
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: DefaultButton(
+            margin: EdgeInsets.only(
+                top: 3.h, bottom: 30.h, left: 16.w, right: 16.w),
+            text: "متابعة",
+            buttonColor: AppColors.red,
+            textColor: AppColors.white,
+            radius: 800,
+            height: 40.h,
+            onTap: () {
+              if (radioValue == '') {
+                showToast('نوع المستخدم مطلوب', ToastState.warning);
+              } else {
+                Navigator.pushNamed(context, AppRouterNames.rRegister);
+              }
+            }),
       ),
     );
   }

@@ -6,3 +6,10 @@ bool isGuest =
     CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckIsGuest);
 bool isUser =
     CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckApiToken) != null;
+
+bool ckIsUser =
+    CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserName) != null;
+
+String user =
+    CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserName) ?? '';
+String name = 'وليد';

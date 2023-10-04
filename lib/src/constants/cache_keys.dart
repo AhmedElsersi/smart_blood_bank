@@ -9,4 +9,7 @@ class CacheKeys {
   static const ckFirstTime = "firstTime";
 
   static const ckIsGuest = "isGuest";
+
+  static const ckIsUser = "isUser";
+  static const ckUserName = "userName";
 }

@@ -53,7 +53,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   children: List.generate(
                       20,
                       (index) => const NotificationComponent(
-                            image: AppAssets.imgProfile,
+                            image: AppAssets.icDonner,
                             userName: "Raed Ali",
                             title: ' liked your ad ',
                             time: "8 mins ago",

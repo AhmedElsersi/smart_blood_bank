@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:smart_blood_bank/src/constants/assets.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
@@ -11,7 +12,6 @@ import 'package:smart_blood_bank/src/presentation/widgets/default_text.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_text_field.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/layout/ask_guest_login.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/loading_indicator.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../../../models/industries_model.dart';
 import '../../../models/interests_model.dart';
@@ -319,14 +319,14 @@ class _ProfilePageState extends State<ProfilePage> {
                               top: 100.h,
                               child: CircleAvatar(
                                 radius: 75,
-                                child: Image.asset(AppAssets.imgProfile),
+                                child: Image.asset(AppAssets.icDonner),
                               ),
                             ),
                             Positioned(
                               top: -103.h,
                               left: -323.w,
                               child: SvgPicture.asset(
-                                AppAssets.imgProfileOverlay,
+                                AppAssets.icDonner,
                                 fit: BoxFit.contain,
                               ),
                             )

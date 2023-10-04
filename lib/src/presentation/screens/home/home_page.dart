@@ -5,9 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
 import 'package:smart_blood_bank/src/constants/end_points.dart';
-import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
 import 'package:smart_blood_bank/src/models/services_model.dart';
-import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_text_field.dart';
 
 import '../../../business_logic/auth_cubit/auth_cubit.dart';
@@ -205,16 +203,12 @@ class _HomePageState extends State<HomePage> {
                                   return InkWell(
                                     onTap: () {
                                       cubit.categoryId = i.id;
-                                      context.goTo(
-                                          AppRouterNames.rRentingServices,
-                                          args: i.id);
                                     },
                                     child: Stack(
                                       alignment: Alignment.center,
                                       children: [
-                                        Image.asset(AppAssets.imgCategory),
-                                        Image.asset(
-                                            AppAssets.imgCategoryOverlay),
+                                        Image.asset(AppAssets.icDonner),
+                                        Image.asset(AppAssets.icDonner),
                                         DefaultText(
                                           text: i.title,
                                           textAlign: TextAlign.center,
@@ -265,8 +259,6 @@ class _HomePageState extends State<HomePage> {
                         state: state,
                         onTapSeeAll: () {
                           cubit.changeCatId(1);
-                          context.goTo(AppRouterNames.rRentingServices,
-                              args: 1);
                         },
                       ),
                       CategorySection(
@@ -279,8 +271,6 @@ class _HomePageState extends State<HomePage> {
                         state: state,
                         onTapSeeAll: () {
                           cubit.changeCatId(2);
-                          context.goTo(AppRouterNames.rRentingServices,
-                              args: 2);
                         },
                       ),
                       CategorySection(
@@ -293,8 +283,6 @@ class _HomePageState extends State<HomePage> {
                         state: state,
                         onTapSeeAll: () {
                           cubit.changeCatId(5);
-                          context.goTo(AppRouterNames.rRentingServices,
-                              args: 5);
                         },
                       ),
                       CategorySection(
@@ -307,8 +295,6 @@ class _HomePageState extends State<HomePage> {
                         state: state,
                         onTapSeeAll: () {
                           cubit.changeCatId(4);
-                          context.goTo(AppRouterNames.rRentingServices,
-                              args: 4);
                         },
                       ),
                       CategorySection(
@@ -321,8 +307,6 @@ class _HomePageState extends State<HomePage> {
                         state: state,
                         onTapSeeAll: () {
                           cubit.changeCatId(3);
-                          context.goTo(AppRouterNames.rRentingServices,
-                              args: 3);
                         },
                       ),
                     ],
@@ -406,7 +390,7 @@ class CategorySection extends StatelessWidget {
                       : EdgeInsets.symmetric(horizontal: 24.w),
                   itemBuilder: (context, index) => InkWell(
                     onTap: () {
-                      context.goTo(AppRouterNames.rService);
+                      // context.goTo(AppRouterNames.rService);
                     },
                     child: MachineCard(
                       serviceModel: services[index],
@@ -430,7 +414,7 @@ class MachineCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.goTo(AppRouterNames.rService, args: serviceModel);
+        // context.goTo(AppRouterNames.rService, args: serviceModel);
       },
       child: Container(
         width: 170,
@@ -511,8 +495,7 @@ class MachineCard extends StatelessWidget {
                   width: 12.w,
                 ),
                 InkWell(
-                    onTap: () {},
-                    child: SvgPicture.asset(AppAssets.icHeartOutline))
+                    onTap: () {}, child: SvgPicture.asset(AppAssets.icDonner))
               ],
             ),
             SizedBox(

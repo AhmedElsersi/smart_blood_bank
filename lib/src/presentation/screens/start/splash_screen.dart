@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_blood_bank/src/constants/assets.dart';
 import 'package:smart_blood_bank/src/constants/cache_keys.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
 import 'package:smart_blood_bank/src/constants/const_variables.dart';
@@ -30,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
       //       }
       //     :
       // {
-      isUser
+      ckIsUser
           ? context.goToReplace(AppRouterNames.rLayout)
           : context.goToReplace(AppRouterNames.rLogin);
       // };
@@ -64,9 +63,9 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              AppAssets.icLogo,
-            ),
+            // Image.asset(
+            //   AppAssets.icLogo,
+            // ),
             DefaultText(
               text: context.smart_blood_bank,
               fontSize: 36.sp,

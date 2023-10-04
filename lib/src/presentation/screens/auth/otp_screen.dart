@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/otp_field_style.dart';
-import 'package:otp_text_field/style.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
 
 import '../../../constants/colors.dart';
+import '../../../constants/const_methods.dart';
+import '../../../constants/enums.dart';
+import '../../../services/notification_service.dart';
+import '../../router/app_router_names.dart';
 import '../../widgets/default_button.dart';
 import '../../widgets/default_text.dart';
 
@@ -16,101 +21,160 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
+  late TextEditingController _controller;
+  late Timer? timer;
+  ValueNotifier<int> secondsToResend = ValueNotifier<int>(45);
+  bool resend = false;
+
+  void setCountDown() {
+    resend = false;
+    secondsToResend.value -= 1;
+    if (secondsToResend.value < 1) {
+      resend = true;
+      setState(() {
+        timer?.cancel();
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    _controller = TextEditingController();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setCountDown();
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(top: 20.h, right: 4.w, left: 4.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                constraints: const BoxConstraints(),
-                padding: const EdgeInsets.all(2),
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
+        padding: EdgeInsets.only(top: 50.h, right: 16.w, left: 16.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                    color: Color(0xFFC8C8C8), shape: BoxShape.circle),
+                child: const RotatedBox(
+                  quarterTurns: 2,
+                  child: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: Colors.black,
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
+              ),
+            ),
+            SizedBox(height: 20.h),
+            DefaultText(
+              text:
+                  'برجاء إدخال رمز التحقق المكون من 4 أرقام ، المرسل إلى رقم الهاتف  ${AuthCubit.get(context).phoneNum}',
+              textColor: const Color(0xFF1E1E1E),
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
+            SizedBox(height: 30.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: PinCodeTextField(
+                length: 4,
+                obscureText: false,
+                animationType: AnimationType.fade,
+                pinTheme: PinTheme(
+                  shape: PinCodeFieldShape.box,
+                  borderRadius: BorderRadius.circular(5),
+                  activeColor: AppColors.red,
+                  fieldHeight: 64,
+                  fieldWidth: 64,
+                  activeFillColor: AppColors.white,
+                  selectedFillColor: Colors.white,
+                  selectedColor: AppColors.red,
+                  borderWidth: 1,
+                  inactiveFillColor: Colors.white,
+                  inactiveColor: AppColors.grey,
+                ),
+                animationDuration: const Duration(milliseconds: 300),
+                backgroundColor: Colors.transparent,
+                enableActiveFill: true,
+                keyboardType: TextInputType.number,
+                controller: _controller,
+                onCompleted: (v) {},
+                onChanged: (value) {
+                  // BlocProvider.of<AuthCubit>(context)
+                  //     .toggleAuthEnable(value.length);
+                  setState(() {});
                 },
+                beforeTextPaste: (text) {
+                  //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                  //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                  return true;
+                },
+                appContext: context,
               ),
-              DefaultText(
-                text: 'رمز التحقق',
-                textColor: AppColors.grey,
-                fontSize: 24,
-                fontWeight: FontWeight.w400,
-              ),
-              SizedBox(height: 10.h),
-              DefaultText(
-                text: 'ادخل رمز التحقق المكون من 6 ارقام',
-                textColor: AppColors.grey,
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
-              SizedBox(height: 30.h),
-              OTPTextField(
-                  //controller: otpController,
-                  length: 4,
-                  keyboardType: TextInputType.number,
-                  width: MediaQuery.of(context).size.width,
-                  textFieldAlignment: MainAxisAlignment.spaceEvenly,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
-                  fieldWidth: 50,
-                  fieldStyle: FieldStyle.box,
-                  otpFieldStyle: OtpFieldStyle(focusBorderColor: AppColors.red),
-                  outlineBorderRadius: 5,
-                  style: const TextStyle(fontSize: 17),
-                  onChanged: (pin) {},
-                  onCompleted: (pin) {}),
-              SizedBox(height: 3.h),
-              Center(
-                child: DefaultText(
-                  text: '0:45',
-                  textColor: AppColors.grey,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
+            ),
+            SizedBox(height: 30.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const DefaultText(
+                    text: 'لم يتم ارسال الرمز ؟',
+                    textColor: AppColors.grey,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500),
+                InkWell(
+                  onTap: () async {
+                    await NotificationService.showNotification(
+                      id: 0,
+                      title: 'Your OTP is ',
+                      body: '1234',
+                    );
+                  },
+                  child: const DefaultText(
+                      text: 'إعادة الإرسال',
+                      textColor: AppColors.red,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500),
                 ),
-              ),
-              SizedBox(height: 3.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {},
-                    child: DefaultText(
-                        text: 'هل حصلت علي رمز التحقق؟',
-                        textColor: AppColors.grey,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: DefaultText(
-                        text: 'إعادة الإرسال',
-                        textColor: AppColors.red,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ],
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: DefaultButton(
-        margin: EdgeInsets.only(top: 3.h, bottom: 3.h, left: 16.w, right: 16.w),
+        margin:
+            EdgeInsets.only(top: 3.h, bottom: 30.h, left: 16.w, right: 16.w),
         text: "تأكيد",
-        buttonColor: AppColors.red,
+        buttonColor:
+            _controller.text.length < 4 ? AppColors.grey : AppColors.red,
         textColor: AppColors.white,
         radius: 800,
         height: 40.h,
-        onTap: () {
-          // Navigator.pushNamed(context, rCongrats);
-        },
+        onTap: _controller.text.length > 3
+            ? () {
+                logSuccess('${_controller.text}');
+                if (_controller.text == "1234") {
+                  Navigator.pushNamed(context, AppRouterNames.rSignUp);
+                } else {
+                  showToast('أدخل الكود الصحيح', ToastState.warning);
+                }
+              }
+            : () {
+                print('kkk');
+              },
       ),
     );
   }

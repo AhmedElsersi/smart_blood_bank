@@ -1,18 +1,13 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart_blood_bank/src/business_logic/layout_cubit/layout_cubit.dart';
 import 'package:smart_blood_bank/src/constants/assets.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
-import 'package:smart_blood_bank/src/constants/const_methods.dart';
-import 'package:smart_blood_bank/src/constants/const_variables.dart';
-import 'package:smart_blood_bank/src/constants/enums.dart';
-import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
-import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
-import 'package:smart_blood_bank/src/presentation/widgets/layout/component/bottom_navigation_item.dart';
 
-import 'home/drawer.dart';
+import '../../constants/const_variables.dart';
+import '../widgets/default_text.dart';
 
 class LayoutScreen extends StatefulWidget {
   const LayoutScreen({super.key});
@@ -22,12 +17,12 @@ class LayoutScreen extends StatefulWidget {
 }
 
 class _LayoutScreenState extends State<LayoutScreen> {
-  List<String> iconList = [
-    AppAssets.icNotifications,
-    AppAssets.icFavorite,
-    AppAssets.icProfile,
-    AppAssets.icHome,
-  ];
+  // List<String> iconList = [
+  //   AppAssets.icNotifications,
+  //   AppAssets.icFavorite,
+  //   AppAssets.icProfile,
+  //   AppAssets.icHome,
+  // ];
   final GlobalKey<ScaffoldState> key = GlobalKey();
 
   @override
@@ -42,70 +37,149 @@ class _LayoutScreenState extends State<LayoutScreen> {
         key: key,
         backgroundColor: AppColors.white,
         resizeToAvoidBottomInset: false,
-        body: cubit.layoutPages.elementAt(cubit.pageIndex),
-        extendBodyBehindAppBar: true,
-        drawer: SizedBox(
-          width: (MediaQuery.of(context).size.width * 0.75) + 30.w,
-          child: Stack(
+        body: Padding(
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const DrawerScreen(),
-              Positioned(
-                top: 26.h,
-                left: (MediaQuery.of(context).size.width * 0.75) - 2,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    width: 30.w,
-                    height: 30.w,
-                    color: AppColors.gradientDark.withOpacity(0.79),
-                    child: const Icon(
-                      Icons.close_rounded,
-                      size: 28,
-                      color: AppColors.white,
+              SizedBox(height: 30.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DefaultText(
+                    text: 'مرحباً ، ${user} ',
+                    textColor: const Color(0xFF1E1E1E),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  SvgPicture.asset(AppAssets.icNotificationNew)
+                ],
+              ),
+              SizedBox(height: 30.h),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+                decoration: BoxDecoration(
+                    color: const Color(0xFFF5F5F5),
+                    borderRadius: BorderRadius.circular(8)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const DefaultText(
+                      text: 'تبرع الأن و أنقذ حياة مريض',
+                      textColor: Color(0xFF1E1E1E),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    SvgPicture.asset(AppAssets.icPatient)
+                  ],
+                ),
+              ),
+              SizedBox(height: 30.h),
+              const DefaultText(
+                text: 'أماكن لتبرع',
+                textColor: Color(0xFF1E1E1E),
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+              SizedBox(height: 30.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 14.h, horizontal: 12.w),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xFFF5F5F5)),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(AppAssets.icHospital),
+                          SizedBox(
+                            width: 8.w,
+                          ),
+                          const DefaultText(
+                            text: 'مستشفي ',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            textColor: Color(0xFF1E1E1E),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              )
+                  SizedBox(
+                    width: 12.w,
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 14.h, horizontal: 12.w),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xFFF5F5F5)),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(AppAssets.icBloodBank),
+                          SizedBox(
+                            width: 8.w,
+                          ),
+                          DefaultText(
+                            text: 'بنك دم ',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            textColor: Color(0xFF1E1E1E),
+                            onTap: () {
+                              // CacheHelper.clearData();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
-        bottomNavigationBar: AnimatedBottomNavigationBar.builder(
-          height: 54.h,
-          elevation: 10.h,
-          notchMargin: 10.h,
-          itemCount: 4,
-          tabBuilder: (int index, bool isActive) {
-            return BottomNavigationItem(
-              onTap: () {
-                cubit.changePageIndex(index);
-              },
-              icon: iconList[index],
-              isActive: isActive,
-            );
-          },
-          gapLocation: GapLocation.center,
-          notchSmoothness: NotchSmoothness.sharpEdge,
-          activeIndex: cubit.pageIndex,
-          onTap: (i) {},
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: AppColors.primary,
-          onPressed: () {
-            if (isGuest) {
-              showToast('You need to login first', ToastState.warning);
-            } else {
-              context.goTo(AppRouterNames.rDashboard);
-            }
-          },
-          clipBehavior: Clip.hardEdge,
-          child: Icon(
-            Icons.add_rounded,
-            size: 30.h,
-          ),
-        ),
+        extendBodyBehindAppBar: true,
+        // bottomNavigationBar: AnimatedBottomNavigationBar.builder(
+        //   height: 54.h,
+        //   elevation: 10.h,
+        //   notchMargin: 10.h,
+        //   itemCount: 4,
+        //   tabBuilder: (int index, bool isActive) {
+        //     return BottomNavigationItem(
+        //       onTap: () {
+        //         cubit.changePageIndex(index);
+        //       },
+        //       icon: iconList[index],
+        //       isActive: isActive,
+        //     );
+        //   },
+        //   gapLocation: GapLocation.center,
+        //   notchSmoothness: NotchSmoothness.sharpEdge,
+        //   activeIndex: cubit.pageIndex,
+        //   onTap: (i) {},
+        // ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // floatingActionButton: FloatingActionButton(
+        //   backgroundColor: AppColors.primary,
+        //   onPressed: () {
+        //     if (isGuest) {
+        //       showToast('You need to login first', ToastState.warning);
+        //     } else {
+        //       context.goTo(AppRouterNames.rDashboard);
+        //     }
+        //   },
+        //   clipBehavior: Clip.hardEdge,
+        //   child: Icon(
+        //     Icons.add_rounded,
+        //     size: 30.h,
+        //   ),
+        // ),
       );
     });
   }
