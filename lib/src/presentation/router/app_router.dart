@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_blood_bank/src/presentation/screens/auth/login_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/auth/otp_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/auth/register_screen.dart';
-import 'package:smart_blood_bank/src/presentation/screens/auth/signup_screen.dart';
+import 'package:smart_blood_bank/src/presentation/screens/auth/user_type_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/layout_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/start/on_boarding_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/start/splash_screen.dart';
@@ -27,7 +27,7 @@ class AppRouter {
         );
       case AppRouterNames.rSignUp:
         return MaterialPageRoute(
-          builder: (_) => const SignUpScreen(),
+          builder: (_) => const UserTypeScreen(),
         );
       case AppRouterNames.rOtp:
         return MaterialPageRoute(

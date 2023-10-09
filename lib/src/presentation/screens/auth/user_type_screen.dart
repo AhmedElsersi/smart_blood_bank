@@ -10,14 +10,14 @@ import '../../../constants/enums.dart';
 import '../../router/app_router_names.dart';
 import '../../widgets/default_button.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class UserTypeScreen extends StatefulWidget {
+  const UserTypeScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<UserTypeScreen> createState() => _UserTypeScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _UserTypeScreenState extends State<UserTypeScreen> {
   bool patient = false;
   bool donner = false;
   bool hospital = false;

@@ -6,8 +6,6 @@ import 'package:smart_blood_bank/src/constants/cache_keys.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
 import 'package:smart_blood_bank/src/constants/const_methods.dart';
 import 'package:smart_blood_bank/src/constants/enums.dart';
-import 'package:smart_blood_bank/src/models/industries_model.dart';
-import 'package:smart_blood_bank/src/models/interests_model.dart';
 import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_button.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_text_field.dart';
@@ -42,16 +40,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _interestController.dispose();
     super.dispose();
   }
-
-  @override
-  void initState() {
-    AuthCubit.get(context).getIndustries();
-    AuthCubit.get(context).getInterests();
-    super.initState();
-  }
-
-  List<IndustriesModel> selectedIndustries = [];
-  List<InterestsModel> selectedInterests = [];
 
   @override
   Widget build(BuildContext context) {
