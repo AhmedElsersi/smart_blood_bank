@@ -91,3 +91,16 @@ String formatDateString(String dateString, String dateFormat) {
   logSuccess(formattedDate);
   return formattedDate;
 }
+
+String getArabicTypes(String type) {
+  switch (type) {
+    case "patient":
+      return 'مريض';
+    case "hospital":
+      return 'مستشفي';
+    case "blood bank":
+      return 'بنك دم';
+    default:
+      return "متبرع";
+  }
+}

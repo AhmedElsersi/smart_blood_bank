@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_text.dart';
 
@@ -46,148 +47,196 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                   textColor: Color(0xFF1E1E1E),
                 ),
                 SizedBox(height: 20.h),
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-                  margin: EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.red),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppAssets.icPatient),
-                          SizedBox(
-                            width: 8.w,
-                          ),
-                          const DefaultText(
-                            text: 'مريض',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            textColor: Color(0xFF1E1E1E),
-                          ),
-                        ],
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      radioValue = 'patient';
+                    });
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: radioValue == 'patient'
+                            ? AppColors.red
+                            : const Color(0xFFC8C8C8),
                       ),
-                      Radio(
-                          value: 'patient',
-                          groupValue: radioValue,
-                          activeColor: AppColors.red,
-                          onChanged: (v) {
-                            radioValue = v!;
-                            setState(() {});
-                          })
-                    ],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppAssets.icPatient),
+                            SizedBox(
+                              width: 8.w,
+                            ),
+                            const DefaultText(
+                              text: 'مريض',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textColor: Color(0xFF1E1E1E),
+                            ),
+                          ],
+                        ),
+                        Radio(
+                            value: 'patient',
+                            groupValue: radioValue,
+                            activeColor: AppColors.red,
+                            onChanged: (v) {
+                              radioValue = v!;
+                              setState(() {});
+                            })
+                      ],
+                    ),
                   ),
                 ),
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-                  margin: EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.red),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppAssets.icDonner),
-                          SizedBox(
-                            width: 8.w,
-                          ),
-                          const DefaultText(
-                            text: 'متبرع',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            textColor: Color(0xFF1E1E1E),
-                          ),
-                        ],
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      radioValue = 'donner';
+                    });
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: radioValue == 'donner'
+                            ? AppColors.red
+                            : const Color(0xFFC8C8C8),
                       ),
-                      Radio(
-                          value: 'donner',
-                          groupValue: radioValue,
-                          activeColor: AppColors.red,
-                          onChanged: (v) {
-                            radioValue = v!;
-                            setState(() {});
-                          })
-                    ],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppAssets.icDonner),
+                            SizedBox(
+                              width: 8.w,
+                            ),
+                            const DefaultText(
+                              text: 'متبرع',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textColor: Color(0xFF1E1E1E),
+                            ),
+                          ],
+                        ),
+                        Radio(
+                            value: 'donner',
+                            groupValue: radioValue,
+                            activeColor: AppColors.red,
+                            onChanged: (v) {
+                              radioValue = v!;
+                              setState(() {});
+                            })
+                      ],
+                    ),
                   ),
                 ),
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-                  margin: EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.red),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppAssets.icHospital),
-                          SizedBox(
-                            width: 8.w,
-                          ),
-                          const DefaultText(
-                            text: 'مستشفي ',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            textColor: Color(0xFF1E1E1E),
-                          ),
-                        ],
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      radioValue = 'hospital';
+                    });
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: radioValue == 'hospital'
+                            ? AppColors.red
+                            : const Color(0xFFC8C8C8),
                       ),
-                      Radio(
-                          value: 'hospital',
-                          groupValue: radioValue,
-                          activeColor: AppColors.red,
-                          onChanged: (v) {
-                            radioValue = v!;
-                            setState(() {});
-                          })
-                    ],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppAssets.icHospital),
+                            SizedBox(
+                              width: 8.w,
+                            ),
+                            const DefaultText(
+                              text: 'مستشفي ',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textColor: Color(0xFF1E1E1E),
+                            ),
+                          ],
+                        ),
+                        Radio(
+                            value: 'hospital',
+                            groupValue: radioValue,
+                            activeColor: AppColors.red,
+                            onChanged: (v) {
+                              radioValue = v!;
+                              setState(() {});
+                            })
+                      ],
+                    ),
                   ),
                 ),
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-                  margin: EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.red),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppAssets.icBloodBank),
-                          SizedBox(
-                            width: 8.w,
-                          ),
-                          const DefaultText(
-                            text: 'بنك دم ',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            textColor: Color(0xFF1E1E1E),
-                          ),
-                        ],
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      radioValue = 'blood bank';
+                    });
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: radioValue == 'blood bank'
+                            ? AppColors.red
+                            : const Color(0xFFC8C8C8),
                       ),
-                      Radio(
-                          value: 'blood bank',
-                          groupValue: radioValue,
-                          activeColor: AppColors.red,
-                          onChanged: (v) {
-                            radioValue = v!;
-                            setState(() {});
-                          })
-                    ],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            SvgPicture.asset(AppAssets.icBloodBank),
+                            SizedBox(
+                              width: 8.w,
+                            ),
+                            const DefaultText(
+                              text: 'بنك دم ',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              textColor: Color(0xFF1E1E1E),
+                            ),
+                          ],
+                        ),
+                        Radio(
+                            value: 'blood bank',
+                            groupValue: radioValue,
+                            activeColor: AppColors.red,
+                            onChanged: (v) {
+                              radioValue = v!;
+                              setState(() {});
+                            })
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -207,6 +256,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
               if (radioValue == '') {
                 showToast('نوع المستخدم مطلوب', ToastState.warning);
               } else {
+                AuthCubit.get(context).userType = radioValue;
                 Navigator.pushNamed(context, AppRouterNames.rRegister);
               }
             }),

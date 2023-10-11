@@ -3,8 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
 
+import '../../default_text.dart';
+
 class BottomNavigationItem extends StatelessWidget {
   final String icon;
+  final String title;
   final bool isActive;
   final bool rotate;
   final VoidCallback onTap;
@@ -14,6 +17,7 @@ class BottomNavigationItem extends StatelessWidget {
     this.rotate = false,
     required this.onTap,
     required this.icon,
+    required this.title,
   }) : super(key: key);
 
   @override
@@ -24,19 +28,22 @@ class BottomNavigationItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(
-            icon,
-            color: isActive ? AppColors.black : AppColors.lightGrey,
+          SizedBox(
+            height: 22,
+            child: SvgPicture.asset(
+              icon,
+              color: isActive ? AppColors.red : const Color(0xFFC8C8C8),
+            ),
           ),
-          if (isActive)
-            SizedBox(
-              height: 4.h,
-            ),
-          if (isActive)
-            CircleAvatar(
-              radius: 2.h,
-              backgroundColor: AppColors.black,
-            ),
+          SizedBox(
+            height: 4.h,
+          ),
+          DefaultText(
+            text: title,
+            textColor: isActive ? AppColors.red : const Color(0xFFC8C8C8),
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+          ),
         ],
       ),
     );

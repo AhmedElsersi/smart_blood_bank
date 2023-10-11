@@ -10,4 +10,11 @@ class AppRouterNames {
   static const rTermsAndConditions = '/termsAndConditions';
 
   static const rLayout = '/layout';
+
+  static const rDonate = '/donate';
+  static const rPlaces = '/places';
+  static const rPlace = '/place';
+
+  static const rPersons = '/persons';
+  static const rPerson = '/person';
 }

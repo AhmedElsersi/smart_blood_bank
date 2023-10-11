@@ -14,6 +14,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   String phoneNum = '';
   int userId = 0;
+  String userType = '';
+  int donationLocation = 0;
 
   Future verifyPhone({
     required List<String> phone,
