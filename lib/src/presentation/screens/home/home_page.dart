@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                           text:
                               'مرحباً ، ${AuthCubit.get(context).registerModel.data?.name ?? CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserName) ?? ''} ',
                           textColor: const Color(0xFF1E1E1E),
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w400,
                         ),
                         SvgPicture.asset(AppAssets.icNotificationNew)
@@ -63,11 +63,13 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   logSuccess(AuthCubit.get(context).userType);
                                   if (AuthCubit.get(context).userType ==
-                                      'Donor') {
+                                          'Donor' ||
+                                      AuthCubit.get(context).userType ==
+                                          'Hospital') {
                                     context.goTo(AppRouterNames.rPlaces,
                                         args: 2);
                                   } else if (AuthCubit.get(context).userType ==
-                                      'Hospital') {
+                                      'BloodBanks') {
                                     // context.goTo(AppRouterNames.rDonate);
                                   }
                                 },
@@ -87,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                                             ? 'بنوك الدم المتاحة لتبرع'
                                             : 'تقديم طلب لبحث عن متبرع',
                                         textColor: Color(0xFF1E1E1E),
-                                        fontSize: 16,
+                                        fontSize: 16.sp,
                                         fontWeight: FontWeight.w400,
                                       ),
                                       SvgPicture.asset(AppAssets.icPatient)
@@ -101,10 +103,10 @@ class _HomePageState extends State<HomePage> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const DefaultText(
+                                    DefaultText(
                                       text: 'الطلبات',
                                       textColor: Color(0xFF1E1E1E),
-                                      fontSize: 16,
+                                      fontSize: 16.sp,
                                       fontWeight: FontWeight.w600,
                                     ),
                                     SizedBox(height: 20.h),
@@ -143,16 +145,20 @@ class _HomePageState extends State<HomePage> {
                                                   SizedBox(
                                                     width: 8.w,
                                                   ),
-                                                  DefaultText(
-                                                    text: AuthCubit.get(context)
-                                                                .userType ==
-                                                            'donner'
-                                                        ? 'المستشفيات'
-                                                        : 'المرضي',
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w400,
-                                                    textColor:
-                                                        Color(0xFF1E1E1E),
+                                                  FittedBox(
+                                                    child: DefaultText(
+                                                      text: AuthCubit.get(
+                                                                      context)
+                                                                  .userType ==
+                                                              'donner'
+                                                          ? 'المستشفيات'
+                                                          : 'المرضي',
+                                                      fontSize: 16.sp,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      textColor:
+                                                          Color(0xFF1E1E1E),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -191,19 +197,23 @@ class _HomePageState extends State<HomePage> {
                                                   SizedBox(
                                                     width: 8.w,
                                                   ),
-                                                  DefaultText(
-                                                    text: AuthCubit.get(context)
-                                                                .userType ==
-                                                            'donner'
-                                                        ? 'بنوك الدم'
-                                                        : 'المتبرعين',
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w400,
-                                                    textColor:
-                                                        Color(0xFF1E1E1E),
-                                                    onTap: () {
-                                                      // CacheHelper.clearData();
-                                                    },
+                                                  FittedBox(
+                                                    child: DefaultText(
+                                                      text: AuthCubit.get(
+                                                                      context)
+                                                                  .userType ==
+                                                              'donner'
+                                                          ? 'بنوك الدم'
+                                                          : 'المتبرعين',
+                                                      fontSize: 16.sp,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      textColor:
+                                                          Color(0xFF1E1E1E),
+                                                      onTap: () {
+                                                        // CacheHelper.clearData();
+                                                      },
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -228,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                                   DefaultText(
                                     text: 'عرض الكل',
                                     textColor: Color(0xFFE53B43),
-                                    fontSize: 14,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.w700,
                                     onTap: () {
                                       //todo show all requests
@@ -265,10 +275,10 @@ class _HomePageState extends State<HomePage> {
                                                 borderRadius: BorderRadius.only(
                                                     topRight:
                                                         Radius.circular(10))),
-                                            child: const DefaultText(
+                                            child: DefaultText(
                                               text: 'فصيلة O+',
                                               textColor: Colors.white,
-                                              fontSize: 14,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w700,
                                             ),
                                           ),
@@ -293,15 +303,15 @@ class _HomePageState extends State<HomePage> {
                                             child: AuthCubit.get(context)
                                                         .userType ==
                                                     'donner'
-                                                ? const DefaultText(
+                                                ? DefaultText(
                                                     text: 'تبرع',
                                                     textColor: AppColors.red,
-                                                    fontSize: 12,
+                                                    fontSize: 12.sp,
                                                     fontWeight: FontWeight.w700,
                                                   )
-                                                : const Row(
+                                                : Row(
                                                     children: [
-                                                      Icon(
+                                                      const Icon(
                                                         Icons.male_rounded,
                                                         color:
                                                             Color(0xFF1E1E1E),
@@ -310,7 +320,7 @@ class _HomePageState extends State<HomePage> {
                                                         text: '24',
                                                         textColor:
                                                             Color(0xFF1E1E1E),
-                                                        fontSize: 12,
+                                                        fontSize: 12.sp,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                       ),
@@ -329,19 +339,19 @@ class _HomePageState extends State<HomePage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            const DefaultText(
+                                            DefaultText(
                                               text: 'الاسم : ',
                                               textColor: Color(0xFF1E1E1E),
-                                              fontSize: 14,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w700,
                                             ),
                                             SizedBox(
                                               width: 1.w,
                                             ),
-                                            const DefaultText(
+                                            DefaultText(
                                               text: 'مصطفي حسام شوقي',
                                               textColor: Color(0xFF1E1E1E),
-                                              fontSize: 14,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w400,
                                             ),
                                           ],
@@ -358,19 +368,19 @@ class _HomePageState extends State<HomePage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            const DefaultText(
+                                            DefaultText(
                                               text: 'يحتاج : 9',
                                               textColor: Color(0xFF1E1E1E),
-                                              fontSize: 14,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w700,
                                             ),
                                             SizedBox(
                                               width: 1.w,
                                             ),
-                                            const DefaultText(
+                                            DefaultText(
                                               text: ' وحدات ( المتبقي 4 )',
                                               textColor: Color(0xFF1E1E1E),
-                                              fontSize: 14,
+                                              fontSize: 14.sp,
                                               fontWeight: FontWeight.w400,
                                             ),
                                           ],
@@ -410,12 +420,12 @@ class _HomePageState extends State<HomePage> {
                                                   SizedBox(
                                                     width: 2.w,
                                                   ),
-                                                  const DefaultText(
+                                                  DefaultText(
                                                     text:
                                                         'مستشفى الفتح الإسلامى',
                                                     textColor:
                                                         Color(0xFF1E1E1E),
-                                                    fontSize: 14,
+                                                    fontSize: 14.sp,
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                                 ],
@@ -455,7 +465,7 @@ class _HomePageState extends State<HomePage> {
                                                             ? const Color(
                                                                 0xFF27AE60)
                                                             : AppColors.red,
-                                                    fontSize: 12,
+                                                    fontSize: 12.sp,
                                                     fontWeight: FontWeight.w400,
                                                   ),
                                                   if (AuthCubit.get(context)

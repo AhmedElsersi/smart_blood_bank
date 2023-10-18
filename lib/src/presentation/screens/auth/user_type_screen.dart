@@ -35,9 +35,9 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const DefaultText(
+                DefaultText(
                   text: 'قم باختيار نوع المستخدم بناءا علي الخدمة التي تحتاجها',
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w400,
                   textColor: Color(0xFF1E1E1E),
                 ),
@@ -70,9 +70,9 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                             SizedBox(
                               width: 8.w,
                             ),
-                            const DefaultText(
+                            DefaultText(
                               text: 'مريض',
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
                               textColor: Color(0xFF1E1E1E),
                             ),
@@ -105,7 +105,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                       border: Border.all(
                         color: radioValue == 'Donor'
                             ? AppColors.red
-                            : const Color(0xFFC8C8C8),
+                            : Color(0xFFC8C8C8),
                       ),
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -118,9 +118,9 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                             SizedBox(
                               width: 8.w,
                             ),
-                            const DefaultText(
+                            DefaultText(
                               text: 'متبرع',
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
                               textColor: Color(0xFF1E1E1E),
                             ),
@@ -153,7 +153,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                       border: Border.all(
                         color: radioValue == 'Hospital'
                             ? AppColors.red
-                            : const Color(0xFFC8C8C8),
+                            : Color(0xFFC8C8C8),
                       ),
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -166,9 +166,9 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                             SizedBox(
                               width: 8.w,
                             ),
-                            const DefaultText(
+                            DefaultText(
                               text: 'مستشفي ',
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
                               textColor: Color(0xFF1E1E1E),
                             ),
@@ -201,7 +201,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                       border: Border.all(
                         color: radioValue == 'BloodBank'
                             ? AppColors.red
-                            : const Color(0xFFC8C8C8),
+                            : Color(0xFFC8C8C8),
                       ),
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -214,9 +214,9 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                             SizedBox(
                               width: 8.w,
                             ),
-                            const DefaultText(
+                            DefaultText(
                               text: 'بنك دم ',
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
                               textColor: Color(0xFF1E1E1E),
                             ),

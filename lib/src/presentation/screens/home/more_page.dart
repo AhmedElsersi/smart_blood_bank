@@ -54,7 +54,7 @@ class _MorePageState extends State<MorePage> {
                         children: [
                           Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.perm_identity_rounded,
                                 color: AppColors.white,
                               ),
@@ -66,7 +66,7 @@ class _MorePageState extends State<MorePage> {
                                         key: CacheKeys.ckUserName) ??
                                     '',
                                 textColor: AppColors.white,
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 fontWeight: FontWeight.w700,
                               ),
                             ],
@@ -91,10 +91,10 @@ class _MorePageState extends State<MorePage> {
                           SizedBox(
                             width: 8.w,
                           ),
-                          const DefaultText(
+                          DefaultText(
                             text: 'تسجيل خروج',
                             textColor: Color(0xFF1E1E1E),
-                            fontSize: 18,
+                            fontSize: 18.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ],

@@ -13,7 +13,6 @@ import 'package:smart_blood_bank/src/presentation/widgets/default_text_field.dar
 
 import '../../../services/cache_helper.dart';
 import '../../widgets/default_text.dart';
-import '../../widgets/loading_indicator.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -605,52 +604,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             CacheHelper.saveDataSharedPreference(
                                 key: CacheKeys.ckUserName,
                                 value: _nameController.text.trim());
-                            CacheHelper.saveDataSharedPreference(
-                                key: CacheKeys.ckPhone,
-                                value: _nameController.text.trim());
-                            // context.goTo(AppRouterNames.rLayout);
+                            context.goTo(AppRouterNames.rLayout);
 
-                            showDialog(
-                              context: context,
-                              builder: (_) {
-                                return const Center(child: LoadingIndicator());
-                              },
-                            );
-                            AuthCubit.get(context).register(
-                              name: _nameController.text.trim(),
-                              phone: _phoneController.text.trim(),
-                              userType: AuthCubit.get(context).userType,
-                              type:
-                                  AuthCubit.get(context).userType == 'Donor' ||
-                                          AuthCubit.get(context).userType ==
-                                              'Recipient'
-                                      ? _genderController.text.trim()
-                                      : null,
-                              bloodType:
-                                  AuthCubit.get(context).userType == 'Donor' ||
-                                          AuthCubit.get(context).userType ==
-                                              'Recipient'
-                                      ? _bloodTypeController.text.trim()
-                                      : null,
-                              birthDate:
-                                  AuthCubit.get(context).userType == 'Donor' ||
-                                          AuthCubit.get(context).userType ==
-                                              'Recipient'
-                                      ? _birthController.text.trim()
-                                      : null,
-                              bloodTypes: AuthCubit.get(context).userType ==
-                                          'Hospital' ||
-                                      AuthCubit.get(context).userType ==
-                                          'BloodBank'
-                                  ? selectedBloodTypes
-                                  : null,
-                              about: AuthCubit.get(context).userType ==
-                                          'Hospital' ||
-                                      AuthCubit.get(context).userType ==
-                                          'BloodBank'
-                                  ? _aboutController.text.trim()
-                                  : null,
-                            );
+                            // showDialog(
+                            //   context: context,
+                            //   builder: (_) {
+                            //     return const Center(child: LoadingIndicator());
+                            //   },
+                            // );
+                            // AuthCubit.get(context).register(
+                            //   name: _nameController.text.trim(),
+                            //   phone: _phoneController.text.trim(),
+                            //   userType: AuthCubit.get(context).userType,
+                            //   type:
+                            //       AuthCubit.get(context).userType == 'Donor' ||
+                            //               AuthCubit.get(context).userType ==
+                            //                   'Recipient'
+                            //           ? _genderController.text.trim()
+                            //           : null,
+                            //   bloodType:
+                            //       AuthCubit.get(context).userType == 'Donor' ||
+                            //               AuthCubit.get(context).userType ==
+                            //                   'Recipient'
+                            //           ? _bloodTypeController.text.trim()
+                            //           : null,
+                            //   birthDate:
+                            //       AuthCubit.get(context).userType == 'Donor' ||
+                            //               AuthCubit.get(context).userType ==
+                            //                   'Recipient'
+                            //           ? _birthController.text.trim()
+                            //           : null,
+                            //   bloodTypes: AuthCubit.get(context).userType ==
+                            //               'Hospital' ||
+                            //           AuthCubit.get(context).userType ==
+                            //               'BloodBank'
+                            //       ? selectedBloodTypes
+                            //       : null,
+                            //   about: AuthCubit.get(context).userType ==
+                            //               'Hospital' ||
+                            //           AuthCubit.get(context).userType ==
+                            //               'BloodBank'
+                            //       ? _aboutController.text.trim()
+                            //       : null,
+                            //   location: AuthCubit.get(context).userType ==
+                            //               'Hospital' ||
+                            //           AuthCubit.get(context).userType ==
+                            //               'BloodBank'
+                            //       ? "$governorate , $city"
+                            //       : null,
+                            //   image: AuthCubit.get(context).userType ==
+                            //               'Hospital' ||
+                            //           AuthCubit.get(context).userType ==
+                            //               'BloodBank'
+                            //       ? 'path'
+                            //       : null,
+                            // );
                           }
                         },
                       ),
