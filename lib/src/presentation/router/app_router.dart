@@ -3,6 +3,7 @@ import 'package:smart_blood_bank/src/presentation/screens/auth/login_screen.dart
 import 'package:smart_blood_bank/src/presentation/screens/auth/otp_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/auth/register_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/auth/user_type_screen.dart';
+import 'package:smart_blood_bank/src/presentation/screens/home/ask_donation_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/home/donate_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/layout_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/start/on_boarding_screen.dart';
@@ -50,6 +51,10 @@ class AppRouter {
       case AppRouterNames.rDonate:
         return MaterialPageRoute(
           builder: (_) => const DonateScreen(),
+        );
+      case AppRouterNames.rAskDonation:
+        return MaterialPageRoute(
+          builder: (_) => const AskDonationScreen(),
         );
       case AppRouterNames.rPlaces:
         final placeType = settings.arguments as int;

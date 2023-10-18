@@ -21,8 +21,4 @@ class LayoutCubit extends Cubit<LayoutState> {
     const MorePage(),
     const HomePage(),
   ];
-
-  void openDrawer() {
-    emit(DrawerOpened());
-  }
 }

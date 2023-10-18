@@ -11,14 +11,14 @@ import '../../router/app_router_names.dart';
 import '../../widgets/default_button.dart';
 import '../../widgets/default_text.dart';
 
-class DonateScreen extends StatefulWidget {
-  const DonateScreen({super.key});
+class AskDonationScreen extends StatefulWidget {
+  const AskDonationScreen({super.key});
 
   @override
-  State<DonateScreen> createState() => _DonateScreenState();
+  State<AskDonationScreen> createState() => _AskDonationScreenState();
 }
 
-class _DonateScreenState extends State<DonateScreen> {
+class _AskDonationScreenState extends State<AskDonationScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _bloodTypeController = TextEditingController();

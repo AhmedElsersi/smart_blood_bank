@@ -65,13 +65,15 @@ class _LayoutScreenState extends State<LayoutScreen>
         floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.red,
           onPressed: () {
-            if (AuthCubit.get(context).userType == 'donner') {
+            if (AuthCubit.get(context).userType == 'Donor') {
               context.goTo(AppRouterNames.rDonate);
+            } else {
+              context.goTo(AppRouterNames.rAskDonation);
             }
           },
           clipBehavior: Clip.hardEdge,
           child: SvgPicture.asset(
-            AuthCubit.get(context).userType == 'donner'
+            AuthCubit.get(context).userType == 'Donor'
                 ? AppAssets.icBlood
                 : AppAssets.icGetBlood,
           ),

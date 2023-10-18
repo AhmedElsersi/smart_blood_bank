@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_blood_bank/src/constants/assets.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
-import 'package:smart_blood_bank/src/constants/const_variables.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_text.dart';
-import 'package:smart_blood_bank/src/presentation/widgets/layout/ask_guest_login.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});
@@ -43,25 +41,23 @@ class _NotificationsPageState extends State<NotificationsPage> {
         ),
       ),
       backgroundColor: AppColors.white,
-      body: isGuest
-          ? const AskGuestLogin()
-          : SingleChildScrollView(
-              clipBehavior: Clip.none,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                child: Column(
-                  children: List.generate(
-                      20,
-                      (index) => const NotificationComponent(
-                            image: AppAssets.icDonner,
-                            userName: "Raed Ali",
-                            title: ' liked your ad ',
-                            time: "8 mins ago",
-                            status: "New",
-                          )),
-                ),
-              ),
-            ),
+      body: SingleChildScrollView(
+        clipBehavior: Clip.none,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+          child: Column(
+            children: List.generate(
+                20,
+                (index) => const NotificationComponent(
+                      image: AppAssets.icDonner,
+                      userName: "Raed Ali",
+                      title: ' liked your ad ',
+                      time: "8 mins ago",
+                      status: "New",
+                    )),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -12,6 +12,7 @@ class AppRouterNames {
   static const rLayout = '/layout';
 
   static const rDonate = '/donate';
+  static const rAskDonation = '/askDonation';
   static const rPlaces = '/places';
   static const rPlace = '/place';
 

@@ -94,11 +94,11 @@ String formatDateString(String dateString, String dateFormat) {
 
 String getArabicTypes(String type) {
   switch (type) {
-    case "patient":
+    case "Recipient":
       return 'مريض';
-    case "hospital":
+    case "Hospital":
       return 'مستشفي';
-    case "blood bank":
+    case "BloodBank":
       return 'بنك دم';
     default:
       return "متبرع";

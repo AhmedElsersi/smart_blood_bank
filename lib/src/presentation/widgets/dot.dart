@@ -22,8 +22,8 @@ class Dot extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         margin: const EdgeInsets.only(right: 10),
-        height: height ?? (isActive ? 19 : 17),
-        width: width ?? (isActive ? 29 : 16),
+        height: height ?? (isActive ? 10 : 10),
+        width: width ?? (isActive ? 42 : 16),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             shape: BoxShape.rectangle,

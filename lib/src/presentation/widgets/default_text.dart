@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
-import 'package:smart_blood_bank/src/localization/app_strings_extension.dart';
 
 class DefaultText extends StatelessWidget {
   const DefaultText({
@@ -47,7 +46,7 @@ class DefaultText extends StatelessWidget {
           color: textColor ?? AppColors.black,
           fontSize: fontSize ?? 15,
           fontWeight: fontWeight ?? FontWeight.w500,
-          fontFamily: fontFamily ?? (context.isAr ? 'Cairo' : 'Roboto'),
+          fontFamily: 'Cairo',
           decoration: textDecoration,
         ),
       ),

@@ -1,30 +1,17 @@
 class EndPoints {
-  static const baseUrl = "https://backend.smart_blood_bank.com/api/";
-  static const imageBaseUrl = "https://backend.smart_blood_bank.com/";
+  // static const baseUrl = "http://127.0.0.1:8000/api/";
+  static const baseUrl = "https://b1f4-197-43-54-233.ngrok.io/api/";
 
   /// auth
-  static const epVerifyPhone = "Users/RegisterStep1";
-  static const epSendOtp = "Users/SendOTP";
-  static const epVerifyOtp = "Users/VerifyPhone";
-  static const epRegister = "Users/RegisterStep2";
-  static const epLogin = "Users/login";
-  static const epLogout = "Users/Logout";
-  static const epRefreshToken = "Users/refreshToken";
+  static const epVerifyPhone = "verify_phone";
+  static const epRegister = "register";
+  static const epLogout = "logout";
 
-  /// user
-  static const epGetProfile = "UserProfile/GetProfile";
-
-  /// common
-  static const epGetIndustries = "Industry/getIndustries";
-  static const epGetInterests = "Interest/getInterests";
-  static const epGetUnits = "Unit/GetUnits";
-
-  /// home
-  static const epGetAds = "Home/GetAds";
-  static const epGetServices = "Home/GetHomeMachines";
-  static const epGetFeaturedSuppliers = "Home/FeaturedSuppliers";
-  static const epGetSearchPlaces = "Home/GetSearchPlaces";
-
-  /// service
-  static const epGetService = "Item";
+  /// services
+  static const epGetHospitals = "getHospitals";
+  static const epGetHospital = "getHospital";
+  static const epSearchHospital = "searchHospitals";
+  static const epGetBloodBanks = "getBloodBanks";
+  static const epGetBloodBank = "getBloodBank";
+  static const epSearchBloodBank = "searchBloodBank";
 }

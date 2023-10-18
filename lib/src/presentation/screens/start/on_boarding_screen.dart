@@ -37,19 +37,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   int _pageIndex = 0;
   onBoardingData(BuildContext context) => [
         OnBoardingModel(
-          image: AppAssets.icDonner,
+          image: AppAssets.imgOnBoarding1,
           title: context.omBoardingTitle1,
           subTitle: context.omBoardingSubTitle1,
         ),
         OnBoardingModel(
-          image: AppAssets.icDonner,
+          image: AppAssets.imgOnBoarding2,
           title: context.omBoardingTitle2,
           subTitle: context.omBoardingSubTitle2,
-        ),
-        OnBoardingModel(
-          image: AppAssets.icDonner,
-          title: context.omBoardingTitle3,
-          subTitle: context.omBoardingSubTitle3,
         ),
       ];
 
@@ -119,7 +114,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                     curve: Curves.ease),
                                 child: Dot(
                                   isActive: _pageIndex == index,
-                                  activeColor: AppColors.primary,
+                                  activeColor: AppColors.red,
                                   color: AppColors.lightGrey,
                                 ),
                               ),
@@ -131,22 +126,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             const Spacer(),
             Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: _pageIndex == 2 ? 60.w : 12.w),
-              child: _pageIndex == 2
+                  horizontal: _pageIndex == 1 ? 60.w : 12.w),
+              child: _pageIndex == 1
                   ? DefaultButton(
                       text: context.startNow,
                       textColor: AppColors.white,
                       fontSize: 21,
-                      buttonColor: AppColors.primary,
-                      radius: 8,
+                      buttonColor: AppColors.red,
+                      radius: 800,
                       height: 30.h,
                       width: 60.w,
                       onTap: () {
                         CacheHelper.saveDataSharedPreference(
                             key: CacheKeys.ckFirstTime, value: false);
-                        CacheHelper.saveDataSharedPreference(
-                            key: CacheKeys.ckIsGuest, value: true);
-                        context.goTo(AppRouterNames.rLayout);
+                        context.goTo(AppRouterNames.rLogin);
                       })
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,8 +152,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           child: Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(8)),
+                                  color: AppColors.red,
+                                  borderRadius: BorderRadius.circular(800)),
                               child: const RotatedBox(
                                 quarterTurns: 2,
                                 child: Icon(
@@ -172,16 +165,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         DefaultButton(
                             text: context.skip,
                             buttonColor: AppColors.transparent,
-                            textColor: AppColors.primary,
+                            textColor: AppColors.red,
                             radius: 8,
                             height: 30.h,
                             width: 60.w,
                             onTap: () {
                               CacheHelper.saveDataSharedPreference(
                                   key: CacheKeys.ckFirstTime, value: false);
-                              CacheHelper.saveDataSharedPreference(
-                                  key: CacheKeys.ckIsGuest, value: true);
-                              context.goTo(AppRouterNames.rLayout);
+                              context.goTo(AppRouterNames.rLogin);
                             }),
                       ],
                     ),

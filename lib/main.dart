@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +10,7 @@ import 'package:smart_blood_bank/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:smart_blood_bank/src/business_logic/bloc_observer.dart';
 import 'package:smart_blood_bank/src/business_logic/layout_cubit/layout_cubit.dart';
+import 'package:smart_blood_bank/src/business_logic/places_cubit/places_cubit.dart';
 import 'package:smart_blood_bank/src/constants/const_methods.dart';
 import 'package:smart_blood_bank/src/constants/themes.dart';
 import 'package:smart_blood_bank/src/localization/app_strings_extension.dart';
@@ -25,6 +28,7 @@ Future<void> main() async {
       await SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
       ]);
+      await Firebase.initializeApp();
       Bloc.observer = MyBlocObserver();
       await NotificationService.initialize();
       await CacheHelper.init();
@@ -53,10 +57,13 @@ class MyApp extends StatelessWidget {
           lazy: false,
         ),
         BlocProvider(
-          create: (context) => AuthCubit(),
+          create: (context) => AuthCubit(FirebaseAuth.instance),
         ),
         BlocProvider(
           create: (context) => LayoutCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PlacesCubit(),
         ),
       ],
       child: BlocBuilder<AppCubit, AppState>(

@@ -4,12 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
+import 'package:smart_blood_bank/src/constants/const_methods.dart';
 import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
 import 'package:smart_blood_bank/src/presentation/screens/home/places_screen.dart';
 
 import '../../../business_logic/layout_cubit/layout_cubit.dart';
 import '../../../constants/assets.dart';
-import '../../../constants/const_variables.dart';
+import '../../../constants/cache_keys.dart';
+import '../../../services/cache_helper.dart';
 import '../../router/app_router_names.dart';
 import '../../widgets/default_text.dart';
 
@@ -21,6 +23,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Donor | Hospital | BloodBank | Recipient
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LayoutCubit, LayoutState>(
@@ -41,7 +45,8 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         DefaultText(
-                          text: 'مرحباً ، $user ',
+                          text:
+                              'مرحباً ، ${AuthCubit.get(context).registerModel.data?.name ?? CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserName) ?? ''} ',
                           textColor: const Color(0xFF1E1E1E),
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -50,18 +55,19 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-                    AuthCubit.get(context).userType != 'patient'
+                    AuthCubit.get(context).userType != 'Recipient'
                         ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               InkWell(
                                 onTap: () {
+                                  logSuccess(AuthCubit.get(context).userType);
                                   if (AuthCubit.get(context).userType ==
-                                      'donner') {
-                                    context.goTo(AppRouterNames.rDonate);
+                                      'Donor') {
+                                    context.goTo(AppRouterNames.rPlaces,
+                                        args: 2);
                                   } else if (AuthCubit.get(context).userType ==
-                                          'hospital' ||
-                                      AuthCubit.get(context).userType ==
-                                          'blood bank') {
+                                      'Hospital') {
                                     // context.goTo(AppRouterNames.rDonate);
                                   }
                                 },
@@ -76,9 +82,9 @@ class _HomePageState extends State<HomePage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       DefaultText(
-                                        text: AuthCubit.get(context).userType ==
-                                                'donner'
-                                            ? 'تبرع الأن و أنقذ حياة مريض'
+                                        text: AuthCubit.get(context).userType !=
+                                                'BloodBank'
+                                            ? 'بنوك الدم المتاحة لتبرع'
                                             : 'تقديم طلب لبحث عن متبرع',
                                         textColor: Color(0xFF1E1E1E),
                                         fontSize: 16,
@@ -90,95 +96,125 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               SizedBox(height: 30.h),
-                              DefaultText(
-                                text:
-                                    AuthCubit.get(context).userType == 'donner'
-                                        ? 'أماكن التبرع'
-                                        : 'الطلبات',
-                                textColor: const Color(0xFF1E1E1E),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              SizedBox(height: 20.h),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        // context.goTo(AppRouterNames.rPersons, args: 1);
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 14.h, horizontal: 12.w),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: const Color(0xFFC8C8C8)),
-                                            borderRadius:
-                                                BorderRadius.circular(8)),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                                AppAssets.icPatient),
-                                            SizedBox(
-                                              width: 8.w,
-                                            ),
-                                            const DefaultText(
-                                              text: 'المرضي',
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              textColor: Color(0xFF1E1E1E),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                              if (AuthCubit.get(context).userType ==
+                                  'BloodBank')
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const DefaultText(
+                                      text: 'الطلبات',
+                                      textColor: Color(0xFF1E1E1E),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 12.w,
-                                  ),
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        // context.goTo(AppRouterNames.rPersons, args: 2);
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 14.h, horizontal: 12.w),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: const Color(0xFFC8C8C8)),
-                                            borderRadius:
-                                                BorderRadius.circular(8)),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                                AppAssets.icDonner),
-                                            SizedBox(
-                                              width: 8.w,
+                                    SizedBox(height: 20.h),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () {
+                                              context.goTo(
+                                                  AppRouterNames.rPlaces,
+                                                  args: 1);
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 14.h,
+                                                  horizontal: 12.w),
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: const Color(
+                                                          0xFFC8C8C8)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                      AuthCubit.get(context)
+                                                                  .userType ==
+                                                              'donner'
+                                                          ? AppAssets.icHospital
+                                                          : AppAssets
+                                                              .icPatient),
+                                                  SizedBox(
+                                                    width: 8.w,
+                                                  ),
+                                                  DefaultText(
+                                                    text: AuthCubit.get(context)
+                                                                .userType ==
+                                                            'donner'
+                                                        ? 'المستشفيات'
+                                                        : 'المرضي',
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w400,
+                                                    textColor:
+                                                        Color(0xFF1E1E1E),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                            DefaultText(
-                                              text: 'المتبرعين',
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              textColor: Color(0xFF1E1E1E),
-                                              onTap: () {
-                                                // CacheHelper.clearData();
-                                              },
-                                            ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
+                                        SizedBox(
+                                          width: 12.w,
+                                        ),
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () {
+                                              // context.goTo(AppRouterNames.rPersons, args: 1);
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 14.h,
+                                                  horizontal: 12.w),
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: const Color(
+                                                          0xFFC8C8C8)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                      AuthCubit.get(context)
+                                                                  .userType ==
+                                                              'donner'
+                                                          ? AppAssets
+                                                              .icBloodBank
+                                                          : AppAssets.icDonner),
+                                                  SizedBox(
+                                                    width: 8.w,
+                                                  ),
+                                                  DefaultText(
+                                                    text: AuthCubit.get(context)
+                                                                .userType ==
+                                                            'donner'
+                                                        ? 'بنوك الدم'
+                                                        : 'المتبرعين',
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w400,
+                                                    textColor:
+                                                        Color(0xFF1E1E1E),
+                                                    onTap: () {
+                                                      // CacheHelper.clearData();
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 30.h),
+                                    SizedBox(height: 30.h),
+                                  ],
+                                ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -461,7 +497,7 @@ class _HomePageState extends State<HomePage> {
                               DefaultText(
                                 text: 'أماكن للعثور لمتبرعين بالدم ',
                                 textColor: const Color(0xFF1E1E1E),
-                                fontSize: 16,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
                               ),
                               SizedBox(height: 10.h),
@@ -471,6 +507,7 @@ class _HomePageState extends State<HomePage> {
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) {
                                     return PlaceCard(
+                                      hasMargin: true,
                                       onTap: () {
                                         // Navigator.pushNamed(context, rPlace);
                                       },

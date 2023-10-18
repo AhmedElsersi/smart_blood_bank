@@ -5,7 +5,7 @@ import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
 import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_text.dart';
 
-import '../../../constants/const_variables.dart';
+import '../../../constants/cache_keys.dart';
 import '../../../services/cache_helper.dart';
 
 class MorePage extends StatefulWidget {
@@ -62,7 +62,9 @@ class _MorePageState extends State<MorePage> {
                                 width: 8.w,
                               ),
                               DefaultText(
-                                text: user,
+                                text: CacheHelper.getDataFromSharedPreference(
+                                        key: CacheKeys.ckUserName) ??
+                                    '',
                                 textColor: AppColors.white,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
@@ -76,8 +78,8 @@ class _MorePageState extends State<MorePage> {
                       height: 10.h,
                     ),
                     InkWell(
-                      onTap: () {
-                        CacheHelper.clearData();
+                      onTap: () async {
+                        await CacheHelper.clearData();
                         context.goTo(AppRouterNames.rLogin);
                       },
                       child: Row(

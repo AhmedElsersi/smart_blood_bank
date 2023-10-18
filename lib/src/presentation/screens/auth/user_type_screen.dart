@@ -19,11 +19,6 @@ class UserTypeScreen extends StatefulWidget {
 }
 
 class _UserTypeScreenState extends State<UserTypeScreen> {
-  bool patient = false;
-  bool donner = false;
-  bool hospital = false;
-  bool bloodBank = false;
-
   String radioValue = '';
 
   int userTypeId = 0;
@@ -50,7 +45,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                 InkWell(
                   onTap: () {
                     setState(() {
-                      radioValue = 'patient';
+                      radioValue = 'Recipient';
                     });
                   },
                   child: Container(
@@ -60,7 +55,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                         EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: radioValue == 'patient'
+                        color: radioValue == 'Recipient'
                             ? AppColors.red
                             : const Color(0xFFC8C8C8),
                       ),
@@ -84,7 +79,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                           ],
                         ),
                         Radio(
-                            value: 'patient',
+                            value: 'Recipient',
                             groupValue: radioValue,
                             activeColor: AppColors.red,
                             onChanged: (v) {
@@ -98,7 +93,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                 InkWell(
                   onTap: () {
                     setState(() {
-                      radioValue = 'donner';
+                      radioValue = 'Donor';
                     });
                   },
                   child: Container(
@@ -108,7 +103,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                         EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: radioValue == 'donner'
+                        color: radioValue == 'Donor'
                             ? AppColors.red
                             : const Color(0xFFC8C8C8),
                       ),
@@ -132,7 +127,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                           ],
                         ),
                         Radio(
-                            value: 'donner',
+                            value: 'Donor',
                             groupValue: radioValue,
                             activeColor: AppColors.red,
                             onChanged: (v) {
@@ -146,7 +141,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                 InkWell(
                   onTap: () {
                     setState(() {
-                      radioValue = 'hospital';
+                      radioValue = 'Hospital';
                     });
                   },
                   child: Container(
@@ -156,7 +151,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                         EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: radioValue == 'hospital'
+                        color: radioValue == 'Hospital'
                             ? AppColors.red
                             : const Color(0xFFC8C8C8),
                       ),
@@ -180,7 +175,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                           ],
                         ),
                         Radio(
-                            value: 'hospital',
+                            value: 'Hospital',
                             groupValue: radioValue,
                             activeColor: AppColors.red,
                             onChanged: (v) {
@@ -194,7 +189,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                 InkWell(
                   onTap: () {
                     setState(() {
-                      radioValue = 'blood bank';
+                      radioValue = 'BloodBank';
                     });
                   },
                   child: Container(
@@ -204,7 +199,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                         EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: radioValue == 'blood bank'
+                        color: radioValue == 'BloodBank'
                             ? AppColors.red
                             : const Color(0xFFC8C8C8),
                       ),
@@ -228,7 +223,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                           ],
                         ),
                         Radio(
-                            value: 'blood bank',
+                            value: 'BloodBank',
                             groupValue: radioValue,
                             activeColor: AppColors.red,
                             onChanged: (v) {

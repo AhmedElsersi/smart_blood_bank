@@ -17,6 +17,8 @@ class AppAssets {
 
   /// images
   static const String imgHospital = 'assets/images/img_hospital.png';
+  static const String imgOnBoarding1 = 'assets/images/img_on_boarding1.svg';
+  static const String imgOnBoarding2 = 'assets/images/img_on_boarding1.svg';
 
   /// fonts
 }

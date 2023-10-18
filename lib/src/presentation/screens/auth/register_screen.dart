@@ -6,12 +6,14 @@ import 'package:smart_blood_bank/src/constants/cache_keys.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
 import 'package:smart_blood_bank/src/constants/const_methods.dart';
 import 'package:smart_blood_bank/src/constants/enums.dart';
+import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
 import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_button.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_text_field.dart';
 
 import '../../../services/cache_helper.dart';
 import '../../widgets/default_text.dart';
+import '../../widgets/loading_indicator.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -32,6 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void initState() {
+    _nameController.clear();
     _genderController.text = genders[0];
     _bloodTypeController.text = bloodTypes[0].name;
     governorate = governorates[0];
@@ -117,6 +120,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     'تبوك'
   ];
   BloodType bloodType = BloodType(name: 'name', selected: false);
+
+  // Donor | Hospital | BloodBank | Recipient
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -173,8 +178,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onTap: () {},
                     ),
                     SizedBox(height: 16.h),
-                    if (cubit.userType == 'donner' ||
-                        cubit.userType == 'patient')
+                    if (cubit.userType == 'Donor' ||
+                        cubit.userType == 'Recipient')
                       Column(
                         children: [
                           Container(
@@ -323,10 +328,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             onTap: () => _getDate(context),
                           ),
                           SizedBox(height: 16.h),
+                          DefaultTextField(
+                            controller: _phoneController,
+                            keyboardType: TextInputType.phone,
+                            hintText: 'رقم الهاتف',
+                            hintTextColor: AppColors.textFieldBorder,
+                            height: 50.h,
+                            borderRadius: 100,
+                            padding: EdgeInsets.symmetric(horizontal: 12.w),
+                            onTap: () {},
+                          ),
+                          SizedBox(height: 16.h),
                         ],
                       ),
-                    if (cubit.userType == 'hospital' ||
-                        cubit.userType == 'blood bank')
+                    if (cubit.userType == 'Hospital' ||
+                        cubit.userType == 'BloodBank')
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -431,7 +447,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           SizedBox(height: 16.h),
                           DefaultTextField(
                             controller: _phoneController,
-                            keyboardType: TextInputType.name,
+                            keyboardType: TextInputType.phone,
                             hintText: 'رقم الهاتف',
                             hintTextColor: AppColors.textFieldBorder,
                             height: 50.h,
@@ -440,17 +456,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             onTap: () {},
                           ),
                           SizedBox(height: 16.h),
-                          DefaultTextField(
-                            controller: _phoneController2,
-                            keyboardType: TextInputType.name,
-                            hintText: 'رقم الهاتف اخر ( اختياري )',
-                            hintTextColor: AppColors.textFieldBorder,
-                            height: 50.h,
-                            borderRadius: 100,
-                            padding: EdgeInsets.symmetric(horizontal: 12.w),
-                            onTap: () {},
-                          ),
-                          SizedBox(height: 16.h),
+                          // DefaultTextField(
+                          //   controller: _phoneController2,
+                          //   keyboardType: TextInputType.name,
+                          //   hintText: 'رقم الهاتف اخر ( اختياري )',
+                          //   hintTextColor: AppColors.textFieldBorder,
+                          //   height: 50.h,
+                          //   borderRadius: 100,
+                          //   padding: EdgeInsets.symmetric(horizontal: 12.w),
+                          //   onTap: () {},
+                          // ),
+                          // SizedBox(height: 16.h),
                           DefaultTextField(
                             controller: _aboutController,
                             keyboardType: TextInputType.name,
@@ -545,46 +561,99 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     Padding(
                       padding: EdgeInsets.all(16.w),
-                      child: DefaultText(
+                      child: const DefaultText(
                         text:
                             'من خلال المتابعة وإنشاء الحساب، فإنك تقر بأنك قد قرأت و وافقت على سياسة الخصوصية الخاصة بنا',
-                        textColor: const Color(0xFF1E1E1E),
+                        textColor: Color(0xFF1E1E1E),
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    DefaultButton(
-                      margin: EdgeInsets.only(
-                          top: 3.h, bottom: 30.h, left: 16.w, right: 16.w),
-                      text: "متابعة",
-                      buttonColor: AppColors.red,
-                      textColor: AppColors.white,
-                      radius: 800,
-                      height: 40.h,
-                      onTap: () {
-                        if (_nameController.text.isEmpty) {
-                          showToast('الاسم مطلوب', ToastState.warning);
-                        } else if (_bloodTypeController.text.isEmpty) {
-                          showToast('فصيلة الدم مطلوبة', ToastState.warning);
-                        } else if (_genderController.text.isEmpty) {
-                          showToast('النوع مطلوب', ToastState.warning);
-                        } else if (AuthCubit.get(context).userType !=
-                                'donner' &&
-                            AuthCubit.get(context).userType != 'patient' &&
-                            _phoneController.text.isEmpty) {
-                          showToast('الهاتف مطلوب', ToastState.warning);
-                        } else if (AuthCubit.get(context).userType !=
-                                'donner' &&
-                            AuthCubit.get(context).userType != 'patient' &&
-                            selectedBloodTypes.isEmpty) {
-                          showToast('فصائل الدم مطلوبة', ToastState.warning);
-                        } else {
-                          CacheHelper.saveDataSharedPreference(
-                              key: CacheKeys.ckUserName,
-                              value: _nameController.text.trim());
-                          Navigator.pushNamed(context, AppRouterNames.rLayout);
+                    BlocListener<AuthCubit, AuthState>(
+                      listener: (context, state) async {
+                        if (state is RegisterSuccess) {
+                          // Navigator.pop(context);
+                          context.goTo(AppRouterNames.rLayout);
+                        } else if (state is RegisterSuccess) {
+                          // Navigator.pop(context);
+                          context.goTo(AppRouterNames.rLayout);
                         }
                       },
+                      child: DefaultButton(
+                        margin: EdgeInsets.only(
+                            top: 3.h, bottom: 30.h, left: 16.w, right: 16.w),
+                        text: "متابعة",
+                        buttonColor: AppColors.red,
+                        textColor: AppColors.white,
+                        radius: 800,
+                        height: 40.h,
+                        onTap: () {
+                          if (_nameController.text.isEmpty) {
+                            showToast('الاسم مطلوب', ToastState.warning);
+                          } else if (_bloodTypeController.text.isEmpty) {
+                            showToast('فصيلة الدم مطلوبة', ToastState.warning);
+                          } else if (_genderController.text.isEmpty) {
+                            showToast('النوع مطلوب', ToastState.warning);
+                          } else if (_phoneController.text.isEmpty) {
+                            showToast('الهاتف مطلوب', ToastState.warning);
+                          } else if (AuthCubit.get(context).userType !=
+                                  'Donor' &&
+                              AuthCubit.get(context).userType != 'Recipient' &&
+                              selectedBloodTypes.isEmpty) {
+                            showToast('فصائل الدم مطلوبة', ToastState.warning);
+                          } else {
+                            CacheHelper.saveDataSharedPreference(
+                                key: CacheKeys.ckUserName,
+                                value: _nameController.text.trim());
+                            CacheHelper.saveDataSharedPreference(
+                                key: CacheKeys.ckPhone,
+                                value: _nameController.text.trim());
+                            // context.goTo(AppRouterNames.rLayout);
+
+                            showDialog(
+                              context: context,
+                              builder: (_) {
+                                return const Center(child: LoadingIndicator());
+                              },
+                            );
+                            AuthCubit.get(context).register(
+                              name: _nameController.text.trim(),
+                              phone: _phoneController.text.trim(),
+                              userType: AuthCubit.get(context).userType,
+                              type:
+                                  AuthCubit.get(context).userType == 'Donor' ||
+                                          AuthCubit.get(context).userType ==
+                                              'Recipient'
+                                      ? _genderController.text.trim()
+                                      : null,
+                              bloodType:
+                                  AuthCubit.get(context).userType == 'Donor' ||
+                                          AuthCubit.get(context).userType ==
+                                              'Recipient'
+                                      ? _bloodTypeController.text.trim()
+                                      : null,
+                              birthDate:
+                                  AuthCubit.get(context).userType == 'Donor' ||
+                                          AuthCubit.get(context).userType ==
+                                              'Recipient'
+                                      ? _birthController.text.trim()
+                                      : null,
+                              bloodTypes: AuthCubit.get(context).userType ==
+                                          'Hospital' ||
+                                      AuthCubit.get(context).userType ==
+                                          'BloodBank'
+                                  ? selectedBloodTypes
+                                  : null,
+                              about: AuthCubit.get(context).userType ==
+                                          'Hospital' ||
+                                      AuthCubit.get(context).userType ==
+                                          'BloodBank'
+                                  ? _aboutController.text.trim()
+                                  : null,
+                            );
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),

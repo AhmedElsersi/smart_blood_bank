@@ -17,7 +17,4 @@ extension AppStrings on BuildContext {
   String get omBoardingTitle2 => AppLocalizations.of(this)!.omBoardingTitle2;
   String get omBoardingSubTitle2 =>
       AppLocalizations.of(this)!.omBoardingSubTitle2;
-  String get omBoardingTitle3 => AppLocalizations.of(this)!.omBoardingTitle3;
-  String get omBoardingSubTitle3 =>
-      AppLocalizations.of(this)!.omBoardingSubTitle3;
 }
