@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_blood_bank/src/business_logic/app_cubit/app_cubit.dart';
 import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:smart_blood_bank/src/business_logic/bloc_observer.dart';
+import 'package:smart_blood_bank/src/business_logic/donnation_cubit/donations_cubit.dart';
 import 'package:smart_blood_bank/src/business_logic/layout_cubit/layout_cubit.dart';
 import 'package:smart_blood_bank/src/business_logic/places_cubit/places_cubit.dart';
 import 'package:smart_blood_bank/src/constants/const_methods.dart';
@@ -64,6 +65,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => PlacesCubit(),
+        ),
+        BlocProvider(
+          create: (context) => DonationsCubit(),
         ),
       ],
       child: BlocBuilder<AppCubit, AppState>(

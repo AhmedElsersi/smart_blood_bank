@@ -37,7 +37,7 @@ class PlacesCubit extends Cubit<PlacesState> {
     try {
       emit(GetBloodBanksLoading());
       await DioHelper.getData(
-        url: EndPoints.epGetHospitals,
+        url: EndPoints.epGetBloodBanks,
       ).then((value) {
         logSuccess('getBloodBanks Response : ${value.data}');
         final response = PlacesModel.fromJson(value.data);

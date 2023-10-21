@@ -6,6 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_blood_bank/src/constants/const_methods.dart';
 import 'package:smart_blood_bank/src/constants/end_points.dart';
+import 'package:smart_blood_bank/src/models/blood_bank_register_model.dart';
+import 'package:smart_blood_bank/src/models/hospital_register_model.dart';
+import 'package:smart_blood_bank/src/models/person_register_model.dart';
+import 'package:smart_blood_bank/src/models/recipient_register_model.dart';
 import 'package:smart_blood_bank/src/models/verify_phone_model.dart';
 
 import '../../constants/cache_keys.dart';
@@ -148,12 +152,35 @@ class AuthCubit extends Cubit<AuthState> {
         "bloodType": bloodType,
         "birthDate": birthDate,
         "location": location,
-        "bloodTypes": bloodTypes,
+        "bloodTypes": bloodTypes.toString(),
         "about": about,
         "image": image,
       }).then((value) {
         logSuccess('register Response : ${value.data}');
-        registerModel = RegisterModel.fromJson(value.data);
+        if (userType == 'Donor') {
+          final donnerRegisterModel = DonnerRegisterModel.fromJson(value.data);
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserName,
+              value: donnerRegisterModel.data?.name ?? 'aa');
+        } else if (userType == 'Recipient') {
+          final recipientRegisterModel =
+              RecipientRegisterModel.fromJson(value.data);
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserName,
+              value: recipientRegisterModel.data?.name ?? 'aa');
+        } else if (userType == 'Hospital') {
+          final hospitalRegisterModel =
+              HospitalRegisterModel.fromJson(value.data);
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserName,
+              value: hospitalRegisterModel.data?.name ?? 'aa');
+        } else if (userType == 'BloodBank') {
+          final bloodBankRegisterModel =
+              BloodBankRegisterModel.fromJson(value.data);
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserName,
+              value: bloodBankRegisterModel.data?.name ?? 'aa');
+        }
         CacheHelper.saveDataSharedPreference(
             key: CacheKeys.ckApiToken, value: registerModel.token);
         logSuccess('register Response : $registerModel');

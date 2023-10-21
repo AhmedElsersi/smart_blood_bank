@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
+import 'package:smart_blood_bank/src/business_logic/places_cubit/places_cubit.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
 import 'package:smart_blood_bank/src/constants/const_methods.dart';
 import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
 import 'package:smart_blood_bank/src/presentation/screens/home/places_screen.dart';
+import 'package:smart_blood_bank/src/presentation/widgets/loading_indicator.dart';
 
-import '../../../business_logic/layout_cubit/layout_cubit.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/cache_keys.dart';
 import '../../../services/cache_helper.dart';
@@ -26,11 +27,22 @@ class _HomePageState extends State<HomePage> {
   // Donor | Hospital | BloodBank | Recipient
 
   @override
+  void initState() {
+    logSuccess("userrrrrrrrrrrr ${AuthCubit.get(context).userType}");
+    if (AuthCubit.get(context).userType == 'Recipient') {
+      PlacesCubit.get(context).getHospitals();
+    } else {
+      PlacesCubit.get(context).getBloodBanks();
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LayoutCubit, LayoutState>(
+    return BlocConsumer<PlacesCubit, PlacesState>(
         listener: (context, state) {},
         builder: (context, state) {
-          final cubit = LayoutCubit.get(context);
+          final cubit = PlacesCubit.get(context);
           return Scaffold(
             backgroundColor: AppColors.white,
             body: SingleChildScrollView(
@@ -46,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         DefaultText(
                           text:
-                              'مرحباً ، ${AuthCubit.get(context).registerModel.data?.name ?? CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserName) ?? ''} ',
+                              'مرحباً ، ${CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserName) ?? ''} ',
                           textColor: const Color(0xFF1E1E1E),
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w400,
@@ -86,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                                       DefaultText(
                                         text: AuthCubit.get(context).userType !=
                                                 'BloodBank'
-                                            ? 'بنوك الدم المتاحة لتبرع'
+                                            ? 'بنوك الدم المتاحة للتبرع'
                                             : 'تقديم طلب لبحث عن متبرع',
                                         textColor: Color(0xFF1E1E1E),
                                         fontSize: 16.sp,
@@ -511,22 +523,35 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight: FontWeight.w600,
                               ),
                               SizedBox(height: 10.h),
-                              ListView.separated(
-                                  shrinkWrap: true,
-                                  padding: EdgeInsets.zero,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return PlaceCard(
-                                      hasMargin: true,
-                                      onTap: () {
-                                        // Navigator.pushNamed(context, rPlace);
+                              state is GetHospitalsSuccess
+                                  ? ListView.separated(
+                                      shrinkWrap: true,
+                                      padding: EdgeInsets.zero,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        return PlaceCard(
+                                          hasMargin: true,
+                                          onTap: () {
+                                            // Navigator.pushNamed(context, rPlace);
+                                          },
+                                          title: cubit.places[index].name ??
+                                              'الأمل',
+                                          location:
+                                              cubit.places[index].location ??
+                                                  "مكة - مكة",
+                                        );
                                       },
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    return const SizedBox();
-                                  },
-                                  itemCount: 10),
+                                      separatorBuilder: (context, index) {
+                                        return const SizedBox();
+                                      },
+                                      itemCount: cubit.places.length)
+                                  : SizedBox(
+                                      height: 300.h,
+                                      child: const Center(
+                                        child: LoadingIndicator(),
+                                      ),
+                                    ),
                             ],
                           ),
                   ],

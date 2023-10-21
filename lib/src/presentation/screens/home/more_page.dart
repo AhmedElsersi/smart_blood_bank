@@ -62,9 +62,8 @@ class _MorePageState extends State<MorePage> {
                                 width: 8.w,
                               ),
                               DefaultText(
-                                text: CacheHelper.getDataFromSharedPreference(
-                                        key: CacheKeys.ckUserName) ??
-                                    '',
+                                text:
+                                    "${CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserName) ?? ''}",
                                 textColor: AppColors.white,
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w700,
