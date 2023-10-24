@@ -148,23 +148,13 @@ class _HomePageState extends State<HomePage> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   SvgPicture.asset(
-                                                      AuthCubit.get(context)
-                                                                  .userType ==
-                                                              'donner'
-                                                          ? AppAssets.icHospital
-                                                          : AppAssets
-                                                              .icPatient),
+                                                      AppAssets.icHospital),
                                                   SizedBox(
                                                     width: 8.w,
                                                   ),
                                                   FittedBox(
                                                     child: DefaultText(
-                                                      text: AuthCubit.get(
-                                                                      context)
-                                                                  .userType ==
-                                                              'donner'
-                                                          ? 'المستشفيات'
-                                                          : 'المرضي',
+                                                      text: 'المستشفيات',
                                                       fontSize: 16.sp,
                                                       fontWeight:
                                                           FontWeight.w400,
@@ -199,24 +189,14 @@ class _HomePageState extends State<HomePage> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  SvgPicture.asset(
-                                                      AuthCubit.get(context)
-                                                                  .userType ==
-                                                              'donner'
-                                                          ? AppAssets
-                                                              .icBloodBank
-                                                          : AppAssets.icDonner),
+                                                  Image.asset(
+                                                      AppAssets.icDonnerPng),
                                                   SizedBox(
                                                     width: 8.w,
                                                   ),
                                                   FittedBox(
                                                     child: DefaultText(
-                                                      text: AuthCubit.get(
-                                                                      context)
-                                                                  .userType ==
-                                                              'donner'
-                                                          ? 'بنوك الدم'
-                                                          : 'المتبرعين',
+                                                      text: 'المتبرعين',
                                                       fontSize: 16.sp,
                                                       fontWeight:
                                                           FontWeight.w400,

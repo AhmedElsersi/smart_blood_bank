@@ -64,6 +64,7 @@ flutter:
 
   assets:
     - assets/icons/
+    - assets/icons/donner.svg
     - assets/images/
 
   fonts:

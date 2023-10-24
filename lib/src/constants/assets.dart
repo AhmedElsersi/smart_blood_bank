@@ -5,6 +5,8 @@ class AppAssets {
 
   static const String icPatient = 'assets/icons/ic_patient.svg';
   static const String icDonner = 'assets/icons/ic_donner.svg';
+  static const String icDonnerPng = 'assets/icons/ic_donner_png.png';
+  static const String donner = 'assets/icons/donner.svg';
   static const String icHospital = 'assets/icons/ic_hospital.svg';
   static const String icBloodBank = 'assets/icons/ic_donner.svg';
   static const String icNotificationNew =
