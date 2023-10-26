@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
 
 class DefaultText extends StatelessWidget {
@@ -44,7 +45,7 @@ class DefaultText extends StatelessWidget {
         style: TextStyle(
           height: height,
           color: textColor ?? AppColors.black,
-          fontSize: fontSize ?? 15,
+          fontSize: fontSize ?? 15.sp,
           fontWeight: fontWeight ?? FontWeight.w500,
           fontFamily: 'Cairo',
           decoration: textDecoration,

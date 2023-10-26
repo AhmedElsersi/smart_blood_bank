@@ -162,28 +162,46 @@ class AuthCubit extends Cubit<AuthState> {
           CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckUserName,
               value: donnerRegisterModel.data?.name ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckApiToken, value: donnerRegisterModel.token);
+          registerModel.data?.id = donnerRegisterModel.data?.id;
+          registerModel.data?.bloodTypes = donnerRegisterModel.data?.bloodType;
         } else if (userType == 'Recipient') {
           final recipientRegisterModel =
               RecipientRegisterModel.fromJson(value.data);
           CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckUserName,
               value: recipientRegisterModel.data?.name ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckApiToken, value: recipientRegisterModel.token);
+
+          registerModel.data?.id = recipientRegisterModel.data?.id;
+          registerModel.data?.bloodTypes =
+              recipientRegisterModel.data?.bloodType;
         } else if (userType == 'Hospital') {
           final hospitalRegisterModel =
               HospitalRegisterModel.fromJson(value.data);
           CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckUserName,
               value: hospitalRegisterModel.data?.name ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckApiToken, value: hospitalRegisterModel.token);
+
+          registerModel.data?.id = hospitalRegisterModel.data?.id;
+          registerModel.data?.bloodTypes =
+              hospitalRegisterModel.data?.bloodTypes;
         } else if (userType == 'BloodBank') {
           final bloodBankRegisterModel =
               BloodBankRegisterModel.fromJson(value.data);
           CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckUserName,
               value: bloodBankRegisterModel.data?.name ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckApiToken, value: bloodBankRegisterModel.token);
+          registerModel.data?.id = bloodBankRegisterModel.data?.id;
+          registerModel.data?.bloodTypes =
+              bloodBankRegisterModel.data?.bloodTypes;
         }
-        CacheHelper.saveDataSharedPreference(
-            key: CacheKeys.ckApiToken, value: registerModel.token);
-        logSuccess('register Response : $registerModel');
         emit(RegisterSuccess());
       });
     } on DioError catch (dioError) {

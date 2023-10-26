@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: 'برجاء إدخال رقم الهاتف',
                     textColor: Color(0xFF1E1E1E),
                     fontWeight: FontWeight.w700,
-                    fontSize: 18.sp,
+                    fontSize: 16.sp,
                   )),
               SizedBox(
                 height: 12.h,
@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: 'سنرسل رمزًا للتحقق من رقم الهاتف المحمول أدناه',
                     textColor: Color(0xFF1E1E1E),
                     fontWeight: FontWeight.w400,
-                    fontSize: 16.sp,
+                    fontSize: 14.sp,
                   )),
               SizedBox(
                 height: 20.h,

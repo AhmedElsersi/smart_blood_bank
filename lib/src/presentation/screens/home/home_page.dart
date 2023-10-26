@@ -513,7 +513,14 @@ class _HomePageState extends State<HomePage> {
                                         return PlaceCard(
                                           hasMargin: true,
                                           onTap: () {
-                                            // Navigator.pushNamed(context, rPlace);
+                                            Navigator.pushNamed(
+                                              context,
+                                              AppRouterNames.rPlace,
+                                              arguments: [
+                                                1,
+                                                cubit.places[index].id!
+                                              ],
+                                            );
                                           },
                                           title: cubit.places[index].name ??
                                               'الأمل',

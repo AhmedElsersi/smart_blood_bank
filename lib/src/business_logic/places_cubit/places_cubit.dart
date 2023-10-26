@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,6 +6,7 @@ import 'package:smart_blood_bank/src/models/places_model.dart';
 
 import '../../constants/const_methods.dart';
 import '../../constants/end_points.dart';
+import '../../models/place_model.dart';
 import '../../services/dio_helper.dart';
 
 part 'places_state.dart';
@@ -27,8 +29,29 @@ class PlacesCubit extends Cubit<PlacesState> {
         places = response.data!;
         emit(GetHospitalsSuccess());
       });
+    } on DioError catch (dioError) {
+      logError('mmmm ${dioError.response}');
     } catch (e) {
       emit(GetHospitalsFailure());
+    }
+  }
+
+  PlaceIModel placeModel = PlaceIModel();
+  Future getHospital({required int id}) async {
+    try {
+      emit(GetHospitalLoading());
+      await DioHelper.getData(
+        url: EndPoints.epGetHospital(id),
+      ).then((value) {
+        logSuccess('getHospital Response : ${value.data}');
+        placeModel = PlaceIModel.fromJson(value.data);
+
+        emit(GetHospitalSuccess());
+      });
+    } on DioError catch (dioError) {
+      logError('mmmm ${dioError.response}');
+    } catch (e) {
+      emit(GetHospitalFailure());
     }
   }
 
@@ -44,6 +67,23 @@ class PlacesCubit extends Cubit<PlacesState> {
         places = response.data!;
         emit(GetBloodBanksSuccess());
       });
+    } catch (e) {
+      emit(GetBloodBanksFailure());
+    }
+  }
+
+  Future getBloodBank() async {
+    try {
+      emit(GetBloodBanksLoading());
+      await DioHelper.getData(
+        url: EndPoints.epGetHospitals,
+      ).then((value) {
+        logSuccess('getBloodBank Response : ${value.data}');
+        final response = PlacesModel.fromJson(value.data);
+        emit(GetBloodBanksSuccess());
+      });
+    } on DioError catch (dioError) {
+      logError('mmmm ${dioError.response}');
     } catch (e) {
       emit(GetBloodBanksFailure());
     }

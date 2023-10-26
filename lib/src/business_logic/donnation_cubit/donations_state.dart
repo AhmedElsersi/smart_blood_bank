@@ -10,3 +10,9 @@ class DonateLoading extends DonationsState {}
 class DonateSuccess extends DonationsState {}
 
 class DonateFailure extends DonationsState {}
+
+class AskDonationLoading extends DonationsState {}
+
+class AskDonationSuccess extends DonationsState {}
+
+class AskDonationFailure extends DonationsState {}

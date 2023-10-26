@@ -10,6 +10,7 @@ import 'package:smart_blood_bank/src/presentation/screens/start/on_boarding_scre
 import 'package:smart_blood_bank/src/presentation/screens/start/splash_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/terms_and_conditions_screen.dart';
 
+import '../screens/home/place_screen.dart';
 import '../screens/home/places_screen.dart';
 import 'app_router_names.dart';
 
@@ -53,14 +54,24 @@ class AppRouter {
           builder: (_) => const DonateScreen(),
         );
       case AppRouterNames.rAskDonation:
+        final placeType = settings.arguments as int;
         return MaterialPageRoute(
-          builder: (_) => const AskDonationScreen(),
+          builder: (_) => AskDonationScreen(
+            placeType: placeType,
+          ),
         );
       case AppRouterNames.rPlaces:
         final placeType = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => PlacesScreen(
             placeType: placeType,
+          ),
+        );
+      case AppRouterNames.rPlace:
+        final ids = settings.arguments as List<int>;
+        return MaterialPageRoute(
+          builder: (_) => PlaceScreen(
+            ids: ids,
           ),
         );
       default:

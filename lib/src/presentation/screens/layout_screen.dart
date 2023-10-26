@@ -68,7 +68,8 @@ class _LayoutScreenState extends State<LayoutScreen>
             if (AuthCubit.get(context).userType == 'Donor') {
               context.goTo(AppRouterNames.rDonate);
             } else {
-              context.goTo(AppRouterNames.rAskDonation);
+              context.goTo(AppRouterNames.rAskDonation,
+                  args: AuthCubit.get(context).userType == 'Recipient' ? 1 : 2);
             }
           },
           clipBehavior: Clip.hardEdge,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart_blood_bank/src/business_logic/places_cubit/places_cubit.dart';
+import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/loading_indicator.dart';
 
 import '../../../constants/assets.dart';
@@ -71,7 +72,12 @@ class _PlacesScreenState extends State<PlacesScreen> {
                               itemBuilder: (context, index) {
                                 return PlaceCard(
                                   onTap: () {
-                                    // Navigator.pushNamed(context, rPlace);
+                                    Navigator.pushNamed(
+                                        context, AppRouterNames.rPlace,
+                                        arguments: [
+                                          widget.placeType,
+                                          cubit.places[index].id
+                                        ]);
                                   },
                                   title: cubit.places[index].name,
                                   location: cubit.places[index].location,
