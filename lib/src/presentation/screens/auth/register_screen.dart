@@ -4,16 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
 import 'package:smart_blood_bank/src/constants/const_methods.dart';
-import 'package:smart_blood_bank/src/constants/enums.dart';
 import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
 import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_button.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_text_field.dart';
 
-import '../../../constants/cache_keys.dart';
-import '../../../services/cache_helper.dart';
 import '../../widgets/default_text.dart';
-import '../../widgets/loading_indicator.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -588,80 +584,83 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         radius: 800,
                         height: 40.h,
                         onTap: () {
-                          if (_nameController.text.isEmpty) {
-                            showToast('الاسم مطلوب', ToastState.warning);
-                          } else if (_bloodTypeController.text.isEmpty) {
-                            showToast('فصيلة الدم مطلوبة', ToastState.warning);
-                          } else if (_genderController.text.isEmpty) {
-                            showToast('النوع مطلوب', ToastState.warning);
-                          } else if (_phoneController.text.isEmpty) {
-                            showToast('الهاتف مطلوب', ToastState.warning);
-                          } else if (AuthCubit.get(context).userType !=
-                                  'Donor' &&
-                              AuthCubit.get(context).userType != 'Recipient' &&
-                              selectedBloodTypes.isEmpty) {
-                            showToast('فصائل الدم مطلوبة', ToastState.warning);
-                          } else {
-                            CacheHelper.saveDataSharedPreference(
-                                key: CacheKeys.ckUserName,
-                                value: _nameController.text.trim());
-                            // context.goTo(AppRouterNames.rLayout);
-
-                            showDialog(
-                              context: context,
-                              builder: (_) {
-                                return const Center(child: LoadingIndicator());
-                              },
-                            );
-                            AuthCubit.get(context).register(
-                              name: _nameController.text.trim(),
-                              phone: _phoneController.text.trim(),
-                              userType: AuthCubit.get(context).userType,
-                              type:
-                                  AuthCubit.get(context).userType == 'Donor' ||
-                                          AuthCubit.get(context).userType ==
-                                              'Recipient'
-                                      ? _genderController.text.trim()
-                                      : null,
-                              bloodType:
-                                  AuthCubit.get(context).userType == 'Donor' ||
-                                          AuthCubit.get(context).userType ==
-                                              'Recipient'
-                                      ? _bloodTypeController.text.trim()
-                                      : null,
-                              birthDate:
-                                  AuthCubit.get(context).userType == 'Donor' ||
-                                          AuthCubit.get(context).userType ==
-                                              'Recipient'
-                                      ? _birthController.text.trim()
-                                      : null,
-                              bloodTypes: AuthCubit.get(context).userType ==
-                                          'Hospital' ||
-                                      AuthCubit.get(context).userType ==
-                                          'BloodBank'
-                                  ? selectedBloodTypes
-                                  : null,
-                              about: AuthCubit.get(context).userType ==
-                                          'Hospital' ||
-                                      AuthCubit.get(context).userType ==
-                                          'BloodBank'
-                                  ? _aboutController.text.trim()
-                                  : null,
-                              location: AuthCubit.get(context).userType ==
-                                          'Hospital' ||
-                                      AuthCubit.get(context).userType ==
-                                          'BloodBank'
-                                  ? "$governorate , $city"
-                                  : null,
-                              image: AuthCubit.get(context).userType ==
-                                          'Hospital' ||
-                                      AuthCubit.get(context).userType ==
-                                          'BloodBank'
-                                  ? 'path'
-                                  : null,
-                            );
-                          }
+                          context.goTo(AppRouterNames.rLayout);
                         },
+                        // onTap: () {
+                        //   if (_nameController.text.isEmpty) {
+                        //     showToast('الاسم مطلوب', ToastState.warning);
+                        //   } else if (_bloodTypeController.text.isEmpty) {
+                        //     showToast('فصيلة الدم مطلوبة', ToastState.warning);
+                        //   } else if (_genderController.text.isEmpty) {
+                        //     showToast('النوع مطلوب', ToastState.warning);
+                        //   } else if (_phoneController.text.isEmpty) {
+                        //     showToast('الهاتف مطلوب', ToastState.warning);
+                        //   } else if (AuthCubit.get(context).userType !=
+                        //           'Donor' &&
+                        //       AuthCubit.get(context).userType != 'Recipient' &&
+                        //       selectedBloodTypes.isEmpty) {
+                        //     showToast('فصائل الدم مطلوبة', ToastState.warning);
+                        //   } else {
+                        //     CacheHelper.saveDataSharedPreference(
+                        //         key: CacheKeys.ckUserName,
+                        //         value: _nameController.text.trim());
+                        //     // context.goTo(AppRouterNames.rLayout);
+                        //
+                        //     showDialog(
+                        //       context: context,
+                        //       builder: (_) {
+                        //         return const Center(child: LoadingIndicator());
+                        //       },
+                        //     );
+                        //     AuthCubit.get(context).register(
+                        //       name: _nameController.text.trim(),
+                        //       phone: _phoneController.text.trim(),
+                        //       userType: AuthCubit.get(context).userType,
+                        //       type:
+                        //           AuthCubit.get(context).userType == 'Donor' ||
+                        //                   AuthCubit.get(context).userType ==
+                        //                       'Recipient'
+                        //               ? _genderController.text.trim()
+                        //               : null,
+                        //       bloodType:
+                        //           AuthCubit.get(context).userType == 'Donor' ||
+                        //                   AuthCubit.get(context).userType ==
+                        //                       'Recipient'
+                        //               ? _bloodTypeController.text.trim()
+                        //               : null,
+                        //       birthDate:
+                        //           AuthCubit.get(context).userType == 'Donor' ||
+                        //                   AuthCubit.get(context).userType ==
+                        //                       'Recipient'
+                        //               ? _birthController.text.trim()
+                        //               : null,
+                        //       bloodTypes: AuthCubit.get(context).userType ==
+                        //                   'Hospital' ||
+                        //               AuthCubit.get(context).userType ==
+                        //                   'BloodBank'
+                        //           ? selectedBloodTypes
+                        //           : null,
+                        //       about: AuthCubit.get(context).userType ==
+                        //                   'Hospital' ||
+                        //               AuthCubit.get(context).userType ==
+                        //                   'BloodBank'
+                        //           ? _aboutController.text.trim()
+                        //           : null,
+                        //       location: AuthCubit.get(context).userType ==
+                        //                   'Hospital' ||
+                        //               AuthCubit.get(context).userType ==
+                        //                   'BloodBank'
+                        //           ? "$governorate , $city"
+                        //           : null,
+                        //       image: AuthCubit.get(context).userType ==
+                        //                   'Hospital' ||
+                        //               AuthCubit.get(context).userType ==
+                        //                   'BloodBank'
+                        //           ? 'path'
+                        //           : null,
+                        //     );
+                        //   }
+                        // },
                       ),
                     ),
                   ],

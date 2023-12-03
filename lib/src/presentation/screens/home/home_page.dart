@@ -173,18 +173,21 @@ class _HomePageState extends State<HomePage> {
                                         Expanded(
                                           child: InkWell(
                                             onTap: () {
-                                              // context.goTo(AppRouterNames.rPersons, args: 1);
+                                              context.goTo(
+                                                  AppRouterNames.rRequests,
+                                                  args: 1);
                                             },
                                             child: Container(
                                               padding: EdgeInsets.symmetric(
                                                   vertical: 14.h,
                                                   horizontal: 12.w),
                                               decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: const Color(
-                                                          0xFFC8C8C8)),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8)),
+                                                border: Border.all(
+                                                    color: const Color(
+                                                        0xFFC8C8C8)),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
@@ -202,9 +205,6 @@ class _HomePageState extends State<HomePage> {
                                                           FontWeight.w400,
                                                       textColor:
                                                           Color(0xFF1E1E1E),
-                                                      onTap: () {
-                                                        // CacheHelper.clearData();
-                                                      },
                                                     ),
                                                   ),
                                                 ],

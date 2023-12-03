@@ -5,6 +5,7 @@ import 'package:smart_blood_bank/src/presentation/screens/auth/register_screen.d
 import 'package:smart_blood_bank/src/presentation/screens/auth/user_type_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/home/ask_donation_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/home/donate_screen.dart';
+import 'package:smart_blood_bank/src/presentation/screens/home/request_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/layout_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/start/on_boarding_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/start/splash_screen.dart';
@@ -12,6 +13,7 @@ import 'package:smart_blood_bank/src/presentation/screens/terms_and_conditions_s
 
 import '../screens/home/place_screen.dart';
 import '../screens/home/places_screen.dart';
+import '../screens/home/requests_screen.dart';
 import 'app_router_names.dart';
 
 class AppRouter {
@@ -72,6 +74,17 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => PlaceScreen(
             ids: ids,
+          ),
+        );
+      case AppRouterNames.rRequests:
+        return MaterialPageRoute(
+          builder: (_) => const RequestsScreen(),
+        );
+      case AppRouterNames.rRequest:
+        final id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => RequestScreen(
+            id: id,
           ),
         );
       default:
