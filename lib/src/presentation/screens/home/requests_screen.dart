@@ -68,7 +68,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                                 context, AppRouterNames.rRequest,
                                 arguments: 1);
                           },
-                          title: "cubit.places[index].name",
+                          title: "مصطفي حسام شوقي",
                           location: "cubit.places[index].location",
                         );
                       },
