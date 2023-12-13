@@ -71,7 +71,7 @@ class _AskRequestsScreenState extends State<AskRequestsScreen> {
                     child: ListView.separated(
                       // padding: const EdgeInsets.only(top: 6),
                       itemBuilder: (context, index) {
-                        return DonationCard(
+                        return AskDonationCard(
                           onTap: () {
                             Navigator.pushNamed(
                                 context, AppRouterNames.rAskRequest,
@@ -97,14 +97,14 @@ class _AskRequestsScreenState extends State<AskRequestsScreen> {
   }
 }
 
-class DonationCard extends StatelessWidget {
+class AskDonationCard extends StatelessWidget {
   final VoidCallback onTap;
   final EdgeInsetsGeometry? margin;
   final String? title;
   final String? location;
   final String? date;
   final double? units;
-  const DonationCard(
+  const AskDonationCard(
       {super.key,
       required this.onTap,
       this.margin,
