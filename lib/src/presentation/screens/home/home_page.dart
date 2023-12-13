@@ -81,8 +81,8 @@ class _HomePageState extends State<HomePage> {
                                     context.goTo(AppRouterNames.rPlaces,
                                         args: 2);
                                   } else if (AuthCubit.get(context).userType ==
-                                      'BloodBanks') {
-                                    // context.goTo(AppRouterNames.rDonate);
+                                      'BloodBank') {
+                                    context.goTo(AppRouterNames.rDonate);
                                   }
                                 },
                                 child: Container(
@@ -233,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w700,
                                     onTap: () {
-                                      //todo show all requests
+                                      context.goTo(AppRouterNames.rAskRequests);
                                     },
                                   ),
                                 ],

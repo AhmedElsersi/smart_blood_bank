@@ -18,4 +18,8 @@ class EndPoints {
   /// Donation
   static const epDonate = "donate";
   static const epRequestDonation = "requestDonation";
+  static const epGetDonations = "getDonation";
+  static epGetDonation(int id) => "getDonation/$id";
+  static const epGetAskDonations = "getAskDonation";
+  static epGetAskDonation(int id) => "getAskDonation/$id";
 }

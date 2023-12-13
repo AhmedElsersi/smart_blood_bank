@@ -80,4 +80,72 @@ class DonationsCubit extends Cubit<DonationsState> {
       emit(AskDonationFailure());
     }
   }
+
+  List<dynamic> donations = [];
+  Future getDonations() async {
+    try {
+      emit(GetDonationsLoading());
+      await DioHelper.getData(
+        url: EndPoints.epGetDonations,
+      ).then((value) {
+        logSuccess('getDonations Response : ${value.data}');
+        emit(GetDonationsSuccess());
+      });
+    } on DioException catch (dioError) {
+      logError('getDonations error ${dioError.response}');
+    } catch (e) {
+      emit(GetDonationsFailure());
+    }
+  }
+
+  dynamic donation;
+  Future getDonationById({required int id}) async {
+    try {
+      emit(GetDonationLoading());
+      await DioHelper.getData(
+        url: EndPoints.epGetDonation(id),
+      ).then((value) {
+        logSuccess('getDonationById Response : ${value.data}');
+        emit(GetDonationSuccess());
+      });
+    } on DioException catch (dioError) {
+      logError('getDonationById error ${dioError.response}');
+    } catch (e) {
+      emit(GetDonationFailure());
+    }
+  }
+
+  List<dynamic> askDonations = [];
+  Future getAskDonations() async {
+    try {
+      emit(GetAskDonationsLoading());
+      await DioHelper.getData(
+        url: EndPoints.epGetAskDonations,
+      ).then((value) {
+        logSuccess('getAskDonations Response : ${value.data}');
+        emit(GetAskDonationsSuccess());
+      });
+    } on DioException catch (dioError) {
+      logError('getAskDonations error ${dioError.response}');
+    } catch (e) {
+      emit(GetAskDonationsFailure());
+    }
+  }
+
+  dynamic askDonationResponse;
+  Future getAskDonationById({required int id}) async {
+    try {
+      emit(GetAskDonationLoading());
+      await DioHelper.getData(
+        url: EndPoints.epGetAskDonation(id),
+      ).then((value) {
+        logSuccess('getAskDonationById Response : ${value.data}');
+        emit(GetAskDonationSuccess());
+      });
+    } on DioException catch (dioError) {
+      logError('getAskDonationById error ${dioError.response}');
+    } catch (e) {
+      emit(GetAskDonationFailure());
+    }
+  }
 }

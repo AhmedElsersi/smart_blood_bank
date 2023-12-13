@@ -22,4 +22,7 @@ class AppRouterNames {
 
   static const rRequests = '/requests';
   static const rRequest = '/request';
+
+  static const rAskRequests = '/askRequests';
+  static const rAskRequest = '/askRequest';
 }

@@ -11,6 +11,8 @@ import 'package:smart_blood_bank/src/presentation/screens/start/on_boarding_scre
 import 'package:smart_blood_bank/src/presentation/screens/start/splash_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/terms_and_conditions_screen.dart';
 
+import '../screens/home/ask_request_screen.dart';
+import '../screens/home/ask_requests_screen.dart';
 import '../screens/home/place_screen.dart';
 import '../screens/home/places_screen.dart';
 import '../screens/home/requests_screen.dart';
@@ -84,6 +86,17 @@ class AppRouter {
         final id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => RequestScreen(
+            id: id,
+          ),
+        );
+      case AppRouterNames.rAskRequests:
+        return MaterialPageRoute(
+          builder: (_) => const AskRequestsScreen(),
+        );
+      case AppRouterNames.rAskRequest:
+        final id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => AskRequestScreen(
             id: id,
           ),
         );

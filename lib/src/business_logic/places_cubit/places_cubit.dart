@@ -16,7 +16,6 @@ class PlacesCubit extends Cubit<PlacesState> {
   static PlacesCubit get(BuildContext context) => BlocProvider.of(context);
 
   List<PlaceModel> places = [];
-
   Future getHospitals() async {
     places.clear();
     try {

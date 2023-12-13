@@ -7,16 +7,16 @@ import 'package:smart_blood_bank/src/presentation/widgets/default_button.dart';
 import '../../../constants/colors.dart';
 import '../../widgets/default_text.dart';
 
-class RequestScreen extends StatefulWidget {
-  const RequestScreen({super.key, required this.id});
+class AskRequestScreen extends StatefulWidget {
+  const AskRequestScreen({super.key, required this.id});
 
   final int id;
 
   @override
-  State<RequestScreen> createState() => _RequestScreenState();
+  State<AskRequestScreen> createState() => _AskRequestScreenState();
 }
 
-class _RequestScreenState extends State<RequestScreen> {
+class _AskRequestScreenState extends State<AskRequestScreen> {
   @override
   void initState() {
     // PlacesCubit.get(context).getBloodBank();
@@ -109,6 +109,27 @@ class _RequestScreenState extends State<RequestScreen> {
                             height: 30.h,
                             color: AppColors.grey,
                           ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.location_on_outlined,
+                                size: 14.sp,
+                              ),
+                              SizedBox(
+                                width: 8.w,
+                              ),
+                              DefaultText(
+                                text: 'مستشفي الملك فيصل',
+                                overflow: TextOverflow.ellipsis,
+                                textColor: const Color(0xFF1E1E1E),
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
                           const Text.rich(
                             TextSpan(
                               children: [
@@ -143,7 +164,27 @@ class _RequestScreenState extends State<RequestScreen> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: ' يريد التبرع ',
+                                  text: ' يحتاج الي ',
+                                  style: TextStyle(
+                                    color: Color(0xFF1E1E1E),
+                                    fontSize: 14,
+                                    fontFamily: 'Cairo',
+                                    fontWeight: FontWeight.w400,
+                                    height: 0,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: ' 9 وحدات ',
+                                  style: TextStyle(
+                                    color: Color(0xFF1E1E1E),
+                                    fontSize: 14,
+                                    fontFamily: 'Cairo',
+                                    fontWeight: FontWeight.w700,
+                                    height: 0,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: ' من الدم ',
                                   style: TextStyle(
                                     color: Color(0xFF1E1E1E),
                                     fontSize: 14,
