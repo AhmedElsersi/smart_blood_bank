@@ -1,6 +1,6 @@
 class EndPoints {
   // static const baseUrl = "http://127.0.0.1:8000/api/";
-  static const baseUrl = "https://e654-156-204-249-56.ngrok.io/api/";
+  static const baseUrl = "https://8e5b-156-204-216-215.ngrok.io/api/";
 
   /// auth
   static const epVerifyPhone = "verify_phone";

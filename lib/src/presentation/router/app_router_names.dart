@@ -25,4 +25,7 @@ class AppRouterNames {
 
   static const rAskRequests = '/askRequests';
   static const rAskRequest = '/askRequest';
+
+  static const rAbout = '/about';
+  static const rProfile = '/profile';
 }

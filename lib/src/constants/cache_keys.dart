@@ -9,6 +9,11 @@ class CacheKeys {
   static const ckFirstTime = "firstTime";
 
   static const ckUserName = "userName";
+  static const ckUserType = "userType";
+  static const ckUserGender = "userGender ";
+  static const ckUserBloodType = "userBloodType";
+  static const ckUserPhone = "userPhone";
+  static const ckUserAbout = "userAbout";
 
   static const ckPhone = "phone";
 }
