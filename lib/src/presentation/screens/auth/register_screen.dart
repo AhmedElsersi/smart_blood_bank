@@ -61,8 +61,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     BloodType(name: 'A-', selected: false),
     BloodType(name: 'B+', selected: false),
     BloodType(name: 'B-', selected: false),
-    BloodType(name: 'C+', selected: false),
-    BloodType(name: 'C-', selected: false),
+    BloodType(name: 'O+', selected: false),
+    BloodType(name: 'O-', selected: false),
     BloodType(name: 'AB+', selected: false),
     BloodType(name: 'AB-', selected: false),
   ];

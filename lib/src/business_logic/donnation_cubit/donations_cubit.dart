@@ -7,6 +7,9 @@ import 'package:smart_blood_bank/src/models/request_donation_model.dart';
 
 import '../../constants/const_methods.dart';
 import '../../constants/end_points.dart';
+import '../../models/ask_donation_model_response.dart';
+import '../../models/ask_donations_model_response.dart';
+import '../../models/donation_model_response.dart';
 import '../../services/dio_helper.dart';
 
 part 'donations_state.dart';
@@ -81,7 +84,7 @@ class DonationsCubit extends Cubit<DonationsState> {
     }
   }
 
-  List<dynamic> donations = [];
+  List<Donation> donations = [];
   Future getDonations() async {
     try {
       emit(GetDonationsLoading());
@@ -89,6 +92,8 @@ class DonationsCubit extends Cubit<DonationsState> {
         url: EndPoints.epGetDonations,
       ).then((value) {
         logSuccess('getDonations Response : ${value.data}');
+        final hh = DonationsModel.fromJson(value.data);
+        donations = hh.data ?? [];
         emit(GetDonationsSuccess());
       });
     } on DioException catch (dioError) {
@@ -115,7 +120,7 @@ class DonationsCubit extends Cubit<DonationsState> {
     }
   }
 
-  List<dynamic> askDonations = [];
+  List<AskDonation> askDonations = [];
   Future getAskDonations() async {
     try {
       emit(GetAskDonationsLoading());
@@ -123,6 +128,8 @@ class DonationsCubit extends Cubit<DonationsState> {
         url: EndPoints.epGetAskDonations,
       ).then((value) {
         logSuccess('getAskDonations Response : ${value.data}');
+        final hh = AskDonationsModel.fromJson(value.data);
+        askDonations = hh.data ?? [];
         emit(GetAskDonationsSuccess());
       });
     } on DioException catch (dioError) {
@@ -132,20 +139,49 @@ class DonationsCubit extends Cubit<DonationsState> {
     }
   }
 
-  dynamic askDonationResponse;
+  AskDonationModel askDonationResponse = AskDonationModel();
   Future getAskDonationById({required int id}) async {
     try {
       emit(GetAskDonationLoading());
       await DioHelper.getData(
-        url: EndPoints.epGetAskDonation(id),
+        url: EndPoints.epGetAskDonation,
+        query: {
+          "id": id,
+        },
       ).then((value) {
         logSuccess('getAskDonationById Response : ${value.data}');
+        askDonationResponse = AskDonationModel.fromJson(value.data);
+        logSuccess('getAskDonationById Response : ${askDonationResponse}');
+
         emit(GetAskDonationSuccess());
       });
     } on DioException catch (dioError) {
       logError('getAskDonationById error ${dioError.response}');
     } catch (e) {
+      logError('getAskDonationById error ${e}');
       emit(GetAskDonationFailure());
+    }
+  }
+
+  Future acceptRefuseDonation(
+      {required int id, required String status, String? reason}) async {
+    try {
+      emit(AcceptRefuseDonationLoading());
+      await DioHelper.getData(
+        url: EndPoints.epAcceptRefuseDonation,
+        query: {
+          "donation_id": id,
+          "status": status,
+          if (status != 'accept') "cancel_reason": reason,
+        },
+      ).then((value) {
+        logSuccess('getAskDonationById Response : ${value.data}');
+        emit(AcceptRefuseDonationSuccess());
+      });
+    } on DioException catch (dioError) {
+      logError('getAskDonationById error ${dioError.response}');
+    } catch (e) {
+      emit(AcceptRefuseDonationFailure());
     }
   }
 }

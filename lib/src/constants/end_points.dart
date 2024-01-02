@@ -1,6 +1,6 @@
 class EndPoints {
-  // static const baseUrl = "http://127.0.0.1:8000/api/";
-  static const baseUrl = "https://8e5b-156-204-216-215.ngrok.io/api/";
+  static const ngrok = "https://80ef-41-34-113-190.ngrok-free.app";
+  static const baseUrl = "$ngrok/api/";
 
   /// auth
   static const epVerifyPhone = "verify_phone";
@@ -18,8 +18,9 @@ class EndPoints {
   /// Donation
   static const epDonate = "donate";
   static const epRequestDonation = "requestDonation";
-  static const epGetDonations = "getDonation";
-  static epGetDonation(int id) => "getDonation/$id";
-  static const epGetAskDonations = "getAskDonation";
-  static epGetAskDonation(int id) => "getAskDonation/$id";
+  static const epGetDonations = "getDonations";
+  static epGetDonation(int id) => "getDonations?$id";
+  static const epGetAskDonations = "getRequestsOfAskingDonation";
+  static const epGetAskDonation = "getRequestsOfAskingDonation";
+  static const epAcceptRefuseDonation = "acceptOrCancelDonation";
 }

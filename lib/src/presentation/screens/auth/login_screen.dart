@@ -19,20 +19,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late GlobalKey<FormState> _formKey;
-
   late TextEditingController _controller;
   @override
   void initState() {
     _controller = TextEditingController();
-    _formKey = GlobalKey<FormState>();
     super.initState();
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _formKey.currentState!.dispose();
     super.dispose();
   }
 
@@ -43,72 +39,69 @@ class _LoginScreenState extends State<LoginScreen> {
       extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 60.h),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: DefaultText(
-                    text: 'برجاء إدخال رقم الهاتف',
-                    textColor: Color(0xFF1E1E1E),
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16.sp,
-                  )),
-              SizedBox(
-                height: 12.h,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Align(
+                alignment: Alignment.centerRight,
+                child: DefaultText(
+                  text: 'برجاء إدخال رقم الهاتف',
+                  textColor: Color(0xFF1E1E1E),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16.sp,
+                )),
+            SizedBox(
+              height: 12.h,
+            ),
+            Align(
+                alignment: Alignment.centerRight,
+                child: DefaultText(
+                  text: 'سنرسل رمزًا للتحقق من رقم الهاتف المحمول أدناه',
+                  textColor: Color(0xFF1E1E1E),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14.sp,
+                )),
+            SizedBox(
+              height: 20.h,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 13,
               ),
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: DefaultText(
-                    text: 'سنرسل رمزًا للتحقق من رقم الهاتف المحمول أدناه',
-                    textColor: Color(0xFF1E1E1E),
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14.sp,
-                  )),
-              SizedBox(
-                height: 20.h,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 13,
+              child: Container(
+                clipBehavior: Clip.hardEdge,
+                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(500),
+                  border: Border.all(color: AppColors.grey),
                 ),
-                child: Container(
-                  clipBehavior: Clip.hardEdge,
-                  padding: EdgeInsets.symmetric(horizontal: 12.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(500),
-                    border: Border.all(color: AppColors.grey),
-                  ),
-                  child: InternationalPhoneNumberInput(
-                    textFieldController: _controller,
-                    initialValue: number,
-                    maxLength: 11,
-                    textAlign: TextAlign.right,
-                    selectorTextStyle: const TextStyle(fontSize: 16),
-                    spaceBetweenSelectorAndTextField: 10,
-                    keyboardType: TextInputType.phone,
-                    inputBorder: InputBorder.none,
-                    selectorConfig: const SelectorConfig(trailingSpace: false),
-                    hintText: 'xxxxxxxxxx',
-                    formatInput: true,
-                    textStyle: Theme.of(context)
-                        .textTheme
-                        .titleSmall!
-                        .copyWith(fontSize: 18),
-                    ignoreBlank: true,
-                    locale: 'SA',
-                    countries: const ['SA'],
-                    onInputChanged: (value) {
-                      setState(() {});
-                    },
-                  ),
+                child: InternationalPhoneNumberInput(
+                  textFieldController: _controller,
+                  initialValue: number,
+                  maxLength: 11,
+                  textAlign: TextAlign.right,
+                  selectorTextStyle: const TextStyle(fontSize: 16),
+                  spaceBetweenSelectorAndTextField: 10,
+                  keyboardType: TextInputType.phone,
+                  inputBorder: InputBorder.none,
+                  selectorConfig: const SelectorConfig(trailingSpace: false),
+                  hintText: 'xxxxxxxxxx',
+                  formatInput: true,
+                  textStyle: Theme.of(context)
+                      .textTheme
+                      .titleSmall!
+                      .copyWith(fontSize: 18),
+                  ignoreBlank: true,
+                  locale: 'SA',
+                  countries: const ['SA'],
+                  onInputChanged: (value) {
+                    setState(() {});
+                  },
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

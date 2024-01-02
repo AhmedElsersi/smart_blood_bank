@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_blood_bank/src/business_logic/places_cubit/places_cubit.dart';
 
+import '../../../business_logic/donnation_cubit/donations_cubit.dart';
 import '../../../constants/colors.dart';
 import '../../router/app_router_names.dart';
 import '../../widgets/default_text.dart';
+import '../../widgets/loading_indicator.dart';
 
 class RequestsScreen extends StatefulWidget {
   const RequestsScreen({super.key});
@@ -17,17 +18,17 @@ class RequestsScreen extends StatefulWidget {
 class _RequestsScreenState extends State<RequestsScreen> {
   @override
   void initState() {
-    // PlacesCubit.get(context).getBloodBanks();
+    DonationsCubit.get(context).getDonations();
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PlacesCubit, PlacesState>(
+    return BlocConsumer<DonationsCubit, DonationsState>(
         listener: (context, state) {},
         builder: (context, state) {
-          final cubit = PlacesCubit.get(context);
+          final cubit = DonationsCubit.get(context);
           return Scaffold(
               backgroundColor: AppColors.white,
               body: Column(
@@ -54,35 +55,47 @@ class _RequestsScreenState extends State<RequestsScreen> {
                       ),
                     ),
                   ),
-                  // state is GetBloodBanksSuccess || state is GetHospitalsSuccess
-                  //     ?
-                  Expanded(
-                      child: Container(
-                    color: AppColors.white,
-                    child: ListView.separated(
-                      // padding: const EdgeInsets.only(top: 6),
-                      itemBuilder: (context, index) {
-                        return DonationCard(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, AppRouterNames.rRequest,
-                                arguments: 1);
-                          },
-                          title: "مصطفي حسام شوقي",
-                          location: "cubit.places[index].location",
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return const SizedBox();
-                      },
-                      itemCount: 10,
-                      // itemCount: cubit.places.length,
-                    ),
-                  ))
-                  // : SizedBox(
-                  //     height: 500.h,
-                  //     child: const Center(child: LoadingIndicator()),
-                  //   ),
+                  state is GetDonationsLoading
+                      ? SizedBox(
+                          height: 500.h,
+                          child: const Center(child: LoadingIndicator()),
+                        )
+                      : cubit.donations.isNotEmpty
+                          ? Expanded(
+                              child: Container(
+                              color: AppColors.white,
+                              child: ListView.separated(
+                                // padding: const EdgeInsets.only(top: 6),
+                                itemBuilder: (context, index) {
+                                  return DonationCard(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, AppRouterNames.rRequest,
+                                          arguments: 1);
+                                    },
+                                    title: cubit.donations[index].donor?.name ??
+                                        "مصطفي حسام شوقي",
+                                    location: "cubit.places[index].location",
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return const SizedBox();
+                                },
+                                // itemCount: 10,
+                                itemCount: cubit.donations.length,
+                              ),
+                            ))
+                          : SizedBox(
+                              height: 500.h,
+                              child: Center(
+                                child: DefaultText(
+                                  text: 'لا يوجد طلبات',
+                                  textColor: Color(0xFF1E1E1E),
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
                 ],
               ));
         });
@@ -125,8 +138,8 @@ class DonationCard extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Container(
                       width: 130.w,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: AppColors.red,

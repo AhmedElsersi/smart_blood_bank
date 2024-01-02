@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_blood_bank/src/business_logic/places_cubit/places_cubit.dart';
+import 'package:smart_blood_bank/src/business_logic/donnation_cubit/donations_cubit.dart';
 
 import '../../../constants/colors.dart';
 import '../../router/app_router_names.dart';
 import '../../widgets/default_text.dart';
+import '../../widgets/loading_indicator.dart';
 
 class AskRequestsScreen extends StatefulWidget {
   const AskRequestsScreen({super.key});
@@ -17,17 +18,16 @@ class AskRequestsScreen extends StatefulWidget {
 class _AskRequestsScreenState extends State<AskRequestsScreen> {
   @override
   void initState() {
-    // PlacesCubit.get(context).getBloodBanks();
-
+    DonationsCubit.get(context).getAskDonations();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PlacesCubit, PlacesState>(
+    return BlocConsumer<DonationsCubit, DonationsState>(
         listener: (context, state) {},
         builder: (context, state) {
-          final cubit = PlacesCubit.get(context);
+          final cubit = DonationsCubit.get(context);
           return Scaffold(
               backgroundColor: AppColors.white,
               body: Column(
@@ -36,61 +36,71 @@ class _AskRequestsScreenState extends State<AskRequestsScreen> {
                   SizedBox(
                     height: 30.h,
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      margin: EdgeInsets.all(16.w),
-                      decoration: const BoxDecoration(
-                          color: Color(0xFFC8C8C8), shape: BoxShape.circle),
-                      child: const RotatedBox(
-                        quarterTurns: 2,
-                        child: Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: Colors.black,
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          margin: EdgeInsets.all(16.w),
+                          decoration: const BoxDecoration(
+                              color: Color(0xFFC8C8C8), shape: BoxShape.circle),
+                          child: const RotatedBox(
+                            quarterTurns: 2,
+                            child: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      DefaultText(
+                        text: 'طلبات طلب التبرع',
+                        textColor: Color(0xFF1E1E1E),
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 0.h),
-                    child: DefaultText(
-                      text: 'طلبات طلب التبرع',
-                      textColor: Color(0xFF1E1E1E),
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Divider(
+                    height: 10.h,
                   ),
-                  // state is GetBloodBanksSuccess || state is GetHospitalsSuccess
-                  //     ?
-                  Expanded(
-                      child: Container(
-                    color: AppColors.white,
-                    child: ListView.separated(
-                      // padding: const EdgeInsets.only(top: 6),
-                      itemBuilder: (context, index) {
-                        return AskDonationCard(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, AppRouterNames.rAskRequest,
-                                arguments: 1);
-                          },
-                          title: "مصطفي حسام شوقي",
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return const SizedBox();
-                      },
-                      itemCount: 10,
-                      // itemCount: cubit.places.length,
-                    ),
-                  ))
-                  // : SizedBox(
-                  //     height: 500.h,
-                  //     child: const Center(child: LoadingIndicator()),
-                  //   ),
+                  state is GetAskDonationsLoading
+                      ? SizedBox(
+                          height: 500.h,
+                          child: const Center(child: LoadingIndicator()),
+                        )
+                      : Expanded(
+                          child: Container(
+                          color: AppColors.white,
+                          child: ListView.separated(
+                            // padding: const EdgeInsets.only(top: 6),
+                            itemBuilder: (context, index) {
+                              return AskDonationCard(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, AppRouterNames.rAskRequest,
+                                      arguments:
+                                          cubit.askDonations[index].id ?? 1);
+                                },
+                                title: cubit.askDonations[index].patientName ??
+                                    "مصطفي حسام شوقي",
+                                location: cubit.askDonations[index].hospitalId,
+                                date: cubit.askDonations[index].date,
+                                bloodType: cubit.askDonations[index].bloodType,
+                                units: (cubit.askDonations[index].quantity ?? 9)
+                                    .toDouble(),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return const SizedBox();
+                            },
+                            // itemCount: 10,
+                            itemCount: cubit.askDonations.length,
+                          ),
+                        )),
                 ],
               ));
         });
@@ -101,6 +111,7 @@ class AskDonationCard extends StatelessWidget {
   final VoidCallback onTap;
   final EdgeInsetsGeometry? margin;
   final String? title;
+  final String? bloodType;
   final String? location;
   final String? date;
   final double? units;
@@ -111,7 +122,8 @@ class AskDonationCard extends StatelessWidget {
       this.title,
       this.location,
       this.units,
-      this.date});
+      this.date,
+      this.bloodType});
 
   @override
   Widget build(BuildContext context) {
@@ -141,8 +153,8 @@ class AskDonationCard extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Container(
                       width: 130.w,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: AppColors.red,
@@ -245,7 +257,7 @@ class AskDonationCard extends StatelessWidget {
                       BorderRadius.only(topRight: Radius.circular(15)),
                 ),
                 child: DefaultText(
-                  text: 'فصيلة O+',
+                  text: bloodType ?? 'فصيلة O+',
                   overflow: TextOverflow.ellipsis,
                   textColor: Colors.white,
                   fontSize: 12.sp,
