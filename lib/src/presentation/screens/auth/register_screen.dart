@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
 import 'package:smart_blood_bank/src/constants/const_methods.dart';
@@ -29,8 +30,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _birthController = TextEditingController();
 
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _phoneController2 = TextEditingController();
+  final TextEditingController _passwordController2 = TextEditingController();
   final TextEditingController _aboutController = TextEditingController();
+  PhoneNumber number = PhoneNumber(isoCode: 'SA');
 
   @override
   void initState() {
@@ -50,7 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _bloodTypeController.dispose();
     _birthController.dispose();
     _phoneController.dispose();
-    _phoneController2.dispose();
+    _passwordController2.dispose();
     _aboutController.dispose();
     super.dispose();
   }
@@ -328,17 +330,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             onTap: () => _getDate(context),
                           ),
                           SizedBox(height: 16.h),
+                          Divider(height: 32.h),
+                          const DefaultText(
+                            text: "أدخل بيانات تسجيل الدخول",
+                            textColor: Color(0xFF1E1E1E),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 13,
+                            ),
+                            child: Container(
+                              clipBehavior: Clip.hardEdge,
+                              padding: EdgeInsets.symmetric(horizontal: 12.w),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(500),
+                                border: Border.all(color: AppColors.grey),
+                              ),
+                              child: InternationalPhoneNumberInput(
+                                textFieldController: _phoneController,
+                                initialValue: number,
+                                maxLength: 11,
+                                textAlign: TextAlign.right,
+                                selectorTextStyle:
+                                    const TextStyle(fontSize: 16),
+                                spaceBetweenSelectorAndTextField: 10,
+                                keyboardType: TextInputType.phone,
+                                inputBorder: InputBorder.none,
+                                selectorConfig:
+                                    const SelectorConfig(trailingSpace: false),
+                                hintText: 'xxxxxxxxxx',
+                                formatInput: true,
+                                textStyle: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(fontSize: 18),
+                                ignoreBlank: true,
+                                locale: 'SA',
+                                countries: const ['SA'],
+                                onInputChanged: (value) {
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ),
                           DefaultTextField(
-                            controller: _phoneController,
-                            keyboardType: TextInputType.phone,
-                            hintText: 'رقم الهاتف',
+                            controller: _passwordController2,
+                            keyboardType: TextInputType.name,
+                            hintText: 'كلمة السر',
                             hintTextColor: AppColors.textFieldBorder,
-                            height: 50.h,
+                            height: 40.h,
                             borderRadius: 100,
                             padding: EdgeInsets.symmetric(horizontal: 12.w),
                             onTap: () {},
                           ),
-                          SizedBox(height: 16.h),
+                          Divider(height: 32.h),
                         ],
                       ),
                     if (cubit.userType == 'Hospital' ||
@@ -444,29 +491,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               }).toList(),
                             ),
                           ),
-                          SizedBox(height: 16.h),
+                          Divider(height: 32.h),
+                          const DefaultText(
+                            text: "أدخل بيانات تسجيل الدخول",
+                            textColor: Color(0xFF1E1E1E),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 13,
+                            ),
+                            child: Container(
+                              clipBehavior: Clip.hardEdge,
+                              padding: EdgeInsets.symmetric(horizontal: 12.w),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(500),
+                                border: Border.all(color: AppColors.grey),
+                              ),
+                              child: InternationalPhoneNumberInput(
+                                textFieldController: _phoneController,
+                                initialValue: number,
+                                maxLength: 11,
+                                textAlign: TextAlign.right,
+                                selectorTextStyle:
+                                    const TextStyle(fontSize: 16),
+                                spaceBetweenSelectorAndTextField: 10,
+                                keyboardType: TextInputType.phone,
+                                inputBorder: InputBorder.none,
+                                selectorConfig:
+                                    const SelectorConfig(trailingSpace: false),
+                                hintText: 'xxxxxxxxxx',
+                                formatInput: true,
+                                textStyle: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(fontSize: 18),
+                                ignoreBlank: true,
+                                locale: 'SA',
+                                countries: const ['SA'],
+                                onInputChanged: (value) {
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ),
                           DefaultTextField(
-                            controller: _phoneController,
-                            keyboardType: TextInputType.phone,
-                            hintText: 'رقم الهاتف',
+                            controller: _passwordController2,
+                            keyboardType: TextInputType.name,
+                            hintText: 'كلمة السر',
                             hintTextColor: AppColors.textFieldBorder,
-                            height: 50.h,
+                            height: 40.h,
                             borderRadius: 100,
                             padding: EdgeInsets.symmetric(horizontal: 12.w),
                             onTap: () {},
                           ),
-                          SizedBox(height: 16.h),
-                          // DefaultTextField(
-                          //   controller: _phoneController2,
-                          //   keyboardType: TextInputType.name,
-                          //   hintText: 'رقم الهاتف اخر ( اختياري )',
-                          //   hintTextColor: AppColors.textFieldBorder,
-                          //   height: 50.h,
-                          //   borderRadius: 100,
-                          //   padding: EdgeInsets.symmetric(horizontal: 12.w),
-                          //   onTap: () {},
-                          // ),
-                          // SizedBox(height: 16.h),
+                          Divider(height: 32.h),
                           DefaultTextField(
                             controller: _aboutController,
                             keyboardType: TextInputType.name,
@@ -602,6 +682,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             showToast('النوع مطلوب', ToastState.warning);
                           } else if (_phoneController.text.isEmpty) {
                             showToast('الهاتف مطلوب', ToastState.warning);
+                          } else if (_passwordController2.text.isEmpty) {
+                            showToast('كلمة السر مطلوبة', ToastState.warning);
                           } else if (AuthCubit.get(context).userType !=
                                   'Donor' &&
                               AuthCubit.get(context).userType != 'Recipient' &&
@@ -654,6 +736,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               name: _nameController.text.trim(),
                               phone: _phoneController.text.trim(),
                               userType: AuthCubit.get(context).userType,
+                              pass: _passwordController2.text.trim(),
                               type:
                                   AuthCubit.get(context).userType == 'Donor' ||
                                           AuthCubit.get(context).userType ==

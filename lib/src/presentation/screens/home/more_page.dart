@@ -115,9 +115,56 @@ class _MorePageState extends State<MorePage> {
                   height: 15.h,
                 ),
                 InkWell(
+                  onTap: () {
+                    context.goTo(AppRouterNames.rNotifications);
+                  },
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.notifications_none_rounded,
+                        color: AppColors.primary,
+                      ),
+                      SizedBox(
+                        width: 8.w,
+                      ),
+                      DefaultText(
+                        text: 'الاشعارات',
+                        textColor: Color(0xFF1E1E1E),
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    context.goTo(AppRouterNames.rRequests);
+                  },
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.remove_from_queue,
+                        color: AppColors.primary,
+                      ),
+                      SizedBox(
+                        width: 8.w,
+                      ),
+                      DefaultText(
+                        text: 'طلباتي',
+                        textColor: Color(0xFF1E1E1E),
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 15.h,
+                ),
+                InkWell(
                   onTap: () async {
                     await CacheHelper.clearData();
-                    context.goTo(AppRouterNames.rLogin);
+                    context.goTo(AppRouterNames.rVerifyPhone);
                   },
                   child: Row(
                     children: [

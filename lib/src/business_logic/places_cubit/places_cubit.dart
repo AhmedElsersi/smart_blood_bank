@@ -25,7 +25,7 @@ class PlacesCubit extends Cubit<PlacesState> {
       ).then((value) {
         logSuccess('getHospitals Response : ${value.data}');
         final response = PlacesModel.fromJson(value.data);
-        places = response.data!;
+        places = response.data ?? [];
         emit(GetHospitalsSuccess());
       });
     } on DioError catch (dioError) {
@@ -63,7 +63,7 @@ class PlacesCubit extends Cubit<PlacesState> {
       ).then((value) {
         logSuccess('getBloodBanks Response : ${value.data}');
         final response = PlacesModel.fromJson(value.data);
-        places = response.data!;
+        places = response.data ?? [];
         emit(GetBloodBanksSuccess());
       });
     } catch (e) {

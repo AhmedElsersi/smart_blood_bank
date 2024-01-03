@@ -139,7 +139,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       onTap: () {
                         CacheHelper.saveDataSharedPreference(
                             key: CacheKeys.ckFirstTime, value: false);
-                        context.goTo(AppRouterNames.rLogin);
+                        context.goTo(AppRouterNames.rVerifyPhone);
                       })
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -172,7 +172,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             onTap: () {
                               CacheHelper.saveDataSharedPreference(
                                   key: CacheKeys.ckFirstTime, value: false);
-                              context.goTo(AppRouterNames.rLogin);
+                              context.goTo(AppRouterNames.rVerifyPhone);
                             }),
                       ],
                     ),

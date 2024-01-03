@@ -34,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
           : {
               isUser
                   ? context.goToReplace(AppRouterNames.rLayout)
-                  : context.goToReplace(AppRouterNames.rLogin)
+                  : context.goToReplace(AppRouterNames.rVerifyPhone)
             };
     });
     super.initState();

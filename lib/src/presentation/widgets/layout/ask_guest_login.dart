@@ -31,7 +31,7 @@ class AskGuestLogin extends StatelessWidget {
             textColor: AppColors.blue,
             fontWeight: FontWeight.bold,
             onTap: () {
-              context.goTo(AppRouterNames.rLogin);
+              context.goTo(AppRouterNames.rVerifyPhone);
             },
           ),
         ],

@@ -3,6 +3,8 @@ import 'package:smart_blood_bank/src/presentation/screens/auth/login_screen.dart
 import 'package:smart_blood_bank/src/presentation/screens/auth/otp_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/auth/register_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/auth/user_type_screen.dart';
+import 'package:smart_blood_bank/src/presentation/screens/auth/verify_phone_screen.dart';
+import 'package:smart_blood_bank/src/presentation/screens/drawer/notifications_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/home/ask_donation_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/home/donate_screen.dart';
 import 'package:smart_blood_bank/src/presentation/screens/home/request_screen.dart';
@@ -31,9 +33,17 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const OnBoardingScreen(),
         );
+      case AppRouterNames.rVerifyPhone:
+        return MaterialPageRoute(
+          builder: (_) => const VerifyPhoneScreen(),
+        );
       case AppRouterNames.rLogin:
         return MaterialPageRoute(
           builder: (_) => const LoginScreen(),
+        );
+      case AppRouterNames.rNotifications:
+        return MaterialPageRoute(
+          builder: (_) => const NotificationsScreen(),
         );
       case AppRouterNames.rSignUp:
         return MaterialPageRoute(

@@ -4,6 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_blood_bank/src/presentation/screens/home/home_page.dart';
 import 'package:smart_blood_bank/src/presentation/screens/home/more_page.dart';
 
+import '../../constants/const_methods.dart';
+import '../../constants/end_points.dart';
+import '../../services/dio_helper.dart';
+
 part 'layout_state.dart';
 
 class LayoutCubit extends Cubit<LayoutState> {
@@ -21,4 +25,22 @@ class LayoutCubit extends Cubit<LayoutState> {
     const MorePage(),
     const HomePage(),
   ];
+  List<dynamic> notifications = [];
+
+  Future getNotifications() async {
+    notifications.clear();
+    try {
+      emit(GetNotificationsLoading());
+      await DioHelper.getData(
+        url: EndPoints.epGetNotifications,
+      ).then((value) {
+        logSuccess('getNotifications Response : ${value.data}');
+        // final response = PlacesModel.fromJson(value.data);
+        // notifications = response.data ?? [];
+        emit(GetNotificationsSuccess());
+      });
+    } catch (e) {
+      emit(GetNotificationsFailure());
+    }
+  }
 }

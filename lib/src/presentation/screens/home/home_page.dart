@@ -10,6 +10,7 @@ import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
 import 'package:smart_blood_bank/src/presentation/screens/home/places_screen.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/loading_indicator.dart';
 
+import '../../../business_logic/donnation_cubit/donations_cubit.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/cache_keys.dart';
 import '../../../services/cache_helper.dart';
@@ -32,6 +33,8 @@ class _HomePageState extends State<HomePage> {
     logSuccess("userrrrrrrrrrrr ${AuthCubit.get(context).userType}");
     if (AuthCubit.get(context).userType == 'Recipient') {
       PlacesCubit.get(context).getHospitals();
+    } else if (AuthCubit.get(context).userType == 'BloodBank') {
+      DonationsCubit.get(context).getAskDonations();
     } else {
       PlacesCubit.get(context).getBloodBanks();
     }
@@ -240,24 +243,84 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                               SizedBox(height: 20.h),
-                              ListView.separated(
-                                shrinkWrap: true,
-                                padding: EdgeInsets.zero,
-                                itemCount: 4,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) =>
-                                    AskDonationCard(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, AppRouterNames.rAskRequest,
-                                        arguments: 1);
-                                  },
-                                  title: "مصطفي حسام شوقي",
-                                ),
-                                separatorBuilder: (context, index) => SizedBox(
-                                  height: 10.h,
-                                ),
-                              ),
+                              BlocConsumer<DonationsCubit, DonationsState>(
+                                  listener: (context, state) {},
+                                  builder: (context, state) {
+                                    final cubit = DonationsCubit.get(context);
+                                    return state is GetAskDonationsLoading
+                                        ? SizedBox(
+                                            height: 200.h,
+                                            child: const Center(
+                                                child: LoadingIndicator()),
+                                          )
+                                        : cubit.askDonations.isEmpty
+                                            ? SizedBox(
+                                                height: 200.h,
+                                                child: Center(
+                                                  child: DefaultText(
+                                                    text: 'لا يوجد طلبات',
+                                                    textColor:
+                                                        Color(0xFF1E1E1E),
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              )
+                                            : Expanded(
+                                                child: Container(
+                                                color: AppColors.white,
+                                                child: ListView.separated(
+                                                  shrinkWrap: true,
+                                                  padding: EdgeInsets.zero,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return AskDonationCard(
+                                                      onTap: () {
+                                                        Navigator.pushNamed(
+                                                            context,
+                                                            AppRouterNames
+                                                                .rAskRequest,
+                                                            arguments: cubit
+                                                                    .askDonations[
+                                                                        index]
+                                                                    .id ??
+                                                                1);
+                                                      },
+                                                      title: cubit
+                                                              .askDonations[
+                                                                  index]
+                                                              .patientName ??
+                                                          "مصطفي حسام شوقي",
+                                                      location: cubit
+                                                          .askDonations[index]
+                                                          .hospitalId,
+                                                      date: cubit
+                                                          .askDonations[index]
+                                                          .date,
+                                                      bloodType: cubit
+                                                          .askDonations[index]
+                                                          .bloodType,
+                                                      units: (cubit
+                                                                  .askDonations[
+                                                                      index]
+                                                                  .quantity ??
+                                                              9)
+                                                          .toDouble(),
+                                                    );
+                                                  },
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+
+                                                  separatorBuilder:
+                                                      (context, index) {
+                                                    return const SizedBox();
+                                                  },
+                                                  // itemCount: 10,
+                                                  itemCount:
+                                                      cubit.askDonations.length,
+                                                ),
+                                              ));
+                                  }),
                             ],
                           )
                         : Column(

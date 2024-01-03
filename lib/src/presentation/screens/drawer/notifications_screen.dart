@@ -2,41 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:smart_blood_bank/src/business_logic/places_cubit/places_cubit.dart';
-import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
+import 'package:smart_blood_bank/src/business_logic/layout_cubit/layout_cubit.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/loading_indicator.dart';
 
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
 import '../../widgets/default_text.dart';
 
-class PlacesScreen extends StatefulWidget {
-  const PlacesScreen({super.key, required this.placeType});
-
-  /// 1:hospital , 2: blood bank
-  final int placeType;
+class NotificationsScreen extends StatefulWidget {
+  const NotificationsScreen({super.key});
 
   @override
-  State<PlacesScreen> createState() => _PlacesScreenState();
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
 }
 
-class _PlacesScreenState extends State<PlacesScreen> {
+class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   void initState() {
-    if (widget.placeType == 1) {
-      PlacesCubit.get(context).getHospitals();
-    } else {
-      PlacesCubit.get(context).getBloodBanks();
-    }
+    LayoutCubit.get(context).getNotifications();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PlacesCubit, PlacesState>(
+    return BlocConsumer<LayoutCubit, LayoutState>(
         listener: (context, state) {},
         builder: (context, state) {
-          final cubit = PlacesCubit.get(context);
+          final cubit = LayoutCubit.get(context);
           return Scaffold(
               backgroundColor: AppColors.white,
               body: Column(
@@ -63,37 +56,34 @@ class _PlacesScreenState extends State<PlacesScreen> {
                       ),
                     ),
                   ),
-                  state is GetBloodBanksSuccess || state is GetHospitalsSuccess
-                      ? cubit.places.isNotEmpty
+                  state is GetNotificationsSuccess
+                      ? cubit.notifications.isNotEmpty
                           ? Expanded(
                               child: Container(
                               color: AppColors.white,
                               child: ListView.separated(
-                                  // padding: const EdgeInsets.only(top: 6),
-                                  itemBuilder: (context, index) {
-                                    return PlaceCard(
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                            context, AppRouterNames.rPlace,
-                                            arguments: [
-                                              widget.placeType,
-                                              cubit.places[index].id
-                                            ]);
-                                      },
-                                      title: cubit.places[index].name,
-                                      location: cubit.places[index].location,
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    return const SizedBox();
-                                  },
-                                  itemCount: cubit.places.length),
+                                // padding: const EdgeInsets.only(top: 6),
+                                itemBuilder: (context, index) {
+                                  return PlaceCard(
+                                    onTap: () {},
+                                    title:
+                                        cubit.notifications[index].name ?? "",
+                                    location:
+                                        cubit.notifications[index].location ??
+                                            "",
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return const SizedBox();
+                                },
+                                itemCount: cubit.notifications.length,
+                              ),
                             ))
                           : SizedBox(
                               height: 500.h,
                               child: Center(
                                 child: DefaultText(
-                                  text: 'لا يوجد طلبات',
+                                  text: 'لا يوجد اشعارات',
                                   textColor: Color(0xFF1E1E1E),
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,

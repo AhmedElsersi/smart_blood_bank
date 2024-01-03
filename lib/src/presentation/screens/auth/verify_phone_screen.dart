@@ -9,24 +9,26 @@ import '../../../constants/enums.dart';
 import '../../router/app_router_names.dart';
 import '../../widgets/default_button.dart';
 import '../../widgets/default_text.dart';
-import '../../widgets/default_text_field.dart';
 import '../../widgets/loading_indicator.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class VerifyPhoneScreen extends StatefulWidget {
+  const VerifyPhoneScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<VerifyPhoneScreen> createState() => _VerifyPhoneScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _controller = TextEditingController();
-  final TextEditingController _passwordController2 = TextEditingController();
+class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
+  late TextEditingController _controller;
+  @override
+  void initState() {
+    _controller = TextEditingController();
+    super.initState();
+  }
 
   @override
   void dispose() {
     _controller.dispose();
-    _passwordController2.dispose();
     super.dispose();
   }
 
@@ -44,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Align(
                 alignment: Alignment.centerRight,
                 child: DefaultText(
-                  text: 'برجاء إدخال رقم الهاتف و كلمة السر',
+                  text: 'برجاء إدخال رقم الهاتف',
                   textColor: Color(0xFF1E1E1E),
                   fontWeight: FontWeight.w700,
                   fontSize: 16.sp,
@@ -52,11 +54,16 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 12.h,
             ),
-            const DefaultText(
-              text: "أدخل بيانات تسجيل الدخول",
-              textColor: Color(0xFF1E1E1E),
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
+            Align(
+                alignment: Alignment.centerRight,
+                child: DefaultText(
+                  text: 'سنرسل رمزًا للتحقق من رقم الهاتف المحمول أدناه',
+                  textColor: Color(0xFF1E1E1E),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14.sp,
+                )),
+            SizedBox(
+              height: 20.h,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -94,16 +101,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            DefaultTextField(
-              controller: _passwordController2,
-              keyboardType: TextInputType.name,
-              hintText: 'كلمة السر',
-              hintTextColor: AppColors.textFieldBorder,
-              height: 40.h,
-              borderRadius: 100,
-              padding: EdgeInsets.symmetric(horizontal: 12.w),
-              onTap: () {},
-            ),
           ],
         ),
       ),
@@ -111,20 +108,25 @@ class _LoginScreenState extends State<LoginScreen> {
       floatingActionButton: DefaultButton(
         margin:
             EdgeInsets.only(top: 3.h, bottom: 20.h, left: 16.w, right: 16.w),
-        text: "تسجيل الدخول",
+        text: "ارسل كود التفعيل",
         buttonColor:
-            _controller.text.length < 11 ? AppColors.red : AppColors.grey,
+            _controller.text.length > 10 ? AppColors.red : AppColors.grey,
         textColor: AppColors.white,
         radius: 100,
         height: 40.h,
-        onTap: _controller.text.length < 11
+        onTap: _controller.text.length > 9
             ? () async {
+                // await NotificationService.showNotification(
+                //   id: 0,
+                //   title: 'Your OTP is ',
+                //   body: '1234',
+                // );
                 if (_controller.text.trim().isEmpty ||
-                    _controller.text.length < 11) {
+                    _controller.text.length < 10) {
                   showToast("أدخل رقم هاتف صحيح", ToastState.warning);
-                } else if (_passwordController2.text.trim().isEmpty) {
-                  showToast("أدخل كلمة السر", ToastState.warning);
                 } else {
+                  String phone = _controller.text;
+
                   showDialog(
                     context: context,
                     builder: (_) {
@@ -134,8 +136,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   AuthCubit.get(context).verifyFirebasePhone(
                     afterSuccess: () {
                       _controller.clear();
-                      _passwordController2.clear();
-                      Navigator.pushNamed(context, AppRouterNames.rLayout);
+                      Navigator.pop(context);
+                      logSuccess(phone);
+                      AuthCubit.get(context).phoneNum = '+966' '$phone ';
+                      Navigator.pushNamed(context, AppRouterNames.rOtp);
                     },
                     afterError: () => Navigator.pop(context),
                     phoneNumber: [

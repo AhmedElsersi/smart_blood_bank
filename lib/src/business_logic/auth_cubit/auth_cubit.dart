@@ -129,10 +129,43 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future login({
+    required List<String> phone,
+    required String pass,
+  }) async {
+    emit(VerifyPhoneLoading());
+    try {
+      logSuccess('verifyPhone Response : ${phone[0]}${phone[1]}');
+
+      await DioHelper.postData(
+        url: EndPoints.epLogin,
+        body: {
+          "phone": "${phone[0]}${phone[1]}",
+          "otp": pass,
+        },
+      ).then((value) {
+        logSuccess('verifyPhone Response : ${value.data}');
+        verifyPhoneModel = VerifyPhoneModel.fromJson(value.data);
+        if (verifyPhoneModel.status!) {
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckApiToken, value: verifyPhoneModel.token);
+        }
+        emit(VerifyPhoneSuccess());
+      });
+    } on DioError catch (dioError) {
+      logError('mmmm ${dioError.response}');
+      emit(VerifyPhoneFailure());
+    } catch (error) {
+      logError(error.toString());
+      emit(VerifyPhoneFailure());
+    }
+  }
+
   RegisterModel registerModel = RegisterModel();
   Future register({
     required String name,
     required String phone,
+    required String pass,
     required String userType,
     String? type,
     String? bloodType,
@@ -147,6 +180,7 @@ class AuthCubit extends Cubit<AuthState> {
       await DioHelper.postData(url: EndPoints.epRegister, body: {
         "name": name,
         "phone": phone,
+        "otp": pass,
         "userType": userType,
         "type": type,
         "bloodType": bloodType,
@@ -204,7 +238,7 @@ class AuthCubit extends Cubit<AuthState> {
         }
         emit(RegisterSuccess());
       });
-    } on DioError catch (dioError) {
+    } on DioException catch (dioError) {
       logError('mmmm ${dioError.response}');
     } catch (error) {
       emit(RegisterFailure());

@@ -72,35 +72,53 @@ class _AskRequestsScreenState extends State<AskRequestsScreen> {
                           height: 500.h,
                           child: const Center(child: LoadingIndicator()),
                         )
-                      : Expanded(
-                          child: Container(
-                          color: AppColors.white,
-                          child: ListView.separated(
-                            // padding: const EdgeInsets.only(top: 6),
-                            itemBuilder: (context, index) {
-                              return AskDonationCard(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, AppRouterNames.rAskRequest,
-                                      arguments:
-                                          cubit.askDonations[index].id ?? 1);
+                      : cubit.askDonations.isEmpty
+                          ? SizedBox(
+                              height: 500.h,
+                              child: Center(
+                                child: DefaultText(
+                                  text: 'لا يوجد طلبات',
+                                  textColor: Color(0xFF1E1E1E),
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            )
+                          : Expanded(
+                              child: Container(
+                              color: AppColors.white,
+                              child: ListView.separated(
+                                // padding: const EdgeInsets.only(top: 6),
+                                itemBuilder: (context, index) {
+                                  return AskDonationCard(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, AppRouterNames.rAskRequest,
+                                          arguments:
+                                              cubit.askDonations[index].id ??
+                                                  1);
+                                    },
+                                    title:
+                                        cubit.askDonations[index].patientName ??
+                                            "مصطفي حسام شوقي",
+                                    location:
+                                        cubit.askDonations[index].hospitalId,
+                                    date: cubit.askDonations[index].date,
+                                    bloodType:
+                                        cubit.askDonations[index].bloodType,
+                                    units:
+                                        (cubit.askDonations[index].quantity ??
+                                                9)
+                                            .toDouble(),
+                                  );
                                 },
-                                title: cubit.askDonations[index].patientName ??
-                                    "مصطفي حسام شوقي",
-                                location: cubit.askDonations[index].hospitalId,
-                                date: cubit.askDonations[index].date,
-                                bloodType: cubit.askDonations[index].bloodType,
-                                units: (cubit.askDonations[index].quantity ?? 9)
-                                    .toDouble(),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const SizedBox();
-                            },
-                            // itemCount: 10,
-                            itemCount: cubit.askDonations.length,
-                          ),
-                        )),
+                                separatorBuilder: (context, index) {
+                                  return const SizedBox();
+                                },
+                                // itemCount: 10,
+                                itemCount: cubit.askDonations.length,
+                              ),
+                            )),
                 ],
               ));
         });
