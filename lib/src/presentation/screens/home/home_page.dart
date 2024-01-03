@@ -33,11 +33,10 @@ class _HomePageState extends State<HomePage> {
     logSuccess("userrrrrrrrrrrr ${AuthCubit.get(context).userType}");
     if (AuthCubit.get(context).userType == 'Recipient') {
       PlacesCubit.get(context).getHospitals();
-    } else if (AuthCubit.get(context).userType == 'BloodBank') {
-      DonationsCubit.get(context).getAskDonations();
     } else {
       PlacesCubit.get(context).getBloodBanks();
     }
+    DonationsCubit.get(context).getAskDonations();
     super.initState();
   }
 

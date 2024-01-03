@@ -66,8 +66,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 itemBuilder: (context, index) {
                                   return PlaceCard(
                                     onTap: () {},
-                                    title:
-                                        cubit.notifications[index].name ?? "",
+                                    title: "تم قبول طلبك",
                                     location:
                                         cubit.notifications[index].location ??
                                             "",
@@ -76,7 +75,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 separatorBuilder: (context, index) {
                                   return const SizedBox();
                                 },
-                                itemCount: cubit.notifications.length,
+                                itemCount: 3,
+                                // itemCount: cubit.notifications.length,
                               ),
                             ))
                           : SizedBox(
