@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:smart_blood_bank/src/constants/assets.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
 import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
@@ -49,6 +50,7 @@ class _MorePageState extends State<MorePage> {
                 ),
                 InkWell(
                   onTap: () {
+                    AuthCubit.get(context).getProfile();
                     context.goTo(AppRouterNames.rProfile);
                   },
                   child: Row(

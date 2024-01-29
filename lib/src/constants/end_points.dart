@@ -1,5 +1,5 @@
 class EndPoints {
-  static const ngrok = "https://54c9-197-57-17-177.ngrok-free.app";
+  static const ngrok = "https://1417-197-57-17-177.ngrok-free.app";
   static const baseUrl = "$ngrok/api/";
 
   /// auth

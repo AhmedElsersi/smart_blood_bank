@@ -72,8 +72,12 @@ class _PlaceScreenState extends State<PlaceScreen> {
                       ),
                     ),
                   ),
-                  state is GetBloodBankSuccess || state is GetHospitalSuccess
-                      ? Expanded(
+                  state is GetBloodBankLoading || state is GetHospitalLoading
+                      ? SizedBox(
+                          height: 500.h,
+                          child: const Center(child: LoadingIndicator()),
+                        )
+                      : Expanded(
                           child: SingleChildScrollView(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,11 +344,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
                               )
                             ],
                           ),
-                        ))
-                      : SizedBox(
-                          height: 500.h,
-                          child: const Center(child: LoadingIndicator()),
-                        ),
+                        )),
                 ],
               ));
         });

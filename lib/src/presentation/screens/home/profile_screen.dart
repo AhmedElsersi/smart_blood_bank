@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_blood_bank/src/constants/const_methods.dart';
+import 'package:smart_blood_bank/src/presentation/widgets/loading_indicator.dart';
 
 import '../../../business_logic/auth_cubit/auth_cubit.dart';
 import '../../../constants/cache_keys.dart';
@@ -31,16 +32,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     logSuccess(AuthCubit.get(context).registerModel.userType.toString());
+
     _userTypeController.text =
-        "${CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserType) ?? ''}";
+        "${AuthCubit.get(context).registerModel.userType ?? CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserType) ?? ''}";
     _nameController.text =
-        "${CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserName) ?? ''}";
+        "${AuthCubit.get(context).registerModel.data?.name ?? CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserName) ?? ''}";
     _bloodTypeController.text =
-        "${CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserBloodType) ?? ''}";
+        "${AuthCubit.get(context).registerModel.data?.bloodTypes ?? CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserBloodType) ?? ''}";
     _phoneController.text =
-        "${CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserPhone) ?? ''}";
+        "${AuthCubit.get(context).registerModel.data?.contactDetails ?? CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserPhone) ?? ''}";
     _aboutController.text =
-        "${CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserAbout) ?? ''}";
+        "${AuthCubit.get(context).registerModel.data?.about ?? CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserAbout) ?? ''}";
     super.initState();
   }
 
@@ -60,6 +62,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<AuthCubit, AuthState>(listener: (context, state) {
+        if (state is GetProfileSuccess) {
+          _userTypeController.text =
+              "${AuthCubit.get(context).registerModel.userType ?? CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserType) ?? ''}";
+          _nameController.text =
+              "${AuthCubit.get(context).registerModel.data?.name ?? CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserName) ?? ''}";
+          _bloodTypeController.text =
+              "${AuthCubit.get(context).registerModel.data?.bloodTypes ?? CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserBloodType) ?? ''}";
+          _phoneController.text =
+              "${AuthCubit.get(context).registerModel.data?.contactDetails ?? CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserPhone) ?? ''}";
+          _aboutController.text =
+              "${AuthCubit.get(context).registerModel.data?.about ?? CacheHelper.getDataFromSharedPreference(key: CacheKeys.ckUserAbout) ?? ''}";
+        }
         final cubit = AuthCubit.get(context);
       }, builder: (context, state) {
         final cubit = AuthCubit.get(context);
@@ -90,74 +104,84 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   SizedBox(height: 20.h),
-                  const DefaultText(
+                  DefaultText(
                     text: 'الصفحة الشخصية',
                     textColor: Color(0xFF1E1E1E),
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w400,
                   ),
                   SizedBox(height: 20.h),
-                  DefaultTextField(
-                    controller: _userTypeController,
-                    keyboardType: TextInputType.name,
-                    hintText: '',
-                    enabled: false,
-                    hintTextColor: AppColors.textFieldBorder,
-                    height: 50.h,
-                    borderRadius: 100,
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    onTap: () {},
-                  ),
-                  SizedBox(height: 16.h),
-                  DefaultTextField(
-                    controller: _nameController,
-                    keyboardType: TextInputType.name,
-                    hintText: '',
-                    enabled: false,
-                    hintTextColor: AppColors.textFieldBorder,
-                    height: 50.h,
-                    borderRadius: 100,
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    onTap: () {},
-                  ),
-                  SizedBox(height: 16.h),
-                  DefaultTextField(
-                    controller: _bloodTypeController,
-                    keyboardType: TextInputType.name,
-                    hintText: '',
-                    enabled: false,
-                    hintTextColor: AppColors.textFieldBorder,
-                    height: 50.h,
-                    borderRadius: 100,
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    onTap: () {},
-                  ),
-                  SizedBox(height: 16.h),
-                  DefaultTextField(
-                    controller: _phoneController,
-                    keyboardType: TextInputType.name,
-                    hintText: '',
-                    enabled: false,
-                    hintTextColor: AppColors.textFieldBorder,
-                    height: 50.h,
-                    borderRadius: 100,
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    onTap: () {},
-                  ),
-                  SizedBox(height: 16.h),
-                  if (userType == 'Hospital' || userType == 'BloodBank')
-                    DefaultTextField(
-                      controller: _aboutController,
-                      keyboardType: TextInputType.name,
-                      hintText: '',
-                      enabled: false,
-                      hintTextColor: AppColors.textFieldBorder,
-                      height: 50.h,
-                      borderRadius: 100,
-                      padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      onTap: () {},
-                    ),
-                  SizedBox(height: 16.h),
+                  state is GetProfileLoading
+                      ? SizedBox(
+                          height: 500.h,
+                          child: Center(child: LoadingIndicator()),
+                        )
+                      : Column(
+                          children: [
+                            DefaultTextField(
+                              controller: _userTypeController,
+                              keyboardType: TextInputType.name,
+                              hintText: '',
+                              enabled: false,
+                              hintTextColor: AppColors.textFieldBorder,
+                              height: 40.h,
+                              borderRadius: 100,
+                              padding: EdgeInsets.symmetric(horizontal: 12.w),
+                              onTap: () {},
+                            ),
+                            SizedBox(height: 16.h),
+                            DefaultTextField(
+                              controller: _nameController,
+                              keyboardType: TextInputType.name,
+                              hintText: '',
+                              enabled: false,
+                              hintTextColor: AppColors.textFieldBorder,
+                              height: 40.h,
+                              borderRadius: 100,
+                              padding: EdgeInsets.symmetric(horizontal: 12.w),
+                              onTap: () {},
+                            ),
+                            SizedBox(height: 16.h),
+                            DefaultTextField(
+                              controller: _bloodTypeController,
+                              keyboardType: TextInputType.name,
+                              hintText: '',
+                              enabled: false,
+                              hintTextColor: AppColors.textFieldBorder,
+                              height: 40.h,
+                              borderRadius: 100,
+                              padding: EdgeInsets.symmetric(horizontal: 12.w),
+                              onTap: () {},
+                            ),
+                            SizedBox(height: 16.h),
+                            DefaultTextField(
+                              controller: _phoneController,
+                              keyboardType: TextInputType.name,
+                              hintText: '',
+                              enabled: false,
+                              hintTextColor: AppColors.textFieldBorder,
+                              height: 40.h,
+                              borderRadius: 100,
+                              padding: EdgeInsets.symmetric(horizontal: 12.w),
+                              onTap: () {},
+                            ),
+                            SizedBox(height: 16.h),
+                            if (userType == 'Hospital' ||
+                                userType == 'BloodBank')
+                              DefaultTextField(
+                                controller: _aboutController,
+                                keyboardType: TextInputType.name,
+                                hintText: '',
+                                enabled: false,
+                                hintTextColor: AppColors.textFieldBorder,
+                                height: 40.h,
+                                borderRadius: 100,
+                                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                                onTap: () {},
+                              ),
+                            SizedBox(height: 16.h),
+                          ],
+                        )
                 ],
               ),
             ],

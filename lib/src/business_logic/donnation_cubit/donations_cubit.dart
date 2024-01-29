@@ -52,7 +52,7 @@ class DonationsCubit extends Cubit<DonationsState> {
   Future askDonation(
       {int? recipientId,
       int? hospitalId,
-      required int bloodBankId,
+      int? bloodBankId,
       required String bloodType,
       required double quantity,
       required String donationDay,

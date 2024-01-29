@@ -35,7 +35,7 @@ class Data {
   String? name;
   String? contactDetails;
   String? bloodType;
-  String? otp;
+  int? otp;
   String? updatedAt;
   String? createdAt;
   int? id;

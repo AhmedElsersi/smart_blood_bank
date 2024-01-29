@@ -130,34 +130,31 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future login({
-    required List<String> phone,
+    required String phone,
     required String pass,
   }) async {
-    emit(VerifyPhoneLoading());
+    emit(LoginLoading());
     try {
-      logSuccess('verifyPhone Response : ${phone[0]}${phone[1]}');
+      logSuccess('verifyPhone Response : $phone');
 
       await DioHelper.postData(
         url: EndPoints.epLogin,
         body: {
-          "phone": "${phone[0]}${phone[1]}",
+          "phone": phone,
           "otp": pass,
         },
       ).then((value) {
-        logSuccess('verifyPhone Response : ${value.data}');
-        verifyPhoneModel = VerifyPhoneModel.fromJson(value.data);
-        if (verifyPhoneModel.status!) {
-          CacheHelper.saveDataSharedPreference(
-              key: CacheKeys.ckApiToken, value: verifyPhoneModel.token);
-        }
-        emit(VerifyPhoneSuccess());
+        logWarning("${value.data}");
+        CacheHelper.saveDataSharedPreference(
+            key: CacheKeys.ckApiToken, value: value.data["token"]);
+        emit(LoginSuccess());
       });
     } on DioError catch (dioError) {
       logError('mmmm ${dioError.response}');
-      emit(VerifyPhoneFailure());
+      emit(LoginFailure());
     } catch (error) {
       logError(error.toString());
-      emit(VerifyPhoneFailure());
+      emit(LoginFailure());
     }
   }
 
@@ -182,7 +179,7 @@ class AuthCubit extends Cubit<AuthState> {
         "phone": phone,
         "otp": pass,
         "userType": userType,
-        // "type": type,
+        "type": type,
         "bloodType": bloodType,
         "birthDate": birthDate,
         "location": location,
@@ -194,47 +191,94 @@ class AuthCubit extends Cubit<AuthState> {
         if (userType == 'Donor') {
           final donnerRegisterModel = DonnerRegisterModel.fromJson(value.data);
           CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserId,
+              value: donnerRegisterModel.data?.id ?? 0);
+          CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckUserName,
               value: donnerRegisterModel.data?.name ?? 'aa');
           CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserType,
+              value: donnerRegisterModel.userType ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserGender,
+              value: donnerRegisterModel.data?.gender ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserBloodType,
+              value: donnerRegisterModel.data?.bloodType ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserPhone,
+              value: donnerRegisterModel.data?.contactDetails ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckApiToken, value: donnerRegisterModel.token);
-          registerModel.data?.id = donnerRegisterModel.data?.id;
-          registerModel.data?.bloodTypes = donnerRegisterModel.data?.bloodType;
         } else if (userType == 'Recipient') {
           final recipientRegisterModel =
               RecipientRegisterModel.fromJson(value.data);
           CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserId,
+              value: recipientRegisterModel.data?.id ?? 0);
+          CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckUserName,
               value: recipientRegisterModel.data?.name ?? 'aa');
           CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserType,
+              value: recipientRegisterModel.userType ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserGender,
+              value: recipientRegisterModel.data?.gender ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserBloodType,
+              value: recipientRegisterModel.data?.bloodType ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserPhone,
+              value: recipientRegisterModel.data?.contactDetails ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckApiToken, value: recipientRegisterModel.token);
-
-          registerModel.data?.id = recipientRegisterModel.data?.id;
-          registerModel.data?.bloodTypes =
-              recipientRegisterModel.data?.bloodType;
         } else if (userType == 'Hospital') {
           final hospitalRegisterModel =
               HospitalRegisterModel.fromJson(value.data);
           CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserId,
+              value: hospitalRegisterModel.data?.id ?? 0);
+          CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckUserName,
               value: hospitalRegisterModel.data?.name ?? 'aa');
           CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserType,
+              value: hospitalRegisterModel.userType ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserAbout,
+              value: hospitalRegisterModel.data?.about ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserBloodType,
+              value: hospitalRegisterModel.data?.bloodTypes ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserPhone,
+              value: hospitalRegisterModel.data?.contactDetails ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckApiToken, value: hospitalRegisterModel.token);
-
-          registerModel.data?.id = hospitalRegisterModel.data?.id;
-          registerModel.data?.bloodTypes =
-              hospitalRegisterModel.data?.bloodTypes;
         } else if (userType == 'BloodBank') {
           final bloodBankRegisterModel =
               BloodBankRegisterModel.fromJson(value.data);
           CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserId,
+              value: bloodBankRegisterModel.data?.id ?? 0);
+          CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckUserName,
               value: bloodBankRegisterModel.data?.name ?? 'aa');
           CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserType,
+              value: bloodBankRegisterModel.userType ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserAbout,
+              value: bloodBankRegisterModel.data?.about ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserBloodType,
+              value: bloodBankRegisterModel.data?.bloodTypes ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserPhone,
+              value: bloodBankRegisterModel.data?.contactDetails ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckApiToken, value: bloodBankRegisterModel.token);
-          registerModel.data?.id = bloodBankRegisterModel.data?.id;
-          registerModel.data?.bloodTypes =
-              bloodBankRegisterModel.data?.bloodTypes;
         }
         emit(RegisterSuccess());
       });
@@ -255,52 +299,86 @@ class AuthCubit extends Cubit<AuthState> {
         if (userType == 'Donor') {
           final donnerRegisterModel = DonnerRegisterModel.fromJson(value.data);
           CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserId,
+              value: donnerRegisterModel.data?.id ?? 0);
+          CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckUserName,
               value: donnerRegisterModel.data?.name ?? 'aa');
           CacheHelper.saveDataSharedPreference(
-              key: CacheKeys.ckUserId,
-              value: donnerRegisterModel.data?.id ?? 4);
-          registerModel.data?.id = donnerRegisterModel.data?.id;
-          registerModel.data?.bloodTypes = donnerRegisterModel.data?.bloodType;
+              key: CacheKeys.ckUserType,
+              value: donnerRegisterModel.userType ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserGender,
+              value: donnerRegisterModel.data?.gender ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserBloodType,
+              value: donnerRegisterModel.data?.bloodType ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserPhone,
+              value: donnerRegisterModel.data?.contactDetails ?? 'aa');
         } else if (userType == 'Recipient') {
           final recipientRegisterModel =
               RecipientRegisterModel.fromJson(value.data);
           CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserId,
+              value: recipientRegisterModel.data?.id ?? 0);
+          CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckUserName,
               value: recipientRegisterModel.data?.name ?? 'aa');
           CacheHelper.saveDataSharedPreference(
-              key: CacheKeys.ckUserId,
-              value: recipientRegisterModel.data?.id ?? 4);
-
-          registerModel.data?.id = recipientRegisterModel.data?.id;
-          registerModel.data?.bloodTypes =
-              recipientRegisterModel.data?.bloodType;
+              key: CacheKeys.ckUserType,
+              value: recipientRegisterModel.userType ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserGender,
+              value: recipientRegisterModel.data?.gender ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserBloodType,
+              value: recipientRegisterModel.data?.bloodType ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserPhone,
+              value: recipientRegisterModel.data?.contactDetails ?? 'aa');
         } else if (userType == 'Hospital') {
           final hospitalRegisterModel =
               HospitalRegisterModel.fromJson(value.data);
           CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserId,
+              value: hospitalRegisterModel.data?.id ?? 0);
+          CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckUserName,
               value: hospitalRegisterModel.data?.name ?? 'aa');
           CacheHelper.saveDataSharedPreference(
-              key: CacheKeys.ckUserId,
-              value: hospitalRegisterModel.data?.id ?? 4);
-          // logWarning("${hospitalRegisterModel.data?.id}");
-          registerModel.data?.id = hospitalRegisterModel.data?.id;
-          registerModel.data?.bloodTypes =
-              hospitalRegisterModel.data?.bloodTypes;
-          // logWarning("${registerModel.data?.id}");
+              key: CacheKeys.ckUserType,
+              value: hospitalRegisterModel.userType ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserAbout,
+              value: hospitalRegisterModel.data?.about ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserBloodType,
+              value: hospitalRegisterModel.data?.bloodTypes ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserPhone,
+              value: hospitalRegisterModel.data?.contactDetails ?? 'aa');
         } else if (userType == 'BloodBank') {
           final bloodBankRegisterModel =
               BloodBankRegisterModel.fromJson(value.data);
           CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserId,
+              value: bloodBankRegisterModel.data?.id ?? 0);
+          CacheHelper.saveDataSharedPreference(
               key: CacheKeys.ckUserName,
               value: bloodBankRegisterModel.data?.name ?? 'aa');
           CacheHelper.saveDataSharedPreference(
-              key: CacheKeys.ckUserId,
-              value: bloodBankRegisterModel.data?.id ?? 4);
-          registerModel.data?.id = bloodBankRegisterModel.data?.id;
-          registerModel.data?.bloodTypes =
-              bloodBankRegisterModel.data?.bloodTypes;
+              key: CacheKeys.ckUserType,
+              value: bloodBankRegisterModel.userType ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserAbout,
+              value: bloodBankRegisterModel.data?.about ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserBloodType,
+              value: bloodBankRegisterModel.data?.bloodTypes ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserPhone,
+              value: bloodBankRegisterModel.data?.contactDetails ?? 'aa');
         }
         emit(GetProfileSuccess());
       });

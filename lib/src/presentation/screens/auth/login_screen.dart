@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
+import 'package:smart_blood_bank/src/presentation/router/app_router_names.dart';
 
 import '../../../business_logic/auth_cubit/auth_cubit.dart';
 import '../../../constants/colors.dart';
 import '../../../constants/const_methods.dart';
 import '../../../constants/enums.dart';
-import '../../router/app_router_names.dart';
 import '../../widgets/default_button.dart';
 import '../../widgets/default_text.dart';
 import '../../widgets/default_text_field.dart';
@@ -108,44 +110,43 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: DefaultButton(
-        margin:
-            EdgeInsets.only(top: 3.h, bottom: 20.h, left: 16.w, right: 16.w),
-        text: "تسجيل الدخول",
-        buttonColor:
-            _controller.text.length < 11 ? AppColors.red : AppColors.grey,
-        textColor: AppColors.white,
-        radius: 100,
-        height: 40.h,
-        onTap: _controller.text.length < 11
-            ? () async {
-                if (_controller.text.trim().isEmpty ||
-                    _controller.text.length < 11) {
-                  showToast("أدخل رقم هاتف صحيح", ToastState.warning);
-                } else if (_passwordController2.text.trim().isEmpty) {
-                  showToast("أدخل كلمة السر", ToastState.warning);
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (_) {
-                      return const Center(child: LoadingIndicator());
-                    },
-                  );
-                  AuthCubit.get(context).verifyFirebasePhone(
-                    afterSuccess: () {
-                      _controller.clear();
-                      _passwordController2.clear();
-                      Navigator.pushNamed(context, AppRouterNames.rLayout);
-                    },
-                    afterError: () => Navigator.pop(context),
-                    phoneNumber: [
-                      "+966",
-                      _controller.text.replaceAll(' ', '').trim(),
-                    ],
-                  );
+      floatingActionButton: BlocListener<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is LoginSuccess) {
+            context.goTo(AppRouterNames.rLayout);
+          }
+        },
+        child: DefaultButton(
+          margin:
+              EdgeInsets.only(top: 3.h, bottom: 20.h, left: 16.w, right: 16.w),
+          text: "تسجيل الدخول",
+          buttonColor:
+              _controller.text.length < 12 ? AppColors.red : AppColors.grey,
+          textColor: AppColors.white,
+          radius: 100,
+          height: 40.h,
+          onTap: _controller.text.length < 12
+              ? () async {
+                  if (_controller.text.trim().isEmpty ||
+                      _controller.text.length < 11) {
+                    showToast("أدخل رقم هاتف صحيح", ToastState.warning);
+                  } else if (_passwordController2.text.trim().isEmpty) {
+                    showToast("أدخل كلمة السر", ToastState.warning);
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (_) {
+                        return const Center(child: LoadingIndicator());
+                      },
+                    );
+                    AuthCubit.get(context).login(
+                      phone: _controller.text,
+                      pass: _passwordController2.text,
+                    );
+                  }
                 }
-              }
-            : () {},
+              : () {},
+        ),
       ),
     );
   }

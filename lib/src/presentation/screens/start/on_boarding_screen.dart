@@ -154,12 +154,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               decoration: BoxDecoration(
                                   color: AppColors.red,
                                   borderRadius: BorderRadius.circular(800)),
-                              child: const RotatedBox(
-                                quarterTurns: 2,
-                                child: Icon(
-                                  Icons.arrow_back_ios_new_rounded,
-                                  color: AppColors.white,
-                                ),
+                              child: const Icon(
+                                Icons.arrow_back_ios_new_rounded,
+                                color: AppColors.white,
                               )),
                         ),
                         DefaultButton(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:smart_blood_bank/src/constants/navigator_extension.dart';
 
 import '../../../business_logic/auth_cubit/auth_cubit.dart';
 import '../../../constants/colors.dart';
@@ -100,6 +101,36 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                   },
                 ),
               ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Align(
+                alignment: Alignment.centerRight,
+                child: Row(
+                  children: [
+                    DefaultText(
+                      text: 'تمتلك حساب ؟',
+                      textColor: Color(0xFF1E1E1E),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14.sp,
+                    ),
+                    SizedBox(
+                      width: 8.w,
+                    ),
+                    DefaultText(
+                      text: "تسجيل دخول",
+                      textColor: Colors.red,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14.sp,
+                      onTap: () {
+                        context.goTo(AppRouterNames.rLogin);
+                      },
+                    ),
+                  ],
+                )),
+            SizedBox(
+              height: 20.h,
             ),
           ],
         ),

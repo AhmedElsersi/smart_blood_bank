@@ -1,4 +1,6 @@
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -39,7 +41,26 @@ class _HomePageState extends State<HomePage> {
     AuthCubit.get(context).getProfile();
     DonationsCubit.get(context)
         .getAskDonations(type: AuthCubit.get(context).userType);
+    readCSV();
     super.initState();
+  }
+
+  Future<void> readCSV() async {
+    try {
+      // Load the CSV file using rootBundle
+      final String csvData =
+          await rootBundle.loadString('assets/dataSet/transfusion.csv');
+
+      // Parse the CSV
+      List<List<dynamic>> fields = CsvToListConverter().convert(csvData);
+
+      // Print the CSV data
+      fields.forEach((List<dynamic> row) {
+        print(row.join(', '));
+      });
+    } catch (e) {
+      print('Error reading CSV file: $e');
+    }
   }
 
   @override

@@ -602,14 +602,17 @@ class _AskDonationScreenState extends State<AskDonationScreen> {
                   );
                   DonationsCubit.get(context).askDonation(
                       recipientId: AuthCubit.get(context).userType != "Hospital"
-                          ? AuthCubit.get(context).registerModel.data?.id
+                          ? CacheHelper.getDataFromSharedPreference(
+                              key: CacheKeys.ckUserId)
                           : null,
                       hospitalId: AuthCubit.get(context).userType == "Hospital"
                           ? CacheHelper.getDataFromSharedPreference(
                                   key: CacheKeys.ckUserId) ??
                               1
                           : bloodBank.id ?? 1,
-                      bloodBankId: bloodBank.id ?? 1,
+                      bloodBankId: AuthCubit.get(context).userType == "Hospital"
+                          ? bloodBank.id ?? 1
+                          : null,
                       quantity:
                           double.parse(_quantityController.text.trim()) ?? 1,
                       donationDay: _dayController.text,

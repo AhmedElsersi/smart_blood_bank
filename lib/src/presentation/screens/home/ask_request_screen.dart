@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_blood_bank/src/constants/const_methods.dart';
+import 'package:smart_blood_bank/src/constants/enums.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_button.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/loading_indicator.dart';
 
@@ -34,7 +35,11 @@ class _AskRequestScreenState extends State<AskRequestScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<DonationsCubit, DonationsState>(
         listener: (context, state) {
-      if (state is AcceptRefuseDonationSuccess) {
+      if (state is AcceptRefuseAskDonationSuccess) {
+        showToast("نجحت العملية", ToastState.success);
+        Navigator.pop(context);
+      } else if (state is AcceptRefuseAskDonationSuccess) {
+        showToast("فشلت العملية", ToastState.error);
         Navigator.pop(context);
       }
     }, builder: (context, state) {
@@ -328,6 +333,10 @@ class _AskRequestScreenState extends State<AskRequestScreen> {
                           textColor: AppColors.white,
                           buttonColor: AppColors.red,
                           onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    const Center(child: LoadingIndicator()));
                             cubit.acceptRefuseAskDonation(
                               id: cubit.askDonationResponse.data?.id ?? 1,
                               status: "accept",
@@ -348,6 +357,10 @@ class _AskRequestScreenState extends State<AskRequestScreen> {
                           textColor: AppColors.red,
                           border: Border.all(color: AppColors.red),
                           onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    const Center(child: LoadingIndicator()));
                             cubit.acceptRefuseAskDonation(
                               id: cubit.askDonationResponse.data?.id ?? 1,
                               status: "cancel",
