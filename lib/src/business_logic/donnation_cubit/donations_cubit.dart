@@ -50,8 +50,8 @@ class DonationsCubit extends Cubit<DonationsState> {
 
   RequestDonationModel requestDonationModel = RequestDonationModel();
   Future askDonation(
-      {required int recipientId,
-      required int hospitalId,
+      {int? recipientId,
+      int? hospitalId,
       required int bloodBankId,
       required String bloodType,
       required double quantity,
@@ -121,11 +121,15 @@ class DonationsCubit extends Cubit<DonationsState> {
   }
 
   List<AskDonation> askDonations = [];
-  Future getAskDonations() async {
+  Future getAskDonations({required String type}) async {
     try {
+      logWarning(type);
       emit(GetAskDonationsLoading());
       await DioHelper.getData(
         url: EndPoints.epGetAskDonations,
+        query: {
+          "type": type,
+        },
       ).then((value) {
         logSuccess('getAskDonations Response : ${value.data}');
         final hh = AskDonationsModel.fromJson(value.data);
@@ -182,6 +186,28 @@ class DonationsCubit extends Cubit<DonationsState> {
       logError('getAskDonationById error ${dioError.response}');
     } catch (e) {
       emit(AcceptRefuseDonationFailure());
+    }
+  }
+
+  Future acceptRefuseAskDonation(
+      {required int id, required String status, String? reason}) async {
+    try {
+      emit(AcceptRefuseAskDonationLoading());
+      await DioHelper.getData(
+        url: EndPoints.epAcceptRefuseAskDonation,
+        query: {
+          "donation_id": id,
+          "status": status,
+          if (status != 'accept') "cancel_reason": reason,
+        },
+      ).then((value) {
+        logSuccess('acceptRefuseAskDonation Response : ${value.data}');
+        emit(AcceptRefuseAskDonationSuccess());
+      });
+    } on DioException catch (dioError) {
+      logError('acceptRefuseAskDonation error ${dioError.response}');
+    } catch (e) {
+      emit(AcceptRefuseAskDonationFailure());
     }
   }
 }

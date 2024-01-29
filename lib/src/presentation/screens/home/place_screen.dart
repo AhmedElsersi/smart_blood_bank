@@ -20,7 +20,7 @@ class PlaceScreen extends StatefulWidget {
   ///0:::  1:hospital , 2:blood bank
   ///0:::  hospital or blood bank id
 
-  final List<int> ids;
+  final List<dynamic> ids;
 
   @override
   State<PlaceScreen> createState() => _PlaceScreenState();
@@ -32,7 +32,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
     if (widget.ids[0] == 1) {
       PlacesCubit.get(context).getHospital(id: widget.ids[1]);
     } else {
-      PlacesCubit.get(context).getBloodBank();
+      PlacesCubit.get(context).getBloodBank(id: widget.ids[1]);
     }
     super.initState();
   }

@@ -5,6 +5,7 @@ import 'package:smart_blood_bank/src/constants/const_methods.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_button.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/loading_indicator.dart';
 
+import '../../../business_logic/auth_cubit/auth_cubit.dart';
 import '../../../business_logic/donnation_cubit/donations_cubit.dart';
 import '../../../constants/colors.dart';
 import '../../widgets/default_text.dart';
@@ -103,7 +104,7 @@ class _AskRequestScreenState extends State<AskRequestScreen> {
                                 DefaultText(
                                   text: cubit.askDonationResponse.data
                                           ?.patientName ??
-                                      'مصطفي حسام شوقي',
+                                      '',
                                   textAlign: TextAlign.center,
                                   textColor: Color(0xFF1E1E1E),
                                   fontSize: 14,
@@ -312,49 +313,51 @@ class _AskRequestScreenState extends State<AskRequestScreen> {
                 SizedBox(
                   height: 30.h,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: DefaultButton(
-                        height: 40.h,
-                        radius: 100,
-                        text: 'قبول',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                        textColor: AppColors.white,
-                        buttonColor: AppColors.red,
-                        onTap: () {
-                          cubit.acceptRefuseDonation(
-                            id: cubit.askDonationResponse.data?.id ?? 1,
-                            status: "accept",
-                          );
-                        },
+                if (AuthCubit.get(context).userType == "BloodBank" ||
+                    AuthCubit.get(context).userType == "Hospital")
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: DefaultButton(
+                          height: 40.h,
+                          radius: 100,
+                          text: 'قبول',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          textColor: AppColors.white,
+                          buttonColor: AppColors.red,
+                          onTap: () {
+                            cubit.acceptRefuseAskDonation(
+                              id: cubit.askDonationResponse.data?.id ?? 1,
+                              status: "accept",
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 8.w,
-                    ),
-                    Expanded(
-                      child: DefaultButton(
-                        height: 40.h,
-                        radius: 100,
-                        text: 'رفض',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                        textColor: AppColors.red,
-                        border: Border.all(color: AppColors.red),
-                        onTap: () {
-                          cubit.acceptRefuseDonation(
-                            id: cubit.askDonationResponse.data?.id ?? 1,
-                            status: "cancel",
-                            reason: "",
-                          );
-                        },
+                      SizedBox(
+                        width: 8.w,
                       ),
-                    ),
-                  ],
-                ),
+                      Expanded(
+                        child: DefaultButton(
+                          height: 40.h,
+                          radius: 100,
+                          text: 'رفض',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          textColor: AppColors.red,
+                          border: Border.all(color: AppColors.red),
+                          onTap: () {
+                            cubit.acceptRefuseAskDonation(
+                              id: cubit.askDonationResponse.data?.id ?? 1,
+                              status: "cancel",
+                              reason: "",
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
               ],
             ),
           ));

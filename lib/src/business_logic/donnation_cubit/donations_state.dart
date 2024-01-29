@@ -46,3 +46,9 @@ class AcceptRefuseDonationLoading extends DonationsState {}
 class AcceptRefuseDonationSuccess extends DonationsState {}
 
 class AcceptRefuseDonationFailure extends DonationsState {}
+
+class AcceptRefuseAskDonationLoading extends DonationsState {}
+
+class AcceptRefuseAskDonationSuccess extends DonationsState {}
+
+class AcceptRefuseAskDonationFailure extends DonationsState {}

@@ -36,7 +36,9 @@ class _HomePageState extends State<HomePage> {
     } else {
       PlacesCubit.get(context).getBloodBanks();
     }
-    DonationsCubit.get(context).getAskDonations();
+    AuthCubit.get(context).getProfile();
+    DonationsCubit.get(context)
+        .getAskDonations(type: AuthCubit.get(context).userType);
     super.initState();
   }
 
@@ -265,8 +267,7 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                 ),
                                               )
-                                            : Expanded(
-                                                child: Container(
+                                            : Container(
                                                 color: AppColors.white,
                                                 child: ListView.separated(
                                                   shrinkWrap: true,
@@ -289,7 +290,7 @@ class _HomePageState extends State<HomePage> {
                                                               .askDonations[
                                                                   index]
                                                               .patientName ??
-                                                          "مصطفي حسام شوقي",
+                                                          "",
                                                       location: cubit
                                                           .askDonations[index]
                                                           .hospitalId,
@@ -318,7 +319,7 @@ class _HomePageState extends State<HomePage> {
                                                   itemCount:
                                                       cubit.askDonations.length,
                                                 ),
-                                              ));
+                                              );
                                   }),
                             ],
                           )

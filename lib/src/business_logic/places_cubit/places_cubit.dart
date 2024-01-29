@@ -71,20 +71,20 @@ class PlacesCubit extends Cubit<PlacesState> {
     }
   }
 
-  Future getBloodBank() async {
+  Future getBloodBank({required int id}) async {
     try {
-      emit(GetBloodBanksLoading());
+      emit(GetBloodBankLoading());
       await DioHelper.getData(
-        url: EndPoints.epGetHospitals,
+        url: EndPoints.epGetBloodBank(id),
       ).then((value) {
         logSuccess('getBloodBank Response : ${value.data}');
-        final response = PlacesModel.fromJson(value.data);
-        emit(GetBloodBanksSuccess());
+        placeModel = PlaceIModel.fromJson(value.data);
+        emit(GetBloodBankSuccess());
       });
     } on DioError catch (dioError) {
       logError('mmmm ${dioError.response}');
     } catch (e) {
-      emit(GetBloodBanksFailure());
+      emit(GetBloodBankFailure());
     }
   }
 }

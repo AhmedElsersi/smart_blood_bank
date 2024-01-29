@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_blood_bank/src/business_logic/auth_cubit/auth_cubit.dart';
 import 'package:smart_blood_bank/src/business_logic/donnation_cubit/donations_cubit.dart';
 
 import '../../../constants/colors.dart';
@@ -18,7 +19,8 @@ class AskRequestsScreen extends StatefulWidget {
 class _AskRequestsScreenState extends State<AskRequestsScreen> {
   @override
   void initState() {
-    DonationsCubit.get(context).getAskDonations();
+    DonationsCubit.get(context)
+        .getAskDonations(type: AuthCubit.get(context).userType);
     super.initState();
   }
 

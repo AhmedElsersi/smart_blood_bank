@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_blood_bank/src/constants/cache_keys.dart';
 import 'package:smart_blood_bank/src/constants/colors.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/default_text_field.dart';
+import 'package:smart_blood_bank/src/services/cache_helper.dart';
 
+import '../../../business_logic/auth_cubit/auth_cubit.dart';
 import '../../../business_logic/donnation_cubit/donations_cubit.dart';
 import '../../../business_logic/places_cubit/places_cubit.dart';
 import '../../../constants/const_methods.dart';
@@ -38,6 +41,7 @@ class _AskDonationScreenState extends State<AskDonationScreen> {
     } else {
       PlacesCubit.get(context).getBloodBanks();
     }
+    AuthCubit.get(context).getProfile();
     _genderController.text = genders[0];
     _bloodTypeController.text = bloodTypes[0];
     governorate = governorates[0];
@@ -58,7 +62,7 @@ class _AskDonationScreenState extends State<AskDonationScreen> {
   }
 
   List<String> genders = ['ذكر', 'أنثي'];
-  List<String> bloodTypes = ['A+', 'A-', 'B+', 'B-', 'C+', 'C-', 'AB+', 'AB-'];
+  List<String> bloodTypes = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
   List<String> selectedBloodTypes = [];
 
   String governorate = '';
@@ -175,9 +179,12 @@ class _AskDonationScreenState extends State<AskDonationScreen> {
           child: BlocConsumer<DonationsCubit, DonationsState>(
               listener: (context, state) {
             final cubit = DonationsCubit.get(context);
-            if (state is DonateSuccess) {
+            if (state is AskDonationSuccess) {
+              showToast('تم طلب متبرع بنجاح', ToastState.success);
               Navigator.pop(context);
               Navigator.pushNamed(context, AppRouterNames.rLayout);
+              // Navigator.pop(context);
+              // Navigator.pushNamed(context, AppRouterNames.rLayout);
             } else {
               Navigator.pop(context);
             }
@@ -275,56 +282,58 @@ class _AskDonationScreenState extends State<AskDonationScreen> {
                   //         }).toList(),
                   //       ),
                   //     ),
-                  //     SizedBox(height: 16.h),
-                  //     Container(
-                  //       height: 50.h,
-                  //       padding: EdgeInsets.fromLTRB(12.w, 0, 12.w, 0),
-                  //       alignment: Alignment.center,
-                  //       decoration: BoxDecoration(
-                  //         borderRadius: BorderRadius.circular(150),
-                  //         border: Border.all(
-                  //           color: const Color(0xFFC8C8C8),
-                  //         ),
-                  //       ),
-                  //       child: DropdownButton<String>(
-                  //         value: _bloodTypeController.text,
-                  //         enableFeedback: true,
-                  //         autofocus: true,
-                  //         isExpanded: true,
-                  //         focusColor: Colors.transparent,
-                  //         dropdownColor: Colors.white,
-                  //         borderRadius: BorderRadius.circular(20),
-                  //         underline: const SizedBox(),
-                  //         icon: const RotatedBox(
-                  //           quarterTurns: 1,
-                  //           child: Icon(
-                  //             Icons.arrow_back_ios_rounded,
-                  //             color: Colors.black,
-                  //             size: 16,
-                  //           ),
-                  //         ),
-                  //         style:
-                  //             const TextStyle(fontSize: 20, color: Colors.black),
-                  //         onChanged: (value) {
-                  //           setState(() {
-                  //             _bloodTypeController.text = value!;
-                  //           });
-                  //         },
-                  //         alignment: Alignment.center,
-                  //         padding: EdgeInsets.symmetric(horizontal: 12.w),
-                  //         items: bloodTypes
-                  //             .map<DropdownMenuItem<String>>((String value) {
-                  //           return DropdownMenuItem<String>(
-                  //               alignment: Alignment.centerRight,
-                  //               value: value,
-                  //               child: DefaultText(
-                  //                 text: value,
-                  //                 fontWeight: FontWeight.w500,
-                  //               ));
-                  //         }).toList(),
-                  //       ),
-                  //     ),
-                  //     SizedBox(height: 16.h),
+                  if (AuthCubit.get(context).userType == "Hospital")
+                    SizedBox(height: 16.h),
+                  if (AuthCubit.get(context).userType == "Hospital")
+                    Container(
+                      height: 50.h,
+                      padding: EdgeInsets.fromLTRB(12.w, 0, 12.w, 0),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(150),
+                        border: Border.all(
+                          color: const Color(0xFFC8C8C8),
+                        ),
+                      ),
+                      child: DropdownButton<String>(
+                        value: _bloodTypeController.text,
+                        enableFeedback: true,
+                        autofocus: true,
+                        isExpanded: true,
+                        focusColor: Colors.transparent,
+                        dropdownColor: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        underline: const SizedBox(),
+                        icon: const RotatedBox(
+                          quarterTurns: 1,
+                          child: Icon(
+                            Icons.arrow_back_ios_rounded,
+                            color: Colors.black,
+                            size: 16,
+                          ),
+                        ),
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.black),
+                        onChanged: (value) {
+                          setState(() {
+                            _bloodTypeController.text = value!;
+                          });
+                        },
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        items: bloodTypes
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                              alignment: Alignment.centerRight,
+                              value: value,
+                              child: DefaultText(
+                                text: value,
+                                fontWeight: FontWeight.w500,
+                              ));
+                        }).toList(),
+                      ),
+                    ),
+                  // SizedBox(height: 16.h),
                   //     DefaultTextField(
                   //       controller: _birthController,
                   //       keyboardType: TextInputType.name,
@@ -584,35 +593,34 @@ class _AskDonationScreenState extends State<AskDonationScreen> {
                 } else if (_timeController.text.isEmpty) {
                   showToast('الوقت مطلوب', ToastState.warning);
                 } else {
+                  logSuccess("${AuthCubit.get(context).registerModel.data}");
                   showDialog(
                     context: context,
                     builder: (_) {
                       return const Center(child: LoadingIndicator());
                     },
                   );
-                  showToast('تم طلب متبرع بنجاح', ToastState.success);
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, AppRouterNames.rLayout);
-                  // showDialog(
-                  //   context: context,
-                  //   builder: (_) {
-                  //     return const Center(child: LoadingIndicator());
-                  //   },
-                  // );
-                  // DonationsCubit.get(context).askDonation(
-                  //     recipientId:
-                  //         AuthCubit.get(context).registerModel.data?.id ?? 1,
-                  //     hospitalId: bloodBank.id ?? 1,
-                  //     bloodBankId: bloodBank.id ?? 1,
-                  //     quantity:
-                  //         double.parse(_quantityController.text.trim()) ?? 1,
-                  //     donationDay: _dayController.text,
-                  //     donationTime: _timeController.text,
-                  //     bloodType: AuthCubit.get(context)
-                  //             .registerModel
-                  //             .data
-                  //             ?.bloodTypes ??
-                  //         'A+');
+                  DonationsCubit.get(context).askDonation(
+                      recipientId: AuthCubit.get(context).userType != "Hospital"
+                          ? AuthCubit.get(context).registerModel.data?.id
+                          : null,
+                      hospitalId: AuthCubit.get(context).userType == "Hospital"
+                          ? CacheHelper.getDataFromSharedPreference(
+                                  key: CacheKeys.ckUserId) ??
+                              1
+                          : bloodBank.id ?? 1,
+                      bloodBankId: bloodBank.id ?? 1,
+                      quantity:
+                          double.parse(_quantityController.text.trim()) ?? 1,
+                      donationDay: _dayController.text,
+                      donationTime: _timeController.text,
+                      bloodType: AuthCubit.get(context).userType == "Hospital"
+                          ? _bloodTypeController.text
+                          : AuthCubit.get(context)
+                                  .registerModel
+                                  .data
+                                  ?.bloodTypes ??
+                              'A+');
                 }
               },
             ),

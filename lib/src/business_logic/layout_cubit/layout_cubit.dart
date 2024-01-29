@@ -6,6 +6,7 @@ import 'package:smart_blood_bank/src/presentation/screens/home/more_page.dart';
 
 import '../../constants/const_methods.dart';
 import '../../constants/end_points.dart';
+import '../../models/notifications_model.dart';
 import '../../services/dio_helper.dart';
 
 part 'layout_state.dart';
@@ -25,7 +26,7 @@ class LayoutCubit extends Cubit<LayoutState> {
     const MorePage(),
     const HomePage(),
   ];
-  List<dynamic> notifications = [];
+  List<NotificationModel> notifications = [];
 
   Future getNotifications() async {
     notifications.clear();
@@ -35,8 +36,8 @@ class LayoutCubit extends Cubit<LayoutState> {
         url: EndPoints.epGetNotifications,
       ).then((value) {
         logSuccess('getNotifications Response : ${value.data}');
-        // final response = PlacesModel.fromJson(value.data);
-        // notifications = response.data ?? [];
+        final response = NotificationsModel.fromJson(value.data);
+        notifications = response.data ?? [];
         emit(GetNotificationsSuccess());
       });
     } catch (e) {

@@ -25,7 +25,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
   void initState() {
     if (widget.placeType == 1) {
       PlacesCubit.get(context).getHospitals();
-    } else {
+    } else if (widget.placeType == 2) {
       PlacesCubit.get(context).getBloodBanks();
     }
     super.initState();
@@ -63,8 +63,12 @@ class _PlacesScreenState extends State<PlacesScreen> {
                       ),
                     ),
                   ),
-                  state is GetBloodBanksSuccess || state is GetHospitalsSuccess
-                      ? cubit.places.isNotEmpty
+                  state is GetBloodBanksLoading || state is GetHospitalsLoading
+                      ? SizedBox(
+                          height: 500.h,
+                          child: const Center(child: LoadingIndicator()),
+                        )
+                      : cubit.places.isNotEmpty
                           ? Expanded(
                               child: Container(
                               color: AppColors.white,
@@ -99,11 +103,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                            )
-                      : SizedBox(
-                          height: 500.h,
-                          child: const Center(child: LoadingIndicator()),
-                        ),
+                            ),
                 ],
               ));
         });

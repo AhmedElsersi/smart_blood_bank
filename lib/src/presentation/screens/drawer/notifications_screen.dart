@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smart_blood_bank/src/business_logic/layout_cubit/layout_cubit.dart';
 import 'package:smart_blood_bank/src/presentation/widgets/loading_indicator.dart';
 
-import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
 import '../../widgets/default_text.dart';
 
@@ -64,19 +62,32 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                               child: ListView.separated(
                                 // padding: const EdgeInsets.only(top: 6),
                                 itemBuilder: (context, index) {
-                                  return PlaceCard(
-                                    onTap: () {},
-                                    title: "تم قبول طلبك",
-                                    location:
-                                        cubit.notifications[index].location ??
-                                            "",
+                                  return Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 12.w, vertical: 5.h),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 8.w, vertical: 10.h),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        border: Border.all(
+                                          color: AppColors.red,
+                                        )),
+                                    child: DefaultText(
+                                      text:
+                                          cubit.notifications[index].message ??
+                                              "",
+                                      overflow: TextOverflow.ellipsis,
+                                      textColor: Color(0xFF1E1E1E),
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   );
                                 },
                                 separatorBuilder: (context, index) {
                                   return const SizedBox();
                                 },
-                                itemCount: 3,
-                                // itemCount: cubit.notifications.length,
+                                itemCount: cubit.notifications.length,
                               ),
                             ))
                           : SizedBox(
@@ -97,101 +108,5 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 ],
               ));
         });
-  }
-}
-
-class PlaceCard extends StatelessWidget {
-  final VoidCallback onTap;
-  final bool? hasMargin;
-  final String? title;
-  final String? location;
-  const PlaceCard(
-      {super.key,
-      required this.onTap,
-      this.hasMargin,
-      this.title,
-      this.location});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        margin: (hasMargin ?? false)
-            ? const EdgeInsets.only(
-                bottom: 20,
-              )
-            : const EdgeInsets.only(
-                left: 20,
-                right: 20,
-                bottom: 20,
-              ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          border: Border.all(color: AppColors.grey),
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Row(
-          children: [
-            Container(
-              height: 80.h,
-              width: 80.h,
-              decoration: BoxDecoration(
-                color: AppColors.red,
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.asset(
-                  AppAssets.imgHospital,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FittedBox(
-                      child: DefaultText(
-                        text: title ?? 'الامل',
-                        overflow: TextOverflow.ellipsis,
-                        textColor: Color(0xFF1E1E1E),
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Row(
-                      children: [
-                        SvgPicture.asset(AppAssets.icLocation),
-                        SizedBox(
-                          width: 4.w,
-                        ),
-                        Expanded(
-                          child: DefaultText(
-                            text: location ?? 'مكة - مكة',
-                            overflow: TextOverflow.ellipsis,
-                            textColor: Color(0xFF1E1E1E),
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

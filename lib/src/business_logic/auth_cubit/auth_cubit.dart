@@ -182,7 +182,7 @@ class AuthCubit extends Cubit<AuthState> {
         "phone": phone,
         "otp": pass,
         "userType": userType,
-        "type": type,
+        // "type": type,
         "bloodType": bloodType,
         "birthDate": birthDate,
         "location": location,
@@ -242,6 +242,70 @@ class AuthCubit extends Cubit<AuthState> {
       logError('mmmm ${dioError.response}');
     } catch (error) {
       emit(RegisterFailure());
+      logError(error.toString());
+    }
+  }
+
+  Future getProfile() async {
+    emit(GetProfileLoading());
+    try {
+      await DioHelper.getData(url: EndPoints.epProfile).then((value) {
+        logSuccess('getProfile Response : ${value.data}');
+        userType = value.data["userType"];
+        if (userType == 'Donor') {
+          final donnerRegisterModel = DonnerRegisterModel.fromJson(value.data);
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserName,
+              value: donnerRegisterModel.data?.name ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserId,
+              value: donnerRegisterModel.data?.id ?? 4);
+          registerModel.data?.id = donnerRegisterModel.data?.id;
+          registerModel.data?.bloodTypes = donnerRegisterModel.data?.bloodType;
+        } else if (userType == 'Recipient') {
+          final recipientRegisterModel =
+              RecipientRegisterModel.fromJson(value.data);
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserName,
+              value: recipientRegisterModel.data?.name ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserId,
+              value: recipientRegisterModel.data?.id ?? 4);
+
+          registerModel.data?.id = recipientRegisterModel.data?.id;
+          registerModel.data?.bloodTypes =
+              recipientRegisterModel.data?.bloodType;
+        } else if (userType == 'Hospital') {
+          final hospitalRegisterModel =
+              HospitalRegisterModel.fromJson(value.data);
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserName,
+              value: hospitalRegisterModel.data?.name ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserId,
+              value: hospitalRegisterModel.data?.id ?? 4);
+          // logWarning("${hospitalRegisterModel.data?.id}");
+          registerModel.data?.id = hospitalRegisterModel.data?.id;
+          registerModel.data?.bloodTypes =
+              hospitalRegisterModel.data?.bloodTypes;
+          // logWarning("${registerModel.data?.id}");
+        } else if (userType == 'BloodBank') {
+          final bloodBankRegisterModel =
+              BloodBankRegisterModel.fromJson(value.data);
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserName,
+              value: bloodBankRegisterModel.data?.name ?? 'aa');
+          CacheHelper.saveDataSharedPreference(
+              key: CacheKeys.ckUserId,
+              value: bloodBankRegisterModel.data?.id ?? 4);
+          registerModel.data?.id = bloodBankRegisterModel.data?.id;
+          registerModel.data?.bloodTypes =
+              bloodBankRegisterModel.data?.bloodTypes;
+        }
+        emit(GetProfileSuccess());
+      });
+    } catch (error) {
+      emit(GetProfileFailure());
       logError(error.toString());
     }
   }

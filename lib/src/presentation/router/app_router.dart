@@ -84,7 +84,7 @@ class AppRouter {
           ),
         );
       case AppRouterNames.rPlace:
-        final ids = settings.arguments as List<int>;
+        final ids = settings.arguments as List<dynamic>;
         return MaterialPageRoute(
           builder: (_) => PlaceScreen(
             ids: ids,
